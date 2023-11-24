@@ -58,7 +58,7 @@ jobs:
           echo '' >> $JANE_CONFIG_PATH
           echo 'return [' >> $JANE_CONFIG_PATH
           echo "    'openapi-file' => __DIR__ . '/spec.json'," >> $JANE_CONFIG_PATH
-          echo "    'namespace' => 'Mdshack\Docker\API\${NAMESPACE}'," >> $JANE_CONFIG_PATH
+          echo "    'namespace' => 'Mdshack\Docker\API\\$NAMESPACE'," >> $JANE_CONFIG_PATH
           echo "    'directory' => __DIR__ . '/generated'," >> $JANE_CONFIG_PATH
           echo '];' >> $JANE_CONFIG_PATH
 
@@ -102,4 +102,4 @@ jobs:
           gh pr create \
             -B main \
             -t "feat (automated): ${{ steps.download.outputs.openapi_version_name }}" \
-            -b "Automated version generated for ${{ steps.download.outputs.openapi_version_name }}\n\nGenerated from: ${{ inputs.openapiSpec }}"
+            -b "Automated version generated for ${{ steps.download.outputs.openapi_version_name }}<br/><br/>Generated from: ${{ inputs.openapiSpec }}"
