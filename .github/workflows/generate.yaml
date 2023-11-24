@@ -40,7 +40,7 @@ jobs:
             'https://converter.swagger.io/api/convert' \
             -H 'accept: application/json' \
             -H 'Content-Type: application/yaml' \
-            --data-binary '@${{ steps.download.outputs.openapi_version_name }}' > $VERSION_PATH/spec.json
+            --data-binary '@${{ steps.download.outputs.openapi_spec_path }}' > $VERSION_PATH/spec.json
 
           NAMESPACE="echo ${{ steps.download.outputs.openapi_version_name }} |  sed -r 's/./_/g'"
 
