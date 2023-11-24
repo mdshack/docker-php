@@ -5,31 +5,34 @@ namespace Mdshack\Docker\API\v1_43\Normalizer;
 use Jane\Component\JsonSchemaRuntime\Reference;
 use Mdshack\Docker\API\v1_43\Runtime\Normalizer\CheckArray;
 use Mdshack\Docker\API\v1_43\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class TaskSpecPlacementNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+class TaskSpecPlacementNormalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null, array $context = array()) : bool
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === 'Mdshack\\Docker\\API\\v1_43\\Model\\TaskSpecPlacement';
     }
-    public function supportsNormalization($data, $format = null, array $context = array()) : bool
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_object($data) && get_class($data) === 'Mdshack\\Docker\\API\\v1_43\\Model\\TaskSpecPlacement';
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -38,11 +41,11 @@ class TaskSpecPlacementNormalizer implements DenormalizerInterface, NormalizerIn
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Mdshack\Docker\API\v1_43\Model\TaskSpecPlacement();
-        if (null === $data || false === \is_array($data)) {
+        if ($data === null || \is_array($data) === false) {
             return $object;
         }
         if (\array_key_exists('Constraints', $data)) {
-            $values = array();
+            $values = [];
             foreach ($data['Constraints'] as $value) {
                 $values[] = $value;
             }
@@ -50,7 +53,7 @@ class TaskSpecPlacementNormalizer implements DenormalizerInterface, NormalizerIn
             unset($data['Constraints']);
         }
         if (\array_key_exists('Preferences', $data)) {
-            $values_1 = array();
+            $values_1 = [];
             foreach ($data['Preferences'] as $value_1) {
                 $values_1[] = $this->denormalizer->denormalize($value_1, 'Mdshack\\Docker\\API\\v1_43\\Model\\TaskSpecPlacementPreferencesItem', 'json', $context);
             }
@@ -62,7 +65,7 @@ class TaskSpecPlacementNormalizer implements DenormalizerInterface, NormalizerIn
             unset($data['MaxReplicas']);
         }
         if (\array_key_exists('Platforms', $data)) {
-            $values_2 = array();
+            $values_2 = [];
             foreach ($data['Platforms'] as $value_2) {
                 $values_2[] = $this->denormalizer->denormalize($value_2, 'Mdshack\\Docker\\API\\v1_43\\Model\\Platform', 'json', $context);
             }
@@ -74,33 +77,35 @@ class TaskSpecPlacementNormalizer implements DenormalizerInterface, NormalizerIn
                 $object[$key] = $value_3;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        if ($object->isInitialized('constraints') && null !== $object->getConstraints()) {
-            $values = array();
+        $data = [];
+        if ($object->isInitialized('constraints') && $object->getConstraints() !== null) {
+            $values = [];
             foreach ($object->getConstraints() as $value) {
                 $values[] = $value;
             }
             $data['Constraints'] = $values;
         }
-        if ($object->isInitialized('preferences') && null !== $object->getPreferences()) {
-            $values_1 = array();
+        if ($object->isInitialized('preferences') && $object->getPreferences() !== null) {
+            $values_1 = [];
             foreach ($object->getPreferences() as $value_1) {
                 $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
             }
             $data['Preferences'] = $values_1;
         }
-        if ($object->isInitialized('maxReplicas') && null !== $object->getMaxReplicas()) {
+        if ($object->isInitialized('maxReplicas') && $object->getMaxReplicas() !== null) {
             $data['MaxReplicas'] = $object->getMaxReplicas();
         }
-        if ($object->isInitialized('platforms') && null !== $object->getPlatforms()) {
-            $values_2 = array();
+        if ($object->isInitialized('platforms') && $object->getPlatforms() !== null) {
+            $values_2 = [];
             foreach ($object->getPlatforms() as $value_2) {
                 $values_2[] = $this->normalizer->normalize($value_2, 'json', $context);
             }
@@ -111,10 +116,12 @@ class TaskSpecPlacementNormalizer implements DenormalizerInterface, NormalizerIn
                 $data[$key] = $value_3;
             }
         }
+
         return $data;
     }
-    public function getSupportedTypes(?string $format = null) : array
+
+    public function getSupportedTypes(string $format = null): array
     {
-        return array('Mdshack\\Docker\\API\\v1_43\\Model\\TaskSpecPlacement' => false);
+        return ['Mdshack\\Docker\\API\\v1_43\\Model\\TaskSpecPlacement' => false];
     }
 }

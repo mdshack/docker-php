@@ -5,1095 +5,1014 @@ namespace Mdshack\Docker\API\v1_43;
 class Client extends \Mdshack\Docker\API\v1_43\Runtime\Client\Client
 {
     /**
-    * Returns a list of containers. For details on the format, see the
+     * Returns a list of containers. For details on the format, see the
     [inspect endpoint](#operation/ContainerInspect).
-    
+
     Note that it uses a different, smaller representation of a container
     than inspecting a single container. For example, the list of linked
     containers is not propagated .
-    
-    *
-    * @param array $queryParameters {
-    *     @var bool $all Return all containers. By default, only running containers are shown.
-    
-    *     @var int $limit Return this number of most recently created containers, including
-    non-running ones.
-    
-    *     @var bool $size Return the size of container as fields `SizeRw` and `SizeRootFs`.
-    
-    *     @var string $filters Filters to process on the container list, encoded as JSON (a
-    `map[string][]string`). For example, `{"status": ["paused"]}` will
-    only return paused containers.
-    
-    Available filters:
-    
-    - `ancestor`=(`<image-name>[:<tag>]`, `<image id>`, or `<image@digest>`)
-    - `before`=(`<container id>` or `<container name>`)
-    - `expose`=(`<port>[/<proto>]`|`<startport-endport>/[<proto>]`)
-    - `exited=<int>` containers with exit code of `<int>`
-    - `health`=(`starting`|`healthy`|`unhealthy`|`none`)
-    - `id=<ID>` a container's ID
-    - `isolation=`(`default`|`process`|`hyperv`) (Windows daemon only)
-    - `is-task=`(`true`|`false`)
-    - `label=key` or `label="key=value"` of a container label
-    - `name=<name>` a container's name
-    - `network`=(`<network id>` or `<network name>`)
-    - `publish`=(`<port>[/<proto>]`|`<startport-endport>/[<proto>]`)
-    - `since`=(`<container id>` or `<container name>`)
-    - `status=`(`created`|`restarting`|`running`|`removing`|`paused`|`exited`|`dead`)
-    - `volume`=(`<volume name>` or `<mount point destination>`)
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerListBadRequestException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerListInternalServerErrorException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\ContainerSummary[]|\Psr\Http\Message\ResponseInterface
-    */
-    public function containerList(array $queryParameters = array(), string $fetch = self::FETCH_OBJECT)
+
+     *
+     * @param  array  $queryParameters {
+     *
+     *     @var bool $all Return all containers. By default, only running containers are shown.
+
+     *     @var int $limit Return this number of most recently created containers, including
+     *     @var bool $size Return the size of container as fields `SizeRw` and `SizeRootFs`.
+
+     *     @var string $filters Filters to process on the container list, encoded as JSON (a
+     * }
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\ContainerSummary[]|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerListBadRequestException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerListInternalServerErrorException
+     */
+    public function containerList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ContainerList($queryParameters), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param \Mdshack\Docker\API\v1_43\Model\ContainersCreatePostBody $requestBody 
-    * @param array $queryParameters {
-    *     @var string $name Assign the specified name to the container. Must match
-    `/?[a-zA-Z0-9][a-zA-Z0-9_.-]+`.
-    
-    *     @var string $platform Platform in the format `os[/arch[/variant]]` used for image lookup.
-    
-    When specified, the daemon checks if the requested image is present
-    in the local image cache with the given OS and Architecture, and
-    otherwise returns a `404` status.
-    
-    If the option is not set, the host's native OS and Architecture are
-    used to look up the image in the image cache. However, if no platform
-    is passed and the given image does exist in the local image cache,
-    but its OS or architecture does not match, the container is created
-    with the available image, and a warning is added to the `Warnings`
-    field in the response, for example;
-    
-       WARNING: The requested image's platform (linux/arm64/v8) does not
-                match the detected host platform (linux/amd64) and no
-                specific platform was requested
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerCreateBadRequestException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerCreateNotFoundException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerCreateConflictException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerCreateInternalServerErrorException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\ContainerCreateResponse|\Psr\Http\Message\ResponseInterface
-    */
-    public function containerCreate(\Mdshack\Docker\API\v1_43\Model\ContainersCreatePostBody $requestBody, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT)
+     * @param  array  $queryParameters {
+     *
+     *     @var string $name Assign the specified name to the container. Must match
+     *     @var string $platform Platform in the format `os[/arch[/variant]]` used for image lookup.
+
+     * }
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\ContainerCreateResponse|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerCreateBadRequestException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerCreateNotFoundException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerCreateConflictException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerCreateInternalServerErrorException
+     */
+    public function containerCreate(Model\ContainersCreatePostBody $requestBody, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ContainerCreate($requestBody, $queryParameters), $fetch);
     }
+
     /**
      * Return low-level information about a container.
      *
-     * @param string $id ID or name of the container
-     * @param array $queryParameters {
+     * @param  string  $id ID or name of the container
+     * @param  array  $queryParameters {
+     *
      *     @var bool $size Return the size of container as fields `SizeRw` and `SizeRootFs`
      * }
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\ContainersIdJsonGetResponse200|\Psr\Http\Message\ResponseInterface
+     *
      * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerInspectNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerInspectInternalServerErrorException
-     *
-     * @return null|\Mdshack\Docker\API\v1_43\Model\ContainersIdJsonGetResponse200|\Psr\Http\Message\ResponseInterface
      */
-    public function containerInspect(string $id, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT)
+    public function containerInspect(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ContainerInspect($id, $queryParameters), $fetch);
     }
+
     /**
-    * On Unix systems, this is done by running the `ps` command. This endpoint
+     * On Unix systems, this is done by running the `ps` command. This endpoint
     is not supported on Windows.
-    
-    *
-    * @param string $id ID or name of the container
-    * @param array $queryParameters {
-    *     @var string $ps_args The arguments to pass to `ps`. For example, `aux`
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/json|text/plain
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerTopNotFoundException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerTopInternalServerErrorException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\ContainersIdTopGetJsonResponse200|\Psr\Http\Message\ResponseInterface
-    */
-    public function containerTop(string $id, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+
+     *
+     * @param  string  $id ID or name of the container
+     * @param  array  $queryParameters {
+     *
+     *     @var string $ps_args The arguments to pass to `ps`. For example, `aux`
+     * }
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Mdshack\Docker\API\v1_43\Model\ContainersIdTopGetJsonResponse200|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerTopNotFoundException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerTopInternalServerErrorException
+     */
+    public function containerTop(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ContainerTop($id, $queryParameters, $accept), $fetch);
     }
+
     /**
-    * Get `stdout` and `stderr` logs from a container.
-    
+     * Get `stdout` and `stderr` logs from a container.
+
     Note: This endpoint works only for containers with the `json-file` or
     `journald` logging driver.
-    
-    *
-    * @param string $id ID or name of the container
-    * @param array $queryParameters {
-    *     @var bool $follow Keep connection after returning logs.
-    *     @var bool $stdout Return logs from `stdout`
-    *     @var bool $stderr Return logs from `stderr`
-    *     @var int $since Only return logs since this time, as a UNIX timestamp
-    *     @var int $until Only return logs before this time, as a UNIX timestamp
-    *     @var bool $timestamps Add timestamps to every log line
-    *     @var string $tail Only return this number of log lines from the end of the logs.
+
+     *
+     * @param  string  $id ID or name of the container
+     * @param  array  $queryParameters {
+     *
+     *     @var bool $follow Keep connection after returning logs.
+     *     @var bool $stdout Return logs from `stdout`
+     *     @var bool $stderr Return logs from `stderr`
+     *     @var int $since Only return logs since this time, as a UNIX timestamp
+     *     @var int $until Only return logs before this time, as a UNIX timestamp
+     *     @var bool $timestamps Add timestamps to every log line
+     *     @var string $tail Only return this number of log lines from the end of the logs.
     Specify as an integer or `all` to output all log lines.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/vnd.docker.raw-stream|application/vnd.docker.multiplexed-stream|application/json
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerLogsNotFoundException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function containerLogs(string $id, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+
+     * }
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/vnd.docker.raw-stream|application/vnd.docker.multiplexed-stream|application/json
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerLogsNotFoundException
+     */
+    public function containerLogs(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ContainerLogs($id, $queryParameters, $accept), $fetch);
     }
+
     /**
-    * Returns which files in a container's filesystem have been added, deleted,
+     * Returns which files in a container's filesystem have been added, deleted,
     or modified. The `Kind` of modification can be one of:
-    
+
     - `0`: Modified ("C")
     - `1`: Added ("A")
     - `2`: Deleted ("D")
-    
-    *
-    * @param string $id ID or name of the container
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerChangesNotFoundException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerChangesInternalServerErrorException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\FilesystemChange[]|\Psr\Http\Message\ResponseInterface
-    */
+
+     *
+     * @param  string  $id ID or name of the container
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\FilesystemChange[]|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerChangesNotFoundException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerChangesInternalServerErrorException
+     */
     public function containerChanges(string $id, string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ContainerChanges($id), $fetch);
     }
+
     /**
      * Export the contents of a container as a tarball.
      *
-     * @param string $id ID or name of the container
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     * @param array $accept Accept content header application/octet-stream|application/json
-     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerExportNotFoundException
-     *
+     * @param  string  $id ID or name of the container
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/octet-stream|application/json
      * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerExportNotFoundException
      */
-    public function containerExport(string $id, string $fetch = self::FETCH_OBJECT, array $accept = array())
+    public function containerExport(string $id, string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ContainerExport($id, $accept), $fetch);
     }
+
     /**
-    * This endpoint returns a live stream of a container’s resource usage
+     * This endpoint returns a live stream of a container’s resource usage
     statistics.
-    
+
     The `precpu_stats` is the CPU statistic of the *previous* read, and is
     used to calculate the CPU usage percentage. It is not an exact copy
     of the `cpu_stats` field.
-    
+
     If either `precpu_stats.online_cpus` or `cpu_stats.online_cpus` is
     nil then for compatibility with older daemons the length of the
     corresponding `cpu_usage.percpu_usage` array should be used.
-    
+
     On a cgroup v2 host, the following fields are not set
-    * `blkio_stats`: all fields other than `io_service_bytes_recursive`
-    * `cpu_stats`: `cpu_usage.percpu_usage`
-    * `memory_stats`: `max_usage` and `failcnt`
+     * `blkio_stats`: all fields other than `io_service_bytes_recursive`
+     * `cpu_stats`: `cpu_usage.percpu_usage`
+     * `memory_stats`: `max_usage` and `failcnt`
     Also, `memory_stats.stats` fields are incompatible with cgroup v1.
-    
+
     To calculate the values shown by the `stats` command of the docker cli tool
     the following formulas can be used:
-    * used_memory = `memory_stats.usage - memory_stats.stats.cache`
-    * available_memory = `memory_stats.limit`
-    * Memory usage % = `(used_memory / available_memory) * 100.0`
-    * cpu_delta = `cpu_stats.cpu_usage.total_usage - precpu_stats.cpu_usage.total_usage`
-    * system_cpu_delta = `cpu_stats.system_cpu_usage - precpu_stats.system_cpu_usage`
-    * number_cpus = `lenght(cpu_stats.cpu_usage.percpu_usage)` or `cpu_stats.online_cpus`
-    * CPU usage % = `(cpu_delta / system_cpu_delta) * number_cpus * 100.0`
-    
-    *
-    * @param string $id ID or name of the container
-    * @param array $queryParameters {
-    *     @var bool $stream Stream the output. If false, the stats will be output once and then
-    it will disconnect.
-    
-    *     @var bool $one-shot Only get a single stat instead of waiting for 2 cycles. Must be used
+     * used_memory = `memory_stats.usage - memory_stats.stats.cache`
+     * available_memory = `memory_stats.limit`
+     * Memory usage % = `(used_memory / available_memory) * 100.0`
+     * cpu_delta = `cpu_stats.cpu_usage.total_usage - precpu_stats.cpu_usage.total_usage`
+     * system_cpu_delta = `cpu_stats.system_cpu_usage - precpu_stats.system_cpu_usage`
+     * number_cpus = `lenght(cpu_stats.cpu_usage.percpu_usage)` or `cpu_stats.online_cpus`
+     * CPU usage % = `(cpu_delta / system_cpu_delta) * number_cpus * 100.0`
+
+     *
+     * @param  string  $id ID or name of the container
+     * @param  array  $queryParameters {
+     *
+     *     @var bool $stream Stream the output. If false, the stats will be output once and then
+     *     @var bool $one-shot Only get a single stat instead of waiting for 2 cycles. Must be used
     with `stream=false`.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerStatsNotFoundException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerStatsInternalServerErrorException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function containerStats(string $id, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT)
+
+     * }
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerStatsNotFoundException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerStatsInternalServerErrorException
+     */
+    public function containerStats(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ContainerStats($id, $queryParameters), $fetch);
     }
+
     /**
      * Resize the TTY for a container.
      *
-     * @param string $id ID or name of the container
-     * @param array $queryParameters {
+     * @param  string  $id ID or name of the container
+     * @param  array  $queryParameters {
+     *
      *     @var int $h Height of the TTY session in characters
      *     @var int $w Width of the TTY session in characters
      * }
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     * @param array $accept Accept content header text/plain|application/json
-     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerResizeNotFoundException
      *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header text/plain|application/json
      * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerResizeNotFoundException
      */
-    public function containerResize(string $id, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+    public function containerResize(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ContainerResize($id, $queryParameters, $accept), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param string $id ID or name of the container
-    * @param array $queryParameters {
-    *     @var string $detachKeys Override the key sequence for detaching a container. Format is a
-    single character `[a-Z]` or `ctrl-<value>` where `<value>` is one
-    of: `a-z`, `@`, `^`, `[`, `,` or `_`.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/json|text/plain
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerStartNotFoundException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerStartInternalServerErrorException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function containerStart(string $id, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+     * @param  string  $id ID or name of the container
+     * @param  array  $queryParameters {
+     *
+     *     @var string $detachKeys Override the key sequence for detaching a container. Format is a
+     * }
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerStartNotFoundException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerStartInternalServerErrorException
+     */
+    public function containerStart(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ContainerStart($id, $queryParameters, $accept), $fetch);
     }
+
     /**
-     * 
+     * @param  string  $id ID or name of the container
+     * @param  array  $queryParameters {
      *
-     * @param string $id ID or name of the container
-     * @param array $queryParameters {
      *     @var string $signal Signal to send to the container as an integer or string (e.g. `SIGINT`).
      *     @var int $t Number of seconds to wait before killing the container
      * }
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     * @param array $accept Accept content header application/json|text/plain
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
      * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerStopNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerStopInternalServerErrorException
-     *
-     * @return null|\Psr\Http\Message\ResponseInterface
      */
-    public function containerStop(string $id, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+    public function containerStop(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ContainerStop($id, $queryParameters, $accept), $fetch);
     }
+
     /**
-     * 
+     * @param  string  $id ID or name of the container
+     * @param  array  $queryParameters {
      *
-     * @param string $id ID or name of the container
-     * @param array $queryParameters {
      *     @var string $signal Signal to send to the container as an integer or string (e.g. `SIGINT`).
      *     @var int $t Number of seconds to wait before killing the container
      * }
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     * @param array $accept Accept content header application/json|text/plain
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
      * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerRestartNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerRestartInternalServerErrorException
-     *
-     * @return null|\Psr\Http\Message\ResponseInterface
      */
-    public function containerRestart(string $id, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+    public function containerRestart(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ContainerRestart($id, $queryParameters, $accept), $fetch);
     }
+
     /**
-    * Send a POSIX signal to a container, defaulting to killing to the
+     * Send a POSIX signal to a container, defaulting to killing to the
     container.
-    
-    *
-    * @param string $id ID or name of the container
-    * @param array $queryParameters {
-    *     @var string $signal Signal to send to the container as an integer or string (e.g. `SIGINT`).
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/json|text/plain
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerKillNotFoundException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerKillConflictException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerKillInternalServerErrorException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function containerKill(string $id, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+
+     *
+     * @param  string  $id ID or name of the container
+     * @param  array  $queryParameters {
+     *
+     *     @var string $signal Signal to send to the container as an integer or string (e.g. `SIGINT`).
+
+     * }
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerKillNotFoundException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerKillConflictException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerKillInternalServerErrorException
+     */
+    public function containerKill(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ContainerKill($id, $queryParameters, $accept), $fetch);
     }
+
     /**
-    * Change various configuration options of a container without having to
+     * Change various configuration options of a container without having to
     recreate it.
-    
-    *
-    * @param string $id ID or name of the container
-    * @param \Mdshack\Docker\API\v1_43\Model\ContainersIdUpdatePostBody $requestBody 
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerUpdateNotFoundException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerUpdateInternalServerErrorException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\ContainersIdUpdatePostResponse200|\Psr\Http\Message\ResponseInterface
-    */
-    public function containerUpdate(string $id, \Mdshack\Docker\API\v1_43\Model\ContainersIdUpdatePostBody $requestBody, string $fetch = self::FETCH_OBJECT)
+
+     *
+     * @param  string  $id ID or name of the container
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\ContainersIdUpdatePostResponse200|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerUpdateNotFoundException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerUpdateInternalServerErrorException
+     */
+    public function containerUpdate(string $id, Model\ContainersIdUpdatePostBody $requestBody, string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ContainerUpdate($id, $requestBody), $fetch);
     }
+
     /**
-     * 
+     * @param  string  $id ID or name of the container
+     * @param  array  $queryParameters {
      *
-     * @param string $id ID or name of the container
-     * @param array $queryParameters {
      *     @var string $name New name for the container
      * }
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     * @param array $accept Accept content header application/json|text/plain
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
      * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerRenameNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerRenameConflictException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerRenameInternalServerErrorException
-     *
-     * @return null|\Psr\Http\Message\ResponseInterface
      */
-    public function containerRename(string $id, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+    public function containerRename(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ContainerRename($id, $queryParameters, $accept), $fetch);
     }
+
     /**
-    * Use the freezer cgroup to suspend all processes in a container.
-    
+     * Use the freezer cgroup to suspend all processes in a container.
+
     Traditionally, when suspending a process the `SIGSTOP` signal is used,
     which is observable by the process being suspended. With the freezer
     cgroup the process is unaware, and unable to capture, that it is being
     suspended, and subsequently resumed.
-    
-    *
-    * @param string $id ID or name of the container
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/json|text/plain
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerPauseNotFoundException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerPauseInternalServerErrorException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function containerPause(string $id, string $fetch = self::FETCH_OBJECT, array $accept = array())
+
+     *
+     * @param  string  $id ID or name of the container
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerPauseNotFoundException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerPauseInternalServerErrorException
+     */
+    public function containerPause(string $id, string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ContainerPause($id, $accept), $fetch);
     }
+
     /**
      * Resume a container which has been paused.
      *
-     * @param string $id ID or name of the container
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     * @param array $accept Accept content header application/json|text/plain
+     * @param  string  $id ID or name of the container
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
      * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerUnpauseNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerUnpauseInternalServerErrorException
-     *
-     * @return null|\Psr\Http\Message\ResponseInterface
      */
-    public function containerUnpause(string $id, string $fetch = self::FETCH_OBJECT, array $accept = array())
+    public function containerUnpause(string $id, string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ContainerUnpause($id, $accept), $fetch);
     }
+
     /**
-    * Attach to a container to read its output or send it input. You can attach
+     * Attach to a container to read its output or send it input. You can attach
     to the same container multiple times and you can reattach to containers
     that have been detached.
-    
+
     Either the `stream` or `logs` parameter must be `true` for this endpoint
     to do anything.
-    
+
     See the [documentation for the `docker attach` command](https://docs.docker.com/engine/reference/commandline/attach/)
     for more details.
-    
+
     ### Hijacking
-    
+
     This endpoint hijacks the HTTP connection to transport `stdin`, `stdout`,
     and `stderr` on the same socket.
-    
+
     This is the response from the daemon for an attach request:
-    
+
     ```
     HTTP/1.1 200 OK
     Content-Type: application/vnd.docker.raw-stream
-    
+
     [STREAM]
     ```
-    
+
     After the headers and two new lines, the TCP connection can now be used
     for raw, bidirectional communication between the client and server.
-    
+
     To hint potential proxies about connection hijacking, the Docker client
     can also optionally send connection upgrade headers.
-    
+
     For example, the client sends this request to upgrade the connection:
-    
+
     ```
     POST /containers/16253994b7c4/attach?stream=1&stdout=1 HTTP/1.1
     Upgrade: tcp
     Connection: Upgrade
     ```
-    
+
     The Docker daemon will respond with a `101 UPGRADED` response, and will
     similarly follow with the raw stream:
-    
+
     ```
     HTTP/1.1 101 UPGRADED
     Content-Type: application/vnd.docker.raw-stream
     Connection: Upgrade
     Upgrade: tcp
-    
+
     [STREAM]
     ```
-    
+
     ### Stream format
-    
+
     When the TTY setting is disabled in [`POST /containers/create`](#operation/ContainerCreate),
     the HTTP Content-Type header is set to application/vnd.docker.multiplexed-stream
     and the stream over the hijacked connected is multiplexed to separate out
     `stdout` and `stderr`. The stream consists of a series of frames, each
     containing a header and a payload.
-    
+
     The header contains the information which the stream writes (`stdout` or
     `stderr`). It also contains the size of the associated frame encoded in
     the last four bytes (`uint32`).
-    
+
     It is encoded on the first eight bytes like this:
-    
+
     ```go
     header := [8]byte{STREAM_TYPE, 0, 0, 0, SIZE1, SIZE2, SIZE3, SIZE4}
     ```
-    
+
     `STREAM_TYPE` can be:
-    
+
     - 0: `stdin` (is written on `stdout`)
     - 1: `stdout`
     - 2: `stderr`
-    
+
     `SIZE1, SIZE2, SIZE3, SIZE4` are the four bytes of the `uint32` size
     encoded as big endian.
-    
+
     Following the header is the payload, which is the specified number of
     bytes of `STREAM_TYPE`.
-    
+
     The simplest way to implement this protocol is the following:
-    
+
     1. Read 8 bytes.
     2. Choose `stdout` or `stderr` depending on the first byte.
     3. Extract the frame size from the last four bytes.
     4. Read the extracted size and output it on the correct output.
     5. Goto 1.
-    
+
     ### Stream format when using a TTY
-    
+
     When the TTY setting is enabled in [`POST /containers/create`](#operation/ContainerCreate),
     the stream is not multiplexed. The data exchanged over the hijacked
     connection is simply the raw data from the process PTY and client's
     `stdin`.
-    
-    *
-    * @param string $id ID or name of the container
-    * @param array $queryParameters {
-    *     @var string $detachKeys Override the key sequence for detaching a container.Format is a single
-    character `[a-Z]` or `ctrl-<value>` where `<value>` is one of: `a-z`,
-    `@`, `^`, `[`, `,` or `_`.
-    
-    *     @var bool $logs Replay previous logs from the container.
-    
-    This is useful for attaching to a container that has started and you
-    want to output everything since the container started.
-    
-    If `stream` is also enabled, once all the previous output has been
-    returned, it will seamlessly transition into streaming current
-    output.
-    
-    *     @var bool $stream Stream attached streams from the time the request was made onwards.
-    
-    *     @var bool $stdin Attach to `stdin`
-    *     @var bool $stdout Attach to `stdout`
-    *     @var bool $stderr Attach to `stderr`
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/vnd.docker.raw-stream|application/vnd.docker.multiplexed-stream|application/json
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerAttachNotFoundException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function containerAttach(string $id, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+
+     *
+     * @param  string  $id ID or name of the container
+     * @param  array  $queryParameters {
+     *
+     *     @var string $detachKeys Override the key sequence for detaching a container.Format is a single
+     *     @var bool $logs Replay previous logs from the container.
+
+     *     @var bool $stream Stream attached streams from the time the request was made onwards.
+
+     *     @var bool $stdin Attach to `stdin`
+     *     @var bool $stdout Attach to `stdout`
+     *     @var bool $stderr Attach to `stderr`
+     * }
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/vnd.docker.raw-stream|application/vnd.docker.multiplexed-stream|application/json
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerAttachNotFoundException
+     */
+    public function containerAttach(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ContainerAttach($id, $queryParameters, $accept), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param string $id ID or name of the container
-    * @param array $queryParameters {
-    *     @var string $detachKeys Override the key sequence for detaching a container.Format is a single
-    character `[a-Z]` or `ctrl-<value>` where `<value>` is one of: `a-z`,
-    `@`, `^`, `[`, `,`, or `_`.
-    
-    *     @var bool $logs Return logs
-    *     @var bool $stream Return stream
-    *     @var bool $stdin Attach to `stdin`
-    *     @var bool $stdout Attach to `stdout`
-    *     @var bool $stderr Attach to `stderr`
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/json|text/plain
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerAttachWebsocketBadRequestException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerAttachWebsocketNotFoundException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerAttachWebsocketInternalServerErrorException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function containerAttachWebsocket(string $id, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+     * @param  string  $id ID or name of the container
+     * @param  array  $queryParameters {
+     *
+     *     @var string $detachKeys Override the key sequence for detaching a container.Format is a single
+     *     @var bool $logs Return logs
+     *     @var bool $stream Return stream
+     *     @var bool $stdin Attach to `stdin`
+     *     @var bool $stdout Attach to `stdout`
+     *     @var bool $stderr Attach to `stderr`
+     * }
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerAttachWebsocketBadRequestException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerAttachWebsocketNotFoundException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerAttachWebsocketInternalServerErrorException
+     */
+    public function containerAttachWebsocket(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ContainerAttachWebsocket($id, $queryParameters, $accept), $fetch);
     }
+
     /**
-    * Block until a container stops, then returns the exit code.
-    *
-    * @param string $id ID or name of the container
-    * @param array $queryParameters {
-    *     @var string $condition Wait until a container state reaches the given condition.
-    
+     * Block until a container stops, then returns the exit code.
+     *
+     * @param  string  $id ID or name of the container
+     * @param  array  $queryParameters {
+     *
+     *     @var string $condition Wait until a container state reaches the given condition.
+
     Defaults to `not-running` if omitted or empty.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerWaitBadRequestException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerWaitNotFoundException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerWaitInternalServerErrorException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\ContainerWaitResponse|\Psr\Http\Message\ResponseInterface
-    */
-    public function containerWait(string $id, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT)
+
+     * }
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\ContainerWaitResponse|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerWaitBadRequestException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerWaitNotFoundException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerWaitInternalServerErrorException
+     */
+    public function containerWait(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ContainerWait($id, $queryParameters), $fetch);
     }
+
     /**
-     * 
+     * @param  string  $id ID or name of the container
+     * @param  array  $queryParameters {
      *
-     * @param string $id ID or name of the container
-     * @param array $queryParameters {
      *     @var bool $v Remove anonymous volumes associated with the container.
      *     @var bool $force If the container is running, kill it before removing it.
      *     @var bool $link Remove the specified link associated with the container.
      * }
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     * @param array $accept Accept content header application/json|text/plain
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
      * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerDeleteBadRequestException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerDeleteNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerDeleteConflictException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerDeleteInternalServerErrorException
-     *
-     * @return null|\Psr\Http\Message\ResponseInterface
      */
-    public function containerDelete(string $id, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+    public function containerDelete(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ContainerDelete($id, $queryParameters, $accept), $fetch);
     }
+
     /**
      * Get a tar archive of a resource in the filesystem of container id.
      *
-     * @param string $id ID or name of the container
-     * @param array $queryParameters {
+     * @param  string  $id ID or name of the container
+     * @param  array  $queryParameters {
+     *
      *     @var string $path Resource in the container’s filesystem to archive.
      * }
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     * @param array $accept Accept content header application/x-tar|application/json
-     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerArchiveNotFoundException
      *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/x-tar|application/json
      * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerArchiveNotFoundException
      */
-    public function containerArchive(string $id, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+    public function containerArchive(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ContainerArchive($id, $queryParameters, $accept), $fetch);
     }
+
     /**
-    * A response header `X-Docker-Container-Path-Stat` is returned, containing
+     * A response header `X-Docker-Container-Path-Stat` is returned, containing
     a base64 - encoded JSON object with some filesystem header information
     about the path.
-    
-    *
-    * @param string $id ID or name of the container
-    * @param array $queryParameters {
-    *     @var string $path Resource in the container’s filesystem to archive.
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/json|text/plain
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerArchiveInfoBadRequestException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerArchiveInfoNotFoundException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerArchiveInfoInternalServerErrorException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function containerArchiveInfo(string $id, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+
+     *
+     * @param  string  $id ID or name of the container
+     * @param  array  $queryParameters {
+     *
+     *     @var string $path Resource in the container’s filesystem to archive.
+     * }
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerArchiveInfoBadRequestException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerArchiveInfoNotFoundException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerArchiveInfoInternalServerErrorException
+     */
+    public function containerArchiveInfo(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ContainerArchiveInfo($id, $queryParameters, $accept), $fetch);
     }
+
     /**
-    * Upload a tar archive to be extracted to a path in the filesystem of container id.
+     * Upload a tar archive to be extracted to a path in the filesystem of container id.
     `path` parameter is asserted to be a directory. If it exists as a file, 400 error
     will be returned with message "not a directory".
-    
-    *
-    * @param string $id ID or name of the container
-    * @param string|resource|\Psr\Http\Message\StreamInterface $requestBody 
-    * @param array $queryParameters {
-    *     @var string $path Path to a directory in the container to extract the archive’s contents into. 
-    *     @var string $noOverwriteDirNonDir If `1`, `true`, or `True` then it will be an error if unpacking the
-    given content would cause an existing directory to be replaced with
-    a non-directory and vice versa.
-    
-    *     @var string $copyUIDGID If `1`, `true`, then it will copy UID/GID maps to the dest file or
+
+     *
+     * @param  string  $id ID or name of the container
+     * @param  string|resource|\Psr\Http\Message\StreamInterface  $requestBody
+     * @param  array  $queryParameters {
+     *
+     *     @var string $path Path to a directory in the container to extract the archive’s contents into.
+     *     @var string $noOverwriteDirNonDir If `1`, `true`, or `True` then it will be an error if unpacking the
+     *     @var string $copyUIDGID If `1`, `true`, then it will copy UID/GID maps to the dest file or
     dir
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/json|text/plain
-    * @throws \Mdshack\Docker\API\v1_43\Exception\PutContainerArchiveBadRequestException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\PutContainerArchiveForbiddenException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\PutContainerArchiveNotFoundException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\PutContainerArchiveInternalServerErrorException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function putContainerArchive(string $id, $requestBody, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+
+     * }
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\PutContainerArchiveBadRequestException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\PutContainerArchiveForbiddenException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\PutContainerArchiveNotFoundException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\PutContainerArchiveInternalServerErrorException
+     */
+    public function putContainerArchive(string $id, $requestBody, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\PutContainerArchive($id, $requestBody, $queryParameters, $accept), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param array $queryParameters {
-    *     @var string $filters Filters to process on the prune list, encoded as JSON (a `map[string][]string`).
-    
-    Available filters:
-    - `until=<timestamp>` Prune containers created before this timestamp. The `<timestamp>` can be Unix timestamps, date formatted timestamps, or Go duration strings (e.g. `10m`, `1h30m`) computed relative to the daemon machine’s time.
-    - `label` (`label=<key>`, `label=<key>=<value>`, `label!=<key>`, or `label!=<key>=<value>`) Prune containers with (or without, in case `label!=...` is used) the specified labels.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerPruneInternalServerErrorException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\ContainersPrunePostResponse200|\Psr\Http\Message\ResponseInterface
-    */
-    public function containerPrune(array $queryParameters = array(), string $fetch = self::FETCH_OBJECT)
+     * @param  array  $queryParameters {
+     *
+     *     @var string $filters Filters to process on the prune list, encoded as JSON (a `map[string][]string`).
+
+     * }
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\ContainersPrunePostResponse200|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerPruneInternalServerErrorException
+     */
+    public function containerPrune(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ContainerPrune($queryParameters), $fetch);
     }
+
     /**
-    * Returns a list of images on the server. Note that it uses a different, smaller representation of an image than inspecting a single image.
-    *
-    * @param array $queryParameters {
-    *     @var bool $all Show all images. Only images from a final layer (no children) are shown by default.
-    *     @var string $filters A JSON encoded value of the filters (a `map[string][]string`) to
-    process on the images list.
-    
-    Available filters:
-    
-    - `before`=(`<image-name>[:<tag>]`,  `<image id>` or `<image@digest>`)
-    - `dangling=true`
-    - `label=key` or `label="key=value"` of an image label
-    - `reference`=(`<image-name>[:<tag>]`)
-    - `since`=(`<image-name>[:<tag>]`,  `<image id>` or `<image@digest>`)
-    
-    *     @var bool $shared-size Compute and show shared size as a `SharedSize` field on each image.
-    *     @var bool $digests Show digest information as a `RepoDigests` field on each image.
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ImageListInternalServerErrorException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\ImageSummary[]|\Psr\Http\Message\ResponseInterface
-    */
-    public function imageList(array $queryParameters = array(), string $fetch = self::FETCH_OBJECT)
+     * Returns a list of images on the server. Note that it uses a different, smaller representation of an image than inspecting a single image.
+     *
+     * @param  array  $queryParameters {
+     *
+     *     @var bool $all Show all images. Only images from a final layer (no children) are shown by default.
+     *     @var string $filters A JSON encoded value of the filters (a `map[string][]string`) to
+     *     @var bool $shared-size Compute and show shared size as a `SharedSize` field on each image.
+     *     @var bool $digests Show digest information as a `RepoDigests` field on each image.
+     * }
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\ImageSummary[]|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ImageListInternalServerErrorException
+     */
+    public function imageList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ImageList($queryParameters), $fetch);
     }
+
     /**
-    * Build an image from a tar archive with a `Dockerfile` in it.
-    
+     * Build an image from a tar archive with a `Dockerfile` in it.
+
     The `Dockerfile` specifies how the image is built from the tar archive. It is typically in the archive's root, but can be at a different path or have a different name by specifying the `dockerfile` parameter. [See the `Dockerfile` reference for more information](https://docs.docker.com/engine/reference/builder/).
-    
+
     The Docker daemon performs a preliminary validation of the `Dockerfile` before starting the build, and returns an error if the syntax is incorrect. After that, each instruction is run one-by-one until the ID of the new image is output.
-    
+
     The build is canceled if the client drops the connection by quitting or being killed.
-    
-    *
-    * @param null|string|resource|\Psr\Http\Message\StreamInterface $requestBody 
-    * @param array $queryParameters {
-    *     @var string $dockerfile Path within the build context to the `Dockerfile`. This is ignored if `remote` is specified and points to an external `Dockerfile`.
-    *     @var string $t A name and optional tag to apply to the image in the `name:tag` format. If you omit the tag the default `latest` value is assumed. You can provide several `t` parameters.
-    *     @var string $extrahosts Extra hosts to add to /etc/hosts
-    *     @var string $remote A Git repository URI or HTTP/HTTPS context URI. If the URI points to a single text file, the file’s contents are placed into a file called `Dockerfile` and the image is built from that file. If the URI points to a tarball, the file is downloaded by the daemon and the contents therein used as the context for the build. If the URI points to a tarball and the `dockerfile` parameter is also specified, there must be a file with the corresponding path inside the tarball.
-    *     @var bool $q Suppress verbose build output.
-    *     @var bool $nocache Do not use the cache when building the image.
-    *     @var string $cachefrom JSON array of images used for build cache resolution.
-    *     @var string $pull Attempt to pull the image even if an older image exists locally.
-    *     @var bool $rm Remove intermediate containers after a successful build.
-    *     @var bool $forcerm Always remove intermediate containers, even upon failure.
-    *     @var int $memory Set memory limit for build.
-    *     @var int $memswap Total memory (memory + swap). Set as `-1` to disable swap.
-    *     @var int $cpushares CPU shares (relative weight).
-    *     @var string $cpusetcpus CPUs in which to allow execution (e.g., `0-3`, `0,1`).
-    *     @var int $cpuperiod The length of a CPU period in microseconds.
-    *     @var int $cpuquota Microseconds of CPU time that the container can get in a CPU period.
-    *     @var string $buildargs JSON map of string pairs for build-time variables. Users pass these values at build-time. Docker uses the buildargs as the environment context for commands run via the `Dockerfile` RUN instruction, or for variable expansion in other `Dockerfile` instructions. This is not meant for passing secret values.
-    
-    For example, the build arg `FOO=bar` would become `{"FOO":"bar"}` in JSON. This would result in the query parameter `buildargs={"FOO":"bar"}`. Note that `{"FOO":"bar"}` should be URI component encoded.
-    
-    [Read more about the buildargs instruction.](https://docs.docker.com/engine/reference/builder/#arg)
-    
-    *     @var int $shmsize Size of `/dev/shm` in bytes. The size must be greater than 0. If omitted the system uses 64MB.
-    *     @var bool $squash Squash the resulting images layers into a single layer. *(Experimental release only.)*
-    *     @var string $labels Arbitrary key/value labels to set on the image, as a JSON map of string pairs.
-    *     @var string $networkmode Sets the networking mode for the run commands during build. Supported
-    standard values are: `bridge`, `host`, `none`, and `container:<name|id>`.
-    Any other value is taken as a custom network's name or ID to which this
-    container should connect to.
-    
-    *     @var string $platform Platform in the format os[/arch[/variant]]
-    *     @var string $target Target build stage
-    *     @var string $outputs BuildKit output configuration
-    * }
-    * @param array $headerParameters {
-    *     @var string $Content-type 
-    *     @var string $X-Registry-Config This is a base64-encoded JSON object with auth configurations for multiple registries that a build may refer to.
-    
-    The key is a registry URL, and the value is an auth configuration object, [as described in the authentication section](#section/Authentication). For example:
-    
-    ```
-    {
-     "docker.example.com": {
-       "username": "janedoe",
-       "password": "hunter2"
-     },
-     "https://index.docker.io/v1/": {
-       "username": "mobydock",
-       "password": "conta1n3rize14"
-     }
-    }
-    ```
-    
-    Only the registry domain name (and port if not the default 443) are required. However, for legacy reasons, the Docker Hub registry must be specified with both a `https://` prefix and a `/v1/` suffix even though Docker will prefer to use the v2 registry API.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ImageBuildBadRequestException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ImageBuildInternalServerErrorException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function imageBuild($requestBody = null, array $queryParameters = array(), array $headerParameters = array(), string $fetch = self::FETCH_OBJECT)
+
+     *
+     * @param  null|string|resource|\Psr\Http\Message\StreamInterface  $requestBody
+     * @param  array  $queryParameters {
+     *
+     *     @var string $dockerfile Path within the build context to the `Dockerfile`. This is ignored if `remote` is specified and points to an external `Dockerfile`.
+     *     @var string $t A name and optional tag to apply to the image in the `name:tag` format. If you omit the tag the default `latest` value is assumed. You can provide several `t` parameters.
+     *     @var string $extrahosts Extra hosts to add to /etc/hosts
+     *     @var string $remote A Git repository URI or HTTP/HTTPS context URI. If the URI points to a single text file, the file’s contents are placed into a file called `Dockerfile` and the image is built from that file. If the URI points to a tarball, the file is downloaded by the daemon and the contents therein used as the context for the build. If the URI points to a tarball and the `dockerfile` parameter is also specified, there must be a file with the corresponding path inside the tarball.
+     *     @var bool $q Suppress verbose build output.
+     *     @var bool $nocache Do not use the cache when building the image.
+     *     @var string $cachefrom JSON array of images used for build cache resolution.
+     *     @var string $pull Attempt to pull the image even if an older image exists locally.
+     *     @var bool $rm Remove intermediate containers after a successful build.
+     *     @var bool $forcerm Always remove intermediate containers, even upon failure.
+     *     @var int $memory Set memory limit for build.
+     *     @var int $memswap Total memory (memory + swap). Set as `-1` to disable swap.
+     *     @var int $cpushares CPU shares (relative weight).
+     *     @var string $cpusetcpus CPUs in which to allow execution (e.g., `0-3`, `0,1`).
+     *     @var int $cpuperiod The length of a CPU period in microseconds.
+     *     @var int $cpuquota Microseconds of CPU time that the container can get in a CPU period.
+     *     @var string $buildargs JSON map of string pairs for build-time variables. Users pass these values at build-time. Docker uses the buildargs as the environment context for commands run via the `Dockerfile` RUN instruction, or for variable expansion in other `Dockerfile` instructions. This is not meant for passing secret values.
+
+     *     @var int $shmsize Size of `/dev/shm` in bytes. The size must be greater than 0. If omitted the system uses 64MB.
+     *     @var bool $squash Squash the resulting images layers into a single layer. *(Experimental release only.)*
+     *     @var string $labels Arbitrary key/value labels to set on the image, as a JSON map of string pairs.
+     *     @var string $networkmode Sets the networking mode for the run commands during build. Supported
+     *     @var string $platform Platform in the format os[/arch[/variant]]
+     *     @var string $target Target build stage
+     *     @var string $outputs BuildKit output configuration
+     * }
+     *
+     * @param  array  $headerParameters {
+     *
+     *     @var string $Content-type
+     *     @var string $X-Registry-Config This is a base64-encoded JSON object with auth configurations for multiple registries that a build may refer to.
+
+     * }
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ImageBuildBadRequestException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ImageBuildInternalServerErrorException
+     */
+    public function imageBuild($requestBody = null, array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ImageBuild($requestBody, $queryParameters, $headerParameters), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param array $queryParameters {
-    *     @var int $keep-storage Amount of disk space in bytes to keep for cache
-    *     @var bool $all Remove all types of build cache
-    *     @var string $filters A JSON encoded value of the filters (a `map[string][]string`) to
-    process on the list of build cache objects.
-    
-    Available filters:
-    
-    - `until=<timestamp>` remove cache older than `<timestamp>`. The `<timestamp>` can be Unix timestamps, date formatted timestamps, or Go duration strings (e.g. `10m`, `1h30m`) computed relative to the daemon's local time.
-    - `id=<id>`
-    - `parent=<id>`
-    - `type=<string>`
-    - `description=<string>`
-    - `inuse`
-    - `shared`
-    - `private`
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\BuildPruneInternalServerErrorException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\BuildPrunePostResponse200|\Psr\Http\Message\ResponseInterface
-    */
-    public function buildPrune(array $queryParameters = array(), string $fetch = self::FETCH_OBJECT)
+     * @param  array  $queryParameters {
+     *
+     *     @var int $keep-storage Amount of disk space in bytes to keep for cache
+     *     @var bool $all Remove all types of build cache
+     *     @var string $filters A JSON encoded value of the filters (a `map[string][]string`) to
+     * }
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\BuildPrunePostResponse200|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\BuildPruneInternalServerErrorException
+     */
+    public function buildPrune(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\BuildPrune($queryParameters), $fetch);
     }
+
     /**
-    * Create an image by either pulling it from a registry or importing it.
-    *
-    * @param null|string $requestBody 
-    * @param array $queryParameters {
-    *     @var string $fromImage Name of the image to pull. The name may include a tag or digest. This parameter may only be used when pulling an image. The pull is cancelled if the HTTP connection is closed.
-    *     @var string $fromSrc Source to import. The value may be a URL from which the image can be retrieved or `-` to read the image from the request body. This parameter may only be used when importing an image.
-    *     @var string $repo Repository name given to an image when it is imported. The repo may include a tag. This parameter may only be used when importing an image.
-    *     @var string $tag Tag or digest. If empty when pulling an image, this causes all tags for the given image to be pulled.
-    *     @var string $message Set commit message for imported image.
-    *     @var array $changes Apply `Dockerfile` instructions to the image that is created,
-    for example: `changes=ENV DEBUG=true`.
-    Note that `ENV DEBUG=true` should be URI component encoded.
-    
-    Supported `Dockerfile` instructions:
-    `CMD`|`ENTRYPOINT`|`ENV`|`EXPOSE`|`ONBUILD`|`USER`|`VOLUME`|`WORKDIR`
-    
-    *     @var string $platform Platform in the format os[/arch[/variant]].
-    
-    When used in combination with the `fromImage` option, the daemon checks
-    if the given image is present in the local image cache with the given
-    OS and Architecture, and otherwise attempts to pull the image. If the
-    option is not set, the host's native OS and Architecture are used.
-    If the given image does not exist in the local image cache, the daemon
-    attempts to pull the image with the host's native OS and Architecture.
-    If the given image does exists in the local image cache, but its OS or
-    architecture does not match, a warning is produced.
-    
-    When used with the `fromSrc` option to import an image from an archive,
-    this option sets the platform information for the imported image. If
-    the option is not set, the host's native OS and Architecture are used
-    for the imported image.
-    
-    * }
-    * @param array $headerParameters {
-    *     @var string $X-Registry-Auth A base64url-encoded auth configuration.
-    
-    Refer to the [authentication section](#section/Authentication) for
-    details.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ImageCreateNotFoundException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ImageCreateInternalServerErrorException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function imageCreate(?string $requestBody = null, array $queryParameters = array(), array $headerParameters = array(), string $fetch = self::FETCH_OBJECT)
+     * Create an image by either pulling it from a registry or importing it.
+     *
+     * @param  array  $queryParameters {
+     *
+     *     @var string $fromImage Name of the image to pull. The name may include a tag or digest. This parameter may only be used when pulling an image. The pull is cancelled if the HTTP connection is closed.
+     *     @var string $fromSrc Source to import. The value may be a URL from which the image can be retrieved or `-` to read the image from the request body. This parameter may only be used when importing an image.
+     *     @var string $repo Repository name given to an image when it is imported. The repo may include a tag. This parameter may only be used when importing an image.
+     *     @var string $tag Tag or digest. If empty when pulling an image, this causes all tags for the given image to be pulled.
+     *     @var string $message Set commit message for imported image.
+     *     @var array $changes Apply `Dockerfile` instructions to the image that is created,
+     *     @var string $platform Platform in the format os[/arch[/variant]].
+
+     * }
+     * @param  array  $headerParameters {
+     *
+     *     @var string $X-Registry-Auth A base64url-encoded auth configuration.
+
+     * }
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ImageCreateNotFoundException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ImageCreateInternalServerErrorException
+     */
+    public function imageCreate(string $requestBody = null, array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ImageCreate($requestBody, $queryParameters, $headerParameters), $fetch);
     }
+
     /**
      * Return low-level information about an image.
      *
-     * @param string $name Image name or id
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  string  $name Image name or id
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\ImageInspect|\Psr\Http\Message\ResponseInterface
+     *
      * @throws \Mdshack\Docker\API\v1_43\Exception\ImageInspectNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ImageInspectInternalServerErrorException
-     *
-     * @return null|\Mdshack\Docker\API\v1_43\Model\ImageInspect|\Psr\Http\Message\ResponseInterface
      */
     public function imageInspect(string $name, string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ImageInspect($name), $fetch);
     }
+
     /**
      * Return parent layers of an image.
      *
-     * @param string $name Image name or ID
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  string  $name Image name or ID
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\ImagesNameHistoryGetResponse200Item[]|\Psr\Http\Message\ResponseInterface
+     *
      * @throws \Mdshack\Docker\API\v1_43\Exception\ImageHistoryNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ImageHistoryInternalServerErrorException
-     *
-     * @return null|\Mdshack\Docker\API\v1_43\Model\ImagesNameHistoryGetResponse200Item[]|\Psr\Http\Message\ResponseInterface
      */
     public function imageHistory(string $name, string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ImageHistory($name), $fetch);
     }
+
     /**
-    * Push an image to a registry.
-    
+     * Push an image to a registry.
+
     If you wish to push an image on to a private registry, that image must
     already have a tag which references the registry. For example,
     `registry.example.com/myimage:latest`.
-    
+
     The push is cancelled if the HTTP connection is closed.
-    
-    *
-    * @param string $name Image name or ID.
-    * @param array $queryParameters {
-    *     @var string $tag The tag to associate with the image on the registry.
-    * }
-    * @param array $headerParameters {
-    *     @var string $X-Registry-Auth A base64url-encoded auth configuration.
-    
-    Refer to the [authentication section](#section/Authentication) for
-    details.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/json|text/plain
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ImagePushNotFoundException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ImagePushInternalServerErrorException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function imagePush(string $name, array $queryParameters = array(), array $headerParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+
+     *
+     * @param  string  $name Image name or ID.
+     * @param  array  $queryParameters {
+     *
+     *     @var string $tag The tag to associate with the image on the registry.
+     * }
+     *
+     * @param  array  $headerParameters {
+     *
+     *     @var string $X-Registry-Auth A base64url-encoded auth configuration.
+
+     * }
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ImagePushNotFoundException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ImagePushInternalServerErrorException
+     */
+    public function imagePush(string $name, array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ImagePush($name, $queryParameters, $headerParameters, $accept), $fetch);
     }
+
     /**
      * Tag an image so that it becomes part of a repository.
      *
-     * @param string $name Image name or ID to tag.
-     * @param array $queryParameters {
+     * @param  string  $name Image name or ID to tag.
+     * @param  array  $queryParameters {
+     *
      *     @var string $repo The repository to tag in. For example, `someuser/someimage`.
      *     @var string $tag The name of the new tag.
      * }
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     * @param array $accept Accept content header application/json|text/plain
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
      * @throws \Mdshack\Docker\API\v1_43\Exception\ImageTagBadRequestException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ImageTagNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ImageTagConflictException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ImageTagInternalServerErrorException
-     *
-     * @return null|\Psr\Http\Message\ResponseInterface
      */
-    public function imageTag(string $name, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+    public function imageTag(string $name, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ImageTag($name, $queryParameters, $accept), $fetch);
     }
+
     /**
-    * Remove an image, along with any untagged parent images that were
+     * Remove an image, along with any untagged parent images that were
     referenced by that image.
-    
+
     Images can't be removed if they have descendant images, are being
     used by a running container or are being used by a build.
-    
-    *
-    * @param string $name Image name or ID
-    * @param array $queryParameters {
-    *     @var bool $force Remove the image even if it is being used by stopped containers or has other tags
-    *     @var bool $noprune Do not delete untagged parent images
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ImageDeleteNotFoundException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ImageDeleteConflictException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ImageDeleteInternalServerErrorException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\ImageDeleteResponseItem[]|\Psr\Http\Message\ResponseInterface
-    */
-    public function imageDelete(string $name, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT)
+
+     *
+     * @param  string  $name Image name or ID
+     * @param  array  $queryParameters {
+     *
+     *     @var bool $force Remove the image even if it is being used by stopped containers or has other tags
+     *     @var bool $noprune Do not delete untagged parent images
+     * }
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\ImageDeleteResponseItem[]|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ImageDeleteNotFoundException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ImageDeleteConflictException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ImageDeleteInternalServerErrorException
+     */
+    public function imageDelete(string $name, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ImageDelete($name, $queryParameters), $fetch);
     }
+
     /**
-    * Search for an image on Docker Hub.
-    *
-    * @param array $queryParameters {
-    *     @var string $term Term to search
-    *     @var int $limit Maximum number of results to return
-    *     @var string $filters A JSON encoded value of the filters (a `map[string][]string`) to process on the images list. Available filters:
-    
-    - `is-automated=(true|false)`
-    - `is-official=(true|false)`
-    - `stars=<number>` Matches images that has at least 'number' stars.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ImageSearchInternalServerErrorException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\ImagesSearchGetResponse200Item[]|\Psr\Http\Message\ResponseInterface
-    */
-    public function imageSearch(array $queryParameters = array(), string $fetch = self::FETCH_OBJECT)
+     * Search for an image on Docker Hub.
+     *
+     * @param  array  $queryParameters {
+     *
+     *     @var string $term Term to search
+     *     @var int $limit Maximum number of results to return
+     *     @var string $filters A JSON encoded value of the filters (a `map[string][]string`) to process on the images list. Available filters:
+
+     * }
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\ImagesSearchGetResponse200Item[]|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ImageSearchInternalServerErrorException
+     */
+    public function imageSearch(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ImageSearch($queryParameters), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param array $queryParameters {
-    *     @var string $filters Filters to process on the prune list, encoded as JSON (a `map[string][]string`). Available filters:
-    
+     * @param  array  $queryParameters {
+     *
+     *     @var string $filters Filters to process on the prune list, encoded as JSON (a `map[string][]string`). Available filters:
+
     - `dangling=<boolean>` When set to `true` (or `1`), prune only
       unused *and* untagged images. When set to `false`
-      (or `0`), all unused images are pruned.
-    - `until=<string>` Prune images created before this timestamp. The `<timestamp>` can be Unix timestamps, date formatted timestamps, or Go duration strings (e.g. `10m`, `1h30m`) computed relative to the daemon machine’s time.
-    - `label` (`label=<key>`, `label=<key>=<value>`, `label!=<key>`, or `label!=<key>=<value>`) Prune images with (or without, in case `label!=...` is used) the specified labels.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ImagePruneInternalServerErrorException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\ImagesPrunePostResponse200|\Psr\Http\Message\ResponseInterface
-    */
-    public function imagePrune(array $queryParameters = array(), string $fetch = self::FETCH_OBJECT)
+     * }
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\ImagesPrunePostResponse200|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ImagePruneInternalServerErrorException
+     */
+    public function imagePrune(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ImagePrune($queryParameters), $fetch);
     }
+
     /**
-    * Validate credentials for a registry and, if available, get an identity
+     * Validate credentials for a registry and, if available, get an identity
     token for accessing the registry without password.
-    
-    *
-    * @param null|\Mdshack\Docker\API\v1_43\Model\AuthConfig $requestBody 
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\SystemAuthUnauthorizedException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\SystemAuthInternalServerErrorException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\AuthPostResponse200|\Psr\Http\Message\ResponseInterface
-    */
-    public function systemAuth(?\Mdshack\Docker\API\v1_43\Model\AuthConfig $requestBody = null, string $fetch = self::FETCH_OBJECT)
+
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\AuthPostResponse200|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\SystemAuthUnauthorizedException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\SystemAuthInternalServerErrorException
+     */
+    public function systemAuth(Model\AuthConfig $requestBody = null, string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\SystemAuth($requestBody), $fetch);
     }
+
     /**
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     * @throws \Mdshack\Docker\API\v1_43\Exception\SystemInfoInternalServerErrorException
-     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      * @return null|\Mdshack\Docker\API\v1_43\Model\SystemInfo|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\SystemInfoInternalServerErrorException
      */
     public function systemInfo(string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\SystemInfo(), $fetch);
     }
+
     /**
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     * @throws \Mdshack\Docker\API\v1_43\Exception\SystemVersionInternalServerErrorException
-     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      * @return null|\Mdshack\Docker\API\v1_43\Model\SystemVersion|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\SystemVersionInternalServerErrorException
      */
     public function systemVersion(string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\SystemVersion(), $fetch);
     }
+
     /**
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      * @return null|\Psr\Http\Message\ResponseInterface
      */
     public function systemPing(string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\SystemPing(), $fetch);
     }
+
     /**
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      * @return null|\Psr\Http\Message\ResponseInterface
      */
     public function systemPingHead(string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\SystemPingHead(), $fetch);
     }
+
     /**
-     * 
+     * @param  array  $queryParameters {
      *
-     * @param null|\Mdshack\Docker\API\v1_43\Model\ContainerConfig $requestBody 
-     * @param array $queryParameters {
      *     @var string $container The ID or name of the container to commit
      *     @var string $repo Repository name for the created image
      *     @var string $tag Tag name for the create image
@@ -1102,106 +1021,96 @@ class Client extends \Mdshack\Docker\API\v1_43\Runtime\Client\Client
      *     @var bool $pause Whether to pause the container before committing
      *     @var string $changes `Dockerfile` instructions to apply while committing
      * }
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\IdResponse|\Psr\Http\Message\ResponseInterface
+     *
      * @throws \Mdshack\Docker\API\v1_43\Exception\ImageCommitNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ImageCommitInternalServerErrorException
-     *
-     * @return null|\Mdshack\Docker\API\v1_43\Model\IdResponse|\Psr\Http\Message\ResponseInterface
      */
-    public function imageCommit(?\Mdshack\Docker\API\v1_43\Model\ContainerConfig $requestBody = null, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT)
+    public function imageCommit(Model\ContainerConfig $requestBody = null, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ImageCommit($requestBody, $queryParameters), $fetch);
     }
+
     /**
-    * Stream real-time events from the server.
-    
+     * Stream real-time events from the server.
+
     Various objects within Docker report events when something happens to them.
-    
+
     Containers report these events: `attach`, `commit`, `copy`, `create`, `destroy`, `detach`, `die`, `exec_create`, `exec_detach`, `exec_start`, `exec_die`, `export`, `health_status`, `kill`, `oom`, `pause`, `rename`, `resize`, `restart`, `start`, `stop`, `top`, `unpause`, `update`, and `prune`
-    
+
     Images report these events: `delete`, `import`, `load`, `pull`, `push`, `save`, `tag`, `untag`, and `prune`
-    
+
     Volumes report these events: `create`, `mount`, `unmount`, `destroy`, and `prune`
-    
+
     Networks report these events: `create`, `connect`, `disconnect`, `destroy`, `update`, `remove`, and `prune`
-    
+
     The Docker daemon reports these events: `reload`
-    
+
     Services report these events: `create`, `update`, and `remove`
-    
+
     Nodes report these events: `create`, `update`, and `remove`
-    
+
     Secrets report these events: `create`, `update`, and `remove`
-    
+
     Configs report these events: `create`, `update`, and `remove`
-    
+
     The Builder reports `prune` events
-    
-    *
-    * @param array $queryParameters {
-    *     @var string $since Show events created since this timestamp then stream new events.
-    *     @var string $until Show events created until this timestamp then stop streaming.
-    *     @var string $filters A JSON encoded value of filters (a `map[string][]string`) to process on the event list. Available filters:
-    
-    - `config=<string>` config name or ID
-    - `container=<string>` container name or ID
-    - `daemon=<string>` daemon name or ID
-    - `event=<string>` event type
-    - `image=<string>` image name or ID
-    - `label=<string>` image or container label
-    - `network=<string>` network name or ID
-    - `node=<string>` node ID
-    - `plugin`=<string> plugin name or ID
-    - `scope`=<string> local or swarm
-    - `secret=<string>` secret name or ID
-    - `service=<string>` service name or ID
-    - `type=<string>` object to filter by, one of `container`, `image`, `volume`, `network`, `daemon`, `plugin`, `node`, `service`, `secret` or `config`
-    - `volume=<string>` volume name
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\SystemEventsBadRequestException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\SystemEventsInternalServerErrorException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\EventMessage|\Psr\Http\Message\ResponseInterface
-    */
-    public function systemEvents(array $queryParameters = array(), string $fetch = self::FETCH_OBJECT)
+
+     *
+     * @param  array  $queryParameters {
+     *
+     *     @var string $since Show events created since this timestamp then stream new events.
+     *     @var string $until Show events created until this timestamp then stop streaming.
+     *     @var string $filters A JSON encoded value of filters (a `map[string][]string`) to process on the event list. Available filters:
+
+     * }
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\EventMessage|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\SystemEventsBadRequestException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\SystemEventsInternalServerErrorException
+     */
+    public function systemEvents(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\SystemEvents($queryParameters), $fetch);
     }
+
     /**
-     * 
+     * @param  array  $queryParameters {
      *
-     * @param array $queryParameters {
      *     @var array $type Object types, for which to compute and return data.
      * }
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     * @param array $accept Accept content header application/json|text/plain
-     * @throws \Mdshack\Docker\API\v1_43\Exception\SystemDataUsageInternalServerErrorException
      *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
      * @return null|\Mdshack\Docker\API\v1_43\Model\SystemDfGetJsonResponse200|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\SystemDataUsageInternalServerErrorException
      */
-    public function systemDataUsage(array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+    public function systemDataUsage(array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\SystemDataUsage($queryParameters, $accept), $fetch);
     }
+
     /**
-    * Get a tarball containing all images and metadata for a repository.
-    
+     * Get a tarball containing all images and metadata for a repository.
+
     If `name` is a specific name and tag (e.g. `ubuntu:latest`), then only that image (and its parents) are returned. If `name` is an image ID, similarly only that image (and its parents) are returned, but with the exclusion of the `repositories` file in the tarball, as there were no image names referenced.
-    
+
     ### Image tarball format
-    
+
     An image tarball contains one directory per image layer (named using its long ID), each containing these files:
-    
+
     - `VERSION`: currently `1.0` - the file format version
     - `json`: detailed layer information, similar to `docker inspect layer_id`
     - `layer.tar`: A tarfile containing the filesystem changes in this layer
-    
+
     The `layer.tar` file contains `aufs` style `.wh..wh.aufs` files and directories for storing attribute changes and deletions.
-    
+
     If the tarball defines a repository, the tarball should also include a `repositories` file at the root that contains a list of repository and tag names mapped to layer IDs.
-    
+
     ```json
     {
      "hello-world": {
@@ -1209,1269 +1118,1137 @@ class Client extends \Mdshack\Docker\API\v1_43\Runtime\Client\Client
      }
     }
     ```
-    
-    *
-    * @param string $name Image name or ID
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
+
+     *
+     * @param  string  $name Image name or ID
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Psr\Http\Message\ResponseInterface
+     */
     public function imageGet(string $name, string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ImageGet($name), $fetch);
     }
+
     /**
-    * Get a tarball containing all images and metadata for several image
+     * Get a tarball containing all images and metadata for several image
     repositories.
-    
+
     For each value of the `names` parameter: if it is a specific name and
     tag (e.g. `ubuntu:latest`), then only that image (and its parents) are
     returned; if it is an image ID, similarly only that image (and its parents)
     are returned and there would be no names referenced in the 'repositories'
     file for this image ID.
-    
+
     For details on the format, see the [export image endpoint](#operation/ImageGet).
-    
-    *
-    * @param array $queryParameters {
-    *     @var array $names Image names to filter by
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function imageGetAll(array $queryParameters = array(), string $fetch = self::FETCH_OBJECT)
+
+     *
+     * @param  array  $queryParameters {
+     *
+     *     @var array $names Image names to filter by
+     * }
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Psr\Http\Message\ResponseInterface
+     */
+    public function imageGetAll(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ImageGetAll($queryParameters), $fetch);
     }
+
     /**
-    * Load a set of images and tags into a repository.
-    
+     * Load a set of images and tags into a repository.
+
     For details on the format, see the [export image endpoint](#operation/ImageGet).
-    
-    *
-    * @param null|string|resource|\Psr\Http\Message\StreamInterface $requestBody 
-    * @param array $queryParameters {
-    *     @var bool $quiet Suppress progress details during load.
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ImageLoadInternalServerErrorException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function imageLoad($requestBody = null, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT)
+
+     *
+     * @param  null|string|resource|\Psr\Http\Message\StreamInterface  $requestBody
+     * @param  array  $queryParameters {
+     *
+     *     @var bool $quiet Suppress progress details during load.
+     * }
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ImageLoadInternalServerErrorException
+     */
+    public function imageLoad($requestBody = null, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ImageLoad($requestBody, $queryParameters), $fetch);
     }
+
     /**
      * Run a command inside a running container.
      *
-     * @param string $id ID or name of container
-     * @param \Mdshack\Docker\API\v1_43\Model\ContainersIdExecPostBody $requestBody 
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  string  $id ID or name of container
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\IdResponse|\Psr\Http\Message\ResponseInterface
+     *
      * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerExecNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerExecConflictException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ContainerExecInternalServerErrorException
-     *
-     * @return null|\Mdshack\Docker\API\v1_43\Model\IdResponse|\Psr\Http\Message\ResponseInterface
      */
-    public function containerExec(string $id, \Mdshack\Docker\API\v1_43\Model\ContainersIdExecPostBody $requestBody, string $fetch = self::FETCH_OBJECT)
+    public function containerExec(string $id, Model\ContainersIdExecPostBody $requestBody, string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ContainerExec($id, $requestBody), $fetch);
     }
+
     /**
-    * Starts a previously set up exec instance. If detach is true, this endpoint
+     * Starts a previously set up exec instance. If detach is true, this endpoint
     returns immediately after starting the command. Otherwise, it sets up an
     interactive session with the command.
-    
-    *
-    * @param string $id Exec instance ID
-    * @param null|\Mdshack\Docker\API\v1_43\Model\ExecIdStartPostBody $requestBody 
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/vnd.docker.raw-stream|application/vnd.docker.multiplexed-stream
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function execStart(string $id, ?\Mdshack\Docker\API\v1_43\Model\ExecIdStartPostBody $requestBody = null, string $fetch = self::FETCH_OBJECT, array $accept = array())
+
+     *
+     * @param  string  $id Exec instance ID
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/vnd.docker.raw-stream|application/vnd.docker.multiplexed-stream
+     * @return null|\Psr\Http\Message\ResponseInterface
+     */
+    public function execStart(string $id, Model\ExecIdStartPostBody $requestBody = null, string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ExecStart($id, $requestBody, $accept), $fetch);
     }
+
     /**
-    * Resize the TTY session used by an exec instance. This endpoint only works
+     * Resize the TTY session used by an exec instance. This endpoint only works
     if `tty` was specified as part of creating and starting the exec instance.
-    
-    *
-    * @param string $id Exec instance ID
-    * @param array $queryParameters {
-    *     @var int $h Height of the TTY session in characters
-    *     @var int $w Width of the TTY session in characters
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/json|text/plain
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ExecResizeBadRequestException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ExecResizeNotFoundException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ExecResizeInternalServerErrorException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function execResize(string $id, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+
+     *
+     * @param  string  $id Exec instance ID
+     * @param  array  $queryParameters {
+     *
+     *     @var int $h Height of the TTY session in characters
+     *     @var int $w Width of the TTY session in characters
+     * }
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ExecResizeBadRequestException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ExecResizeNotFoundException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ExecResizeInternalServerErrorException
+     */
+    public function execResize(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ExecResize($id, $queryParameters, $accept), $fetch);
     }
+
     /**
      * Return low-level information about an exec instance.
      *
-     * @param string $id Exec instance ID
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  string  $id Exec instance ID
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\ExecIdJsonGetResponse200|\Psr\Http\Message\ResponseInterface
+     *
      * @throws \Mdshack\Docker\API\v1_43\Exception\ExecInspectNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ExecInspectInternalServerErrorException
-     *
-     * @return null|\Mdshack\Docker\API\v1_43\Model\ExecIdJsonGetResponse200|\Psr\Http\Message\ResponseInterface
      */
     public function execInspect(string $id, string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ExecInspect($id), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param array $queryParameters {
-    *     @var string $filters JSON encoded value of the filters (a `map[string][]string`) to
-    process on the volumes list. Available filters:
-    
-    - `dangling=<boolean>` When set to `true` (or `1`), returns all
-      volumes that are not in use by a container. When set to `false`
-      (or `0`), only volumes that are in use by one or more
-      containers are returned.
-    - `driver=<volume-driver-name>` Matches volumes based on their driver.
-    - `label=<key>` or `label=<key>:<value>` Matches volumes based on
-      the presence of a `label` alone or a `label` and a value.
-    - `name=<volume-name>` Matches all or part of a volume name.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\VolumeListInternalServerErrorException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\VolumeListResponse|\Psr\Http\Message\ResponseInterface
-    */
-    public function volumeList(array $queryParameters = array(), string $fetch = self::FETCH_OBJECT)
+     * @param  array  $queryParameters {
+     *
+     *     @var string $filters JSON encoded value of the filters (a `map[string][]string`) to
+     * }
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\VolumeListResponse|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\VolumeListInternalServerErrorException
+     */
+    public function volumeList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\VolumeList($queryParameters), $fetch);
     }
+
     /**
-     * 
-     *
-     * @param \Mdshack\Docker\API\v1_43\Model\VolumeCreateOptions $requestBody 
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     * @throws \Mdshack\Docker\API\v1_43\Exception\VolumeCreateInternalServerErrorException
-     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      * @return null|\Mdshack\Docker\API\v1_43\Model\Volume|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\VolumeCreateInternalServerErrorException
      */
-    public function volumeCreate(\Mdshack\Docker\API\v1_43\Model\VolumeCreateOptions $requestBody, string $fetch = self::FETCH_OBJECT)
+    public function volumeCreate(Model\VolumeCreateOptions $requestBody, string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\VolumeCreate($requestBody), $fetch);
     }
+
     /**
      * Instruct the driver to remove the volume.
      *
-     * @param string $name Volume name or ID
-     * @param array $queryParameters {
+     * @param  string  $name Volume name or ID
+     * @param  array  $queryParameters {
+     *
      *     @var bool $force Force the removal of the volume
      * }
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     * @param array $accept Accept content header application/json|text/plain
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
      * @throws \Mdshack\Docker\API\v1_43\Exception\VolumeDeleteNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\VolumeDeleteConflictException
      * @throws \Mdshack\Docker\API\v1_43\Exception\VolumeDeleteInternalServerErrorException
-     *
-     * @return null|\Psr\Http\Message\ResponseInterface
      */
-    public function volumeDelete(string $name, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+    public function volumeDelete(string $name, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\VolumeDelete($name, $queryParameters, $accept), $fetch);
     }
+
     /**
-     * 
+     * @param  string  $name Volume name or ID
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\Volume|\Psr\Http\Message\ResponseInterface
      *
-     * @param string $name Volume name or ID
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      * @throws \Mdshack\Docker\API\v1_43\Exception\VolumeInspectNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\VolumeInspectInternalServerErrorException
-     *
-     * @return null|\Mdshack\Docker\API\v1_43\Model\Volume|\Psr\Http\Message\ResponseInterface
      */
     public function volumeInspect(string $name, string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\VolumeInspect($name), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param string $name The name or ID of the volume
-    * @param null|\Mdshack\Docker\API\v1_43\Model\VolumesNamePutBody $requestBody 
-    * @param array $queryParameters {
-    *     @var int $version The version number of the volume being updated. This is required to
-    avoid conflicting writes. Found in the volume's `ClusterVolume`
-    field.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\VolumeUpdateBadRequestException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\VolumeUpdateNotFoundException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\VolumeUpdateInternalServerErrorException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\VolumeUpdateServiceUnavailableException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function volumeUpdate(string $name, ?\Mdshack\Docker\API\v1_43\Model\VolumesNamePutBody $requestBody = null, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT)
+     * @param  string  $name The name or ID of the volume
+     * @param  array  $queryParameters {
+     *
+     *     @var int $version The version number of the volume being updated. This is required to
+     * }
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\VolumeUpdateBadRequestException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\VolumeUpdateNotFoundException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\VolumeUpdateInternalServerErrorException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\VolumeUpdateServiceUnavailableException
+     */
+    public function volumeUpdate(string $name, Model\VolumesNamePutBody $requestBody = null, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\VolumeUpdate($name, $requestBody, $queryParameters), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param array $queryParameters {
-    *     @var string $filters Filters to process on the prune list, encoded as JSON (a `map[string][]string`).
-    
-    Available filters:
-    - `label` (`label=<key>`, `label=<key>=<value>`, `label!=<key>`, or `label!=<key>=<value>`) Prune volumes with (or without, in case `label!=...` is used) the specified labels.
-    - `all` (`all=true`) - Consider all (local) volumes for pruning and not just anonymous volumes.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\VolumePruneInternalServerErrorException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\VolumesPrunePostResponse200|\Psr\Http\Message\ResponseInterface
-    */
-    public function volumePrune(array $queryParameters = array(), string $fetch = self::FETCH_OBJECT)
+     * @param  array  $queryParameters {
+     *
+     *     @var string $filters Filters to process on the prune list, encoded as JSON (a `map[string][]string`).
+
+     * }
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\VolumesPrunePostResponse200|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\VolumePruneInternalServerErrorException
+     */
+    public function volumePrune(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\VolumePrune($queryParameters), $fetch);
     }
+
     /**
-    * Returns a list of networks. For details on the format, see the
+     * Returns a list of networks. For details on the format, see the
     [network inspect endpoint](#operation/NetworkInspect).
-    
+
     Note that it uses a different, smaller representation of a network than
     inspecting a single network. For example, the list of containers attached
     to the network is not propagated in API versions 1.28 and up.
-    
-    *
-    * @param array $queryParameters {
-    *     @var string $filters JSON encoded value of the filters (a `map[string][]string`) to process
-    on the networks list.
-    
-    Available filters:
-    
-    - `dangling=<boolean>` When set to `true` (or `1`), returns all
-      networks that are not in use by a container. When set to `false`
-      (or `0`), only networks that are in use by one or more
-      containers are returned.
-    - `driver=<driver-name>` Matches a network's driver.
-    - `id=<network-id>` Matches all or part of a network ID.
-    - `label=<key>` or `label=<key>=<value>` of a network label.
-    - `name=<network-name>` Matches all or part of a network name.
-    - `scope=["swarm"|"global"|"local"]` Filters networks by scope (`swarm`, `global`, or `local`).
-    - `type=["custom"|"builtin"]` Filters networks by type. The `custom` keyword returns all user-defined networks.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\NetworkListInternalServerErrorException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\Network[]|\Psr\Http\Message\ResponseInterface
-    */
-    public function networkList(array $queryParameters = array(), string $fetch = self::FETCH_OBJECT)
+
+     *
+     * @param  array  $queryParameters {
+     *
+     *     @var string $filters JSON encoded value of the filters (a `map[string][]string`) to process
+     * }
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\Network[]|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\NetworkListInternalServerErrorException
+     */
+    public function networkList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\NetworkList($queryParameters), $fetch);
     }
+
     /**
-     * 
+     * @param  string  $id Network ID or name
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
      *
-     * @param string $id Network ID or name
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     * @param array $accept Accept content header application/json|text/plain
      * @throws \Mdshack\Docker\API\v1_43\Exception\NetworkDeleteForbiddenException
      * @throws \Mdshack\Docker\API\v1_43\Exception\NetworkDeleteNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\NetworkDeleteInternalServerErrorException
-     *
-     * @return null|\Psr\Http\Message\ResponseInterface
      */
-    public function networkDelete(string $id, string $fetch = self::FETCH_OBJECT, array $accept = array())
+    public function networkDelete(string $id, string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\NetworkDelete($id, $accept), $fetch);
     }
+
     /**
-     * 
+     * @param  string  $id Network ID or name
+     * @param  array  $queryParameters {
      *
-     * @param string $id Network ID or name
-     * @param array $queryParameters {
      *     @var bool $verbose Detailed inspect output for troubleshooting
      *     @var string $scope Filter the network by scope (swarm, global, or local)
      * }
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\Network|\Psr\Http\Message\ResponseInterface
+     *
      * @throws \Mdshack\Docker\API\v1_43\Exception\NetworkInspectNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\NetworkInspectInternalServerErrorException
-     *
-     * @return null|\Mdshack\Docker\API\v1_43\Model\Network|\Psr\Http\Message\ResponseInterface
      */
-    public function networkInspect(string $id, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT)
+    public function networkInspect(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\NetworkInspect($id, $queryParameters), $fetch);
     }
+
     /**
-     * 
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\NetworksCreatePostResponse201|\Psr\Http\Message\ResponseInterface
      *
-     * @param \Mdshack\Docker\API\v1_43\Model\NetworksCreatePostBody $requestBody 
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      * @throws \Mdshack\Docker\API\v1_43\Exception\NetworkCreateForbiddenException
      * @throws \Mdshack\Docker\API\v1_43\Exception\NetworkCreateNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\NetworkCreateInternalServerErrorException
-     *
-     * @return null|\Mdshack\Docker\API\v1_43\Model\NetworksCreatePostResponse201|\Psr\Http\Message\ResponseInterface
      */
-    public function networkCreate(\Mdshack\Docker\API\v1_43\Model\NetworksCreatePostBody $requestBody, string $fetch = self::FETCH_OBJECT)
+    public function networkCreate(Model\NetworksCreatePostBody $requestBody, string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\NetworkCreate($requestBody), $fetch);
     }
+
     /**
-     * 
+     * @param  string  $id Network ID or name
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
      *
-     * @param string $id Network ID or name
-     * @param \Mdshack\Docker\API\v1_43\Model\NetworksIdConnectPostBody $requestBody 
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     * @param array $accept Accept content header application/json|text/plain
      * @throws \Mdshack\Docker\API\v1_43\Exception\NetworkConnectForbiddenException
      * @throws \Mdshack\Docker\API\v1_43\Exception\NetworkConnectNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\NetworkConnectInternalServerErrorException
-     *
-     * @return null|\Psr\Http\Message\ResponseInterface
      */
-    public function networkConnect(string $id, \Mdshack\Docker\API\v1_43\Model\NetworksIdConnectPostBody $requestBody, string $fetch = self::FETCH_OBJECT, array $accept = array())
+    public function networkConnect(string $id, Model\NetworksIdConnectPostBody $requestBody, string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\NetworkConnect($id, $requestBody, $accept), $fetch);
     }
+
     /**
-     * 
+     * @param  string  $id Network ID or name
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
      *
-     * @param string $id Network ID or name
-     * @param \Mdshack\Docker\API\v1_43\Model\NetworksIdDisconnectPostBody $requestBody 
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     * @param array $accept Accept content header application/json|text/plain
      * @throws \Mdshack\Docker\API\v1_43\Exception\NetworkDisconnectForbiddenException
      * @throws \Mdshack\Docker\API\v1_43\Exception\NetworkDisconnectNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\NetworkDisconnectInternalServerErrorException
-     *
-     * @return null|\Psr\Http\Message\ResponseInterface
      */
-    public function networkDisconnect(string $id, \Mdshack\Docker\API\v1_43\Model\NetworksIdDisconnectPostBody $requestBody, string $fetch = self::FETCH_OBJECT, array $accept = array())
+    public function networkDisconnect(string $id, Model\NetworksIdDisconnectPostBody $requestBody, string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\NetworkDisconnect($id, $requestBody, $accept), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param array $queryParameters {
-    *     @var string $filters Filters to process on the prune list, encoded as JSON (a `map[string][]string`).
-    
-    Available filters:
-    - `until=<timestamp>` Prune networks created before this timestamp. The `<timestamp>` can be Unix timestamps, date formatted timestamps, or Go duration strings (e.g. `10m`, `1h30m`) computed relative to the daemon machine’s time.
-    - `label` (`label=<key>`, `label=<key>=<value>`, `label!=<key>`, or `label!=<key>=<value>`) Prune networks with (or without, in case `label!=...` is used) the specified labels.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\NetworkPruneInternalServerErrorException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\NetworksPrunePostResponse200|\Psr\Http\Message\ResponseInterface
-    */
-    public function networkPrune(array $queryParameters = array(), string $fetch = self::FETCH_OBJECT)
+     * @param  array  $queryParameters {
+     *
+     *     @var string $filters Filters to process on the prune list, encoded as JSON (a `map[string][]string`).
+
+     * }
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\NetworksPrunePostResponse200|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\NetworkPruneInternalServerErrorException
+     */
+    public function networkPrune(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\NetworkPrune($queryParameters), $fetch);
     }
+
     /**
-    * Returns information about installed plugins.
-    *
-    * @param array $queryParameters {
-    *     @var string $filters A JSON encoded value of the filters (a `map[string][]string`) to
-    process on the plugin list.
-    
-    Available filters:
-    
-    - `capability=<capability name>`
-    - `enable=<true>|<false>`
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\PluginListInternalServerErrorException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\Plugin[]|\Psr\Http\Message\ResponseInterface
-    */
-    public function pluginList(array $queryParameters = array(), string $fetch = self::FETCH_OBJECT)
+     * Returns information about installed plugins.
+     *
+     * @param  array  $queryParameters {
+     *
+     *     @var string $filters A JSON encoded value of the filters (a `map[string][]string`) to
+     * }
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\Plugin[]|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\PluginListInternalServerErrorException
+     */
+    public function pluginList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\PluginList($queryParameters), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param array $queryParameters {
-    *     @var string $remote The name of the plugin. The `:latest` tag is optional, and is the
+     * @param  array  $queryParameters {
+     *
+     *     @var string $remote The name of the plugin. The `:latest` tag is optional, and is the
     default if omitted.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/json|text/plain
-    * @throws \Mdshack\Docker\API\v1_43\Exception\GetPluginPrivilegesInternalServerErrorException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\PluginPrivilege[]|\Psr\Http\Message\ResponseInterface
-    */
-    public function getPluginPrivileges(array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+
+     * }
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Mdshack\Docker\API\v1_43\Model\PluginPrivilege[]|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\GetPluginPrivilegesInternalServerErrorException
+     */
+    public function getPluginPrivileges(array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\GetPluginPrivileges($queryParameters, $accept), $fetch);
     }
+
     /**
-    * Pulls and installs a plugin. After the plugin is installed, it can be
+     * Pulls and installs a plugin. After the plugin is installed, it can be
     enabled using the [`POST /plugins/{name}/enable` endpoint](#operation/PostPluginsEnable).
-    
-    *
-    * @param null|\Mdshack\Docker\API\v1_43\Model\PluginPrivilege[] $requestBody 
-    * @param array $queryParameters {
-    *     @var string $remote Remote reference for plugin to install.
-    
+
+     *
+     * @param  null|\Mdshack\Docker\API\v1_43\Model\PluginPrivilege[]  $requestBody
+     * @param  array  $queryParameters {
+     *
+     *     @var string $remote Remote reference for plugin to install.
+
+     *     @var string $name Local name for the pulled plugin.
+
     The `:latest` tag is optional, and is used as the default if omitted.
-    
-    *     @var string $name Local name for the pulled plugin.
-    
-    The `:latest` tag is optional, and is used as the default if omitted.
-    
-    * }
-    * @param array $headerParameters {
-    *     @var string $X-Registry-Auth A base64url-encoded auth configuration to use when pulling a plugin
-    from a registry.
-    
-    Refer to the [authentication section](#section/Authentication) for
-    details.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\PluginPullInternalServerErrorException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function pluginPull(?array $requestBody = null, array $queryParameters = array(), array $headerParameters = array(), string $fetch = self::FETCH_OBJECT)
+
+     * }
+     *
+     * @param  array  $headerParameters {
+     *
+     *     @var string $X-Registry-Auth A base64url-encoded auth configuration to use when pulling a plugin
+     * }
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\PluginPullInternalServerErrorException
+     */
+    public function pluginPull(array $requestBody = null, array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\PluginPull($requestBody, $queryParameters, $headerParameters), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param string $name The name of the plugin. The `:latest` tag is optional, and is the
-    default if omitted.
-    
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/json|text/plain
-    * @throws \Mdshack\Docker\API\v1_43\Exception\PluginInspectNotFoundException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\PluginInspectInternalServerErrorException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\Plugin|\Psr\Http\Message\ResponseInterface
-    */
-    public function pluginInspect(string $name, string $fetch = self::FETCH_OBJECT, array $accept = array())
+     * @param  string  $name The name of the plugin. The `:latest` tag is optional, and is the
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Mdshack\Docker\API\v1_43\Model\Plugin|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\PluginInspectNotFoundException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\PluginInspectInternalServerErrorException
+     */
+    public function pluginInspect(string $name, string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\PluginInspect($name, $accept), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param string $name The name of the plugin. The `:latest` tag is optional, and is the
-    default if omitted.
-    
-    * @param array $queryParameters {
-    *     @var bool $force Disable the plugin before removing. This may result in issues if the
+     * @param  string  $name The name of the plugin. The `:latest` tag is optional, and is the
+     * @param  array  $queryParameters {
+     *
+     *     @var bool $force Disable the plugin before removing. This may result in issues if the
     plugin is in use by a container.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/json|text/plain
-    * @throws \Mdshack\Docker\API\v1_43\Exception\PluginDeleteNotFoundException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\PluginDeleteInternalServerErrorException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\Plugin|\Psr\Http\Message\ResponseInterface
-    */
-    public function pluginDelete(string $name, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+
+     * }
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Mdshack\Docker\API\v1_43\Model\Plugin|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\PluginDeleteNotFoundException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\PluginDeleteInternalServerErrorException
+     */
+    public function pluginDelete(string $name, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\PluginDelete($name, $queryParameters, $accept), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param string $name The name of the plugin. The `:latest` tag is optional, and is the
-    default if omitted.
-    
-    * @param array $queryParameters {
-    *     @var int $timeout Set the HTTP client timeout (in seconds)
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/json|text/plain
-    * @throws \Mdshack\Docker\API\v1_43\Exception\PluginEnableNotFoundException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\PluginEnableInternalServerErrorException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function pluginEnable(string $name, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+     * @param  string  $name The name of the plugin. The `:latest` tag is optional, and is the
+     * @param  array  $queryParameters {
+     *
+     *     @var int $timeout Set the HTTP client timeout (in seconds)
+     * }
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\PluginEnableNotFoundException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\PluginEnableInternalServerErrorException
+     */
+    public function pluginEnable(string $name, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\PluginEnable($name, $queryParameters, $accept), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param string $name The name of the plugin. The `:latest` tag is optional, and is the
-    default if omitted.
-    
-    * @param array $queryParameters {
-    *     @var bool $force Force disable a plugin even if still in use.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/json|text/plain
-    * @throws \Mdshack\Docker\API\v1_43\Exception\PluginDisableNotFoundException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\PluginDisableInternalServerErrorException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function pluginDisable(string $name, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+     * @param  string  $name The name of the plugin. The `:latest` tag is optional, and is the
+     * @param  array  $queryParameters {
+     *
+     *     @var bool $force Force disable a plugin even if still in use.
+
+     * }
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\PluginDisableNotFoundException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\PluginDisableInternalServerErrorException
+     */
+    public function pluginDisable(string $name, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\PluginDisable($name, $queryParameters, $accept), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param string $name The name of the plugin. The `:latest` tag is optional, and is the
-    default if omitted.
-    
-    * @param null|\Mdshack\Docker\API\v1_43\Model\PluginPrivilege[] $requestBody 
-    * @param array $queryParameters {
-    *     @var string $remote Remote reference to upgrade to.
-    
+     * @param  string  $name The name of the plugin. The `:latest` tag is optional, and is the
+     * @param  null|\Mdshack\Docker\API\v1_43\Model\PluginPrivilege[]  $requestBody
+     * @param  array  $queryParameters {
+     *
+     *     @var string $remote Remote reference to upgrade to.
+
     The `:latest` tag is optional, and is used as the default if omitted.
-    
-    * }
-    * @param array $headerParameters {
-    *     @var string $X-Registry-Auth A base64url-encoded auth configuration to use when pulling a plugin
-    from a registry.
-    
-    Refer to the [authentication section](#section/Authentication) for
-    details.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/json|text/plain
-    * @throws \Mdshack\Docker\API\v1_43\Exception\PluginUpgradeNotFoundException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\PluginUpgradeInternalServerErrorException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function pluginUpgrade(string $name, ?array $requestBody = null, array $queryParameters = array(), array $headerParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+
+     * }
+     *
+     * @param  array  $headerParameters {
+     *
+     *     @var string $X-Registry-Auth A base64url-encoded auth configuration to use when pulling a plugin
+     * }
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\PluginUpgradeNotFoundException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\PluginUpgradeInternalServerErrorException
+     */
+    public function pluginUpgrade(string $name, array $requestBody = null, array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\PluginUpgrade($name, $requestBody, $queryParameters, $headerParameters, $accept), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param null|string|resource|\Psr\Http\Message\StreamInterface $requestBody 
-    * @param array $queryParameters {
-    *     @var string $name The name of the plugin. The `:latest` tag is optional, and is the
+     * @param  null|string|resource|\Psr\Http\Message\StreamInterface  $requestBody
+     * @param  array  $queryParameters {
+     *
+     *     @var string $name The name of the plugin. The `:latest` tag is optional, and is the
     default if omitted.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/json|text/plain
-    * @throws \Mdshack\Docker\API\v1_43\Exception\PluginCreateInternalServerErrorException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function pluginCreate($requestBody = null, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+
+     * }
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\PluginCreateInternalServerErrorException
+     */
+    public function pluginCreate($requestBody = null, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\PluginCreate($requestBody, $queryParameters, $accept), $fetch);
     }
+
     /**
-    * Push a plugin to the registry.
-    
-    *
-    * @param string $name The name of the plugin. The `:latest` tag is optional, and is the
-    default if omitted.
-    
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/json|text/plain
-    * @throws \Mdshack\Docker\API\v1_43\Exception\PluginPushNotFoundException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\PluginPushInternalServerErrorException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function pluginPush(string $name, string $fetch = self::FETCH_OBJECT, array $accept = array())
+     * Push a plugin to the registry.
+
+     *
+     * @param  string  $name The name of the plugin. The `:latest` tag is optional, and is the
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\PluginPushNotFoundException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\PluginPushInternalServerErrorException
+     */
+    public function pluginPush(string $name, string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\PluginPush($name, $accept), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param string $name The name of the plugin. The `:latest` tag is optional, and is the
-    default if omitted.
-    
-    * @param null|array[] $requestBody 
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/json|text/plain
-    * @throws \Mdshack\Docker\API\v1_43\Exception\PluginSetNotFoundException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\PluginSetInternalServerErrorException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function pluginSet(string $name, ?array $requestBody = null, string $fetch = self::FETCH_OBJECT, array $accept = array())
+     * @param  string  $name The name of the plugin. The `:latest` tag is optional, and is the
+     * @param  null|array[]  $requestBody
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\PluginSetNotFoundException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\PluginSetInternalServerErrorException
+     */
+    public function pluginSet(string $name, array $requestBody = null, string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\PluginSet($name, $requestBody, $accept), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param array $queryParameters {
-    *     @var string $filters Filters to process on the nodes list, encoded as JSON (a `map[string][]string`).
-    
-    Available filters:
-    - `id=<node id>`
-    - `label=<engine label>`
-    - `membership=`(`accepted`|`pending`)`
-    - `name=<node name>`
-    - `node.label=<node label>`
-    - `role=`(`manager`|`worker`)`
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/json|text/plain
-    * @throws \Mdshack\Docker\API\v1_43\Exception\NodeListInternalServerErrorException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\NodeListServiceUnavailableException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\Node[]|\Psr\Http\Message\ResponseInterface
-    */
-    public function nodeList(array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+     * @param  array  $queryParameters {
+     *
+     *     @var string $filters Filters to process on the nodes list, encoded as JSON (a `map[string][]string`).
+
+     * }
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Mdshack\Docker\API\v1_43\Model\Node[]|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\NodeListInternalServerErrorException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\NodeListServiceUnavailableException
+     */
+    public function nodeList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\NodeList($queryParameters, $accept), $fetch);
     }
+
     /**
-     * 
+     * @param  string  $id The ID or name of the node
+     * @param  array  $queryParameters {
      *
-     * @param string $id The ID or name of the node
-     * @param array $queryParameters {
      *     @var bool $force Force remove a node from the swarm
      * }
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     * @param array $accept Accept content header application/json|text/plain
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
      * @throws \Mdshack\Docker\API\v1_43\Exception\NodeDeleteNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\NodeDeleteInternalServerErrorException
      * @throws \Mdshack\Docker\API\v1_43\Exception\NodeDeleteServiceUnavailableException
-     *
-     * @return null|\Psr\Http\Message\ResponseInterface
      */
-    public function nodeDelete(string $id, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+    public function nodeDelete(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\NodeDelete($id, $queryParameters, $accept), $fetch);
     }
+
     /**
-     * 
+     * @param  string  $id The ID or name of the node
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Mdshack\Docker\API\v1_43\Model\Node|\Psr\Http\Message\ResponseInterface
      *
-     * @param string $id The ID or name of the node
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     * @param array $accept Accept content header application/json|text/plain
      * @throws \Mdshack\Docker\API\v1_43\Exception\NodeInspectNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\NodeInspectInternalServerErrorException
      * @throws \Mdshack\Docker\API\v1_43\Exception\NodeInspectServiceUnavailableException
-     *
-     * @return null|\Mdshack\Docker\API\v1_43\Model\Node|\Psr\Http\Message\ResponseInterface
      */
-    public function nodeInspect(string $id, string $fetch = self::FETCH_OBJECT, array $accept = array())
+    public function nodeInspect(string $id, string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\NodeInspect($id, $accept), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param string $id The ID of the node
-    * @param null|\Mdshack\Docker\API\v1_43\Model\NodeSpec $requestBody 
-    * @param array $queryParameters {
-    *     @var int $version The version number of the node object being updated. This is required
+     * @param  string  $id The ID of the node
+     * @param  array  $queryParameters {
+     *
+     *     @var int $version The version number of the node object being updated. This is required
     to avoid conflicting writes.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/json|text/plain
-    * @throws \Mdshack\Docker\API\v1_43\Exception\NodeUpdateBadRequestException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\NodeUpdateNotFoundException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\NodeUpdateInternalServerErrorException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\NodeUpdateServiceUnavailableException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function nodeUpdate(string $id, ?\Mdshack\Docker\API\v1_43\Model\NodeSpec $requestBody = null, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+
+     * }
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\NodeUpdateBadRequestException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\NodeUpdateNotFoundException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\NodeUpdateInternalServerErrorException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\NodeUpdateServiceUnavailableException
+     */
+    public function nodeUpdate(string $id, Model\NodeSpec $requestBody = null, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\NodeUpdate($id, $requestBody, $queryParameters, $accept), $fetch);
     }
+
     /**
-     * 
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Mdshack\Docker\API\v1_43\Model\Swarm|\Psr\Http\Message\ResponseInterface
      *
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     * @param array $accept Accept content header application/json|text/plain
      * @throws \Mdshack\Docker\API\v1_43\Exception\SwarmInspectNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\SwarmInspectInternalServerErrorException
      * @throws \Mdshack\Docker\API\v1_43\Exception\SwarmInspectServiceUnavailableException
-     *
-     * @return null|\Mdshack\Docker\API\v1_43\Model\Swarm|\Psr\Http\Message\ResponseInterface
      */
-    public function swarmInspect(string $fetch = self::FETCH_OBJECT, array $accept = array())
+    public function swarmInspect(string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\SwarmInspect($accept), $fetch);
     }
+
     /**
-     * 
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
      *
-     * @param \Mdshack\Docker\API\v1_43\Model\SwarmInitPostBody $requestBody 
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     * @param array $accept Accept content header application/json|text/plain
      * @throws \Mdshack\Docker\API\v1_43\Exception\SwarmInitBadRequestException
      * @throws \Mdshack\Docker\API\v1_43\Exception\SwarmInitInternalServerErrorException
      * @throws \Mdshack\Docker\API\v1_43\Exception\SwarmInitServiceUnavailableException
-     *
-     * @return null|\Psr\Http\Message\ResponseInterface
      */
-    public function swarmInit(\Mdshack\Docker\API\v1_43\Model\SwarmInitPostBody $requestBody, string $fetch = self::FETCH_OBJECT, array $accept = array())
+    public function swarmInit(Model\SwarmInitPostBody $requestBody, string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\SwarmInit($requestBody, $accept), $fetch);
     }
+
     /**
-     * 
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
      *
-     * @param \Mdshack\Docker\API\v1_43\Model\SwarmJoinPostBody $requestBody 
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     * @param array $accept Accept content header application/json|text/plain
      * @throws \Mdshack\Docker\API\v1_43\Exception\SwarmJoinBadRequestException
      * @throws \Mdshack\Docker\API\v1_43\Exception\SwarmJoinInternalServerErrorException
      * @throws \Mdshack\Docker\API\v1_43\Exception\SwarmJoinServiceUnavailableException
-     *
-     * @return null|\Psr\Http\Message\ResponseInterface
      */
-    public function swarmJoin(\Mdshack\Docker\API\v1_43\Model\SwarmJoinPostBody $requestBody, string $fetch = self::FETCH_OBJECT, array $accept = array())
+    public function swarmJoin(Model\SwarmJoinPostBody $requestBody, string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\SwarmJoin($requestBody, $accept), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param array $queryParameters {
-    *     @var bool $force Force leave swarm, even if this is the last manager or that it will
+     * @param  array  $queryParameters {
+     *
+     *     @var bool $force Force leave swarm, even if this is the last manager or that it will
     break the cluster.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/json|text/plain
-    * @throws \Mdshack\Docker\API\v1_43\Exception\SwarmLeaveInternalServerErrorException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\SwarmLeaveServiceUnavailableException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function swarmLeave(array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+
+     * }
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\SwarmLeaveInternalServerErrorException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\SwarmLeaveServiceUnavailableException
+     */
+    public function swarmLeave(array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\SwarmLeave($queryParameters, $accept), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param \Mdshack\Docker\API\v1_43\Model\SwarmSpec $requestBody 
-    * @param array $queryParameters {
-    *     @var int $version The version number of the swarm object being updated. This is
-    required to avoid conflicting writes.
-    
-    *     @var bool $rotateWorkerToken Rotate the worker join token.
-    *     @var bool $rotateManagerToken Rotate the manager join token.
-    *     @var bool $rotateManagerUnlockKey Rotate the manager unlock key.
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/json|text/plain
-    * @throws \Mdshack\Docker\API\v1_43\Exception\SwarmUpdateBadRequestException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\SwarmUpdateInternalServerErrorException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\SwarmUpdateServiceUnavailableException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function swarmUpdate(\Mdshack\Docker\API\v1_43\Model\SwarmSpec $requestBody, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+     * @param  array  $queryParameters {
+     *
+     *     @var int $version The version number of the swarm object being updated. This is
+     *     @var bool $rotateWorkerToken Rotate the worker join token.
+     *     @var bool $rotateManagerToken Rotate the manager join token.
+     *     @var bool $rotateManagerUnlockKey Rotate the manager unlock key.
+     * }
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\SwarmUpdateBadRequestException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\SwarmUpdateInternalServerErrorException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\SwarmUpdateServiceUnavailableException
+     */
+    public function swarmUpdate(Model\SwarmSpec $requestBody, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\SwarmUpdate($requestBody, $queryParameters, $accept), $fetch);
     }
+
     /**
-     * 
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Mdshack\Docker\API\v1_43\Model\SwarmUnlockkeyGetJsonResponse200|\Psr\Http\Message\ResponseInterface
      *
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     * @param array $accept Accept content header application/json|text/plain
      * @throws \Mdshack\Docker\API\v1_43\Exception\SwarmUnlockkeyInternalServerErrorException
      * @throws \Mdshack\Docker\API\v1_43\Exception\SwarmUnlockkeyServiceUnavailableException
-     *
-     * @return null|\Mdshack\Docker\API\v1_43\Model\SwarmUnlockkeyGetJsonResponse200|\Psr\Http\Message\ResponseInterface
      */
-    public function swarmUnlockkey(string $fetch = self::FETCH_OBJECT, array $accept = array())
+    public function swarmUnlockkey(string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\SwarmUnlockkey($accept), $fetch);
     }
+
     /**
-     * 
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Psr\Http\Message\ResponseInterface
      *
-     * @param \Mdshack\Docker\API\v1_43\Model\SwarmUnlockPostBody $requestBody 
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      * @throws \Mdshack\Docker\API\v1_43\Exception\SwarmUnlockInternalServerErrorException
      * @throws \Mdshack\Docker\API\v1_43\Exception\SwarmUnlockServiceUnavailableException
-     *
-     * @return null|\Psr\Http\Message\ResponseInterface
      */
-    public function swarmUnlock(\Mdshack\Docker\API\v1_43\Model\SwarmUnlockPostBody $requestBody, string $fetch = self::FETCH_OBJECT)
+    public function swarmUnlock(Model\SwarmUnlockPostBody $requestBody, string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\SwarmUnlock($requestBody), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param array $queryParameters {
-    *     @var string $filters A JSON encoded value of the filters (a `map[string][]string`) to
-    process on the services list.
-    
-    Available filters:
-    
-    - `id=<service id>`
-    - `label=<service label>`
-    - `mode=["replicated"|"global"]`
-    - `name=<service name>`
-    
-    *     @var bool $status Include service status, with count of running and desired tasks.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/json|text/plain
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceListInternalServerErrorException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceListServiceUnavailableException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\Service[]|\Psr\Http\Message\ResponseInterface
-    */
-    public function serviceList(array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+     * @param  array  $queryParameters {
+     *
+     *     @var string $filters A JSON encoded value of the filters (a `map[string][]string`) to
+     *     @var bool $status Include service status, with count of running and desired tasks.
+
+     * }
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Mdshack\Docker\API\v1_43\Model\Service[]|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceListInternalServerErrorException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceListServiceUnavailableException
+     */
+    public function serviceList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ServiceList($queryParameters, $accept), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param \Mdshack\Docker\API\v1_43\Model\ServicesCreatePostBody $requestBody 
-    * @param array $headerParameters {
-    *     @var string $X-Registry-Auth A base64url-encoded auth configuration for pulling from private
-    registries.
-    
-    Refer to the [authentication section](#section/Authentication) for
-    details.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceCreateBadRequestException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceCreateForbiddenException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceCreateConflictException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceCreateInternalServerErrorException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceCreateServiceUnavailableException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\ServicesCreatePostResponse201|\Psr\Http\Message\ResponseInterface
-    */
-    public function serviceCreate(\Mdshack\Docker\API\v1_43\Model\ServicesCreatePostBody $requestBody, array $headerParameters = array(), string $fetch = self::FETCH_OBJECT)
+     * @param  array  $headerParameters {
+     *
+     *     @var string $X-Registry-Auth A base64url-encoded auth configuration for pulling from private
+     * }
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\ServicesCreatePostResponse201|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceCreateBadRequestException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceCreateForbiddenException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceCreateConflictException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceCreateInternalServerErrorException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceCreateServiceUnavailableException
+     */
+    public function serviceCreate(Model\ServicesCreatePostBody $requestBody, array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ServiceCreate($requestBody, $headerParameters), $fetch);
     }
+
     /**
-     * 
+     * @param  string  $id ID or name of service.
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
      *
-     * @param string $id ID or name of service.
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     * @param array $accept Accept content header application/json|text/plain
      * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceDeleteNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceDeleteInternalServerErrorException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceDeleteServiceUnavailableException
-     *
-     * @return null|\Psr\Http\Message\ResponseInterface
      */
-    public function serviceDelete(string $id, string $fetch = self::FETCH_OBJECT, array $accept = array())
+    public function serviceDelete(string $id, string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ServiceDelete($id, $accept), $fetch);
     }
+
     /**
-     * 
+     * @param  string  $id ID or name of service.
+     * @param  array  $queryParameters {
      *
-     * @param string $id ID or name of service.
-     * @param array $queryParameters {
      *     @var bool $insertDefaults Fill empty fields with default values.
      * }
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     * @param array $accept Accept content header application/json|text/plain
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Mdshack\Docker\API\v1_43\Model\Service|\Psr\Http\Message\ResponseInterface
+     *
      * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceInspectNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceInspectInternalServerErrorException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceInspectServiceUnavailableException
-     *
-     * @return null|\Mdshack\Docker\API\v1_43\Model\Service|\Psr\Http\Message\ResponseInterface
      */
-    public function serviceInspect(string $id, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+    public function serviceInspect(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ServiceInspect($id, $queryParameters, $accept), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param string $id ID or name of service.
-    * @param \Mdshack\Docker\API\v1_43\Model\ServicesIdUpdatePostBody $requestBody 
-    * @param array $queryParameters {
-    *     @var int $version The version number of the service object being updated. This is
-    required to avoid conflicting writes.
-    This version number should be the value as currently set on the
-    service *before* the update. You can find the current version by
-    calling `GET /services/{id}`
-    
-    *     @var string $registryAuthFrom If the `X-Registry-Auth` header is not specified, this parameter
-    indicates where to find registry authorization credentials.
-    
-    *     @var string $rollback Set to this parameter to `previous` to cause a server-side rollback
-    to the previous service spec. The supplied spec will be ignored in
-    this case.
-    
-    * }
-    * @param array $headerParameters {
-    *     @var string $X-Registry-Auth A base64url-encoded auth configuration for pulling from private
-    registries.
-    
-    Refer to the [authentication section](#section/Authentication) for
-    details.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceUpdateBadRequestException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceUpdateNotFoundException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceUpdateInternalServerErrorException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceUpdateServiceUnavailableException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\ServiceUpdateResponse|\Psr\Http\Message\ResponseInterface
-    */
-    public function serviceUpdate(string $id, \Mdshack\Docker\API\v1_43\Model\ServicesIdUpdatePostBody $requestBody, array $queryParameters = array(), array $headerParameters = array(), string $fetch = self::FETCH_OBJECT)
+     * @param  string  $id ID or name of service.
+     * @param  array  $queryParameters {
+     *
+     *     @var int $version The version number of the service object being updated. This is
+     *     @var string $registryAuthFrom If the `X-Registry-Auth` header is not specified, this parameter
+     *     @var string $rollback Set to this parameter to `previous` to cause a server-side rollback
+     * }
+     * @param  array  $headerParameters {
+     *
+     *     @var string $X-Registry-Auth A base64url-encoded auth configuration for pulling from private
+     * }
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\ServiceUpdateResponse|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceUpdateBadRequestException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceUpdateNotFoundException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceUpdateInternalServerErrorException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceUpdateServiceUnavailableException
+     */
+    public function serviceUpdate(string $id, Model\ServicesIdUpdatePostBody $requestBody, array $queryParameters = [], array $headerParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ServiceUpdate($id, $requestBody, $queryParameters, $headerParameters), $fetch);
     }
+
     /**
-    * Get `stdout` and `stderr` logs from a service. See also
+     * Get `stdout` and `stderr` logs from a service. See also
     [`/containers/{id}/logs`](#operation/ContainerLogs).
-    
-    **Note**: This endpoint works only for services with the `local`,
+
+     **Note**: This endpoint works only for services with the `local`,
     `json-file` or `journald` logging drivers.
-    
-    *
-    * @param string $id ID or name of the service
-    * @param array $queryParameters {
-    *     @var bool $details Show service context and extra details provided to logs.
-    *     @var bool $follow Keep connection after returning logs.
-    *     @var bool $stdout Return logs from `stdout`
-    *     @var bool $stderr Return logs from `stderr`
-    *     @var int $since Only return logs since this time, as a UNIX timestamp
-    *     @var bool $timestamps Add timestamps to every log line
-    *     @var string $tail Only return this number of log lines from the end of the logs.
+
+     *
+     * @param  string  $id ID or name of the service
+     * @param  array  $queryParameters {
+     *
+     *     @var bool $details Show service context and extra details provided to logs.
+     *     @var bool $follow Keep connection after returning logs.
+     *     @var bool $stdout Return logs from `stdout`
+     *     @var bool $stderr Return logs from `stderr`
+     *     @var int $since Only return logs since this time, as a UNIX timestamp
+     *     @var bool $timestamps Add timestamps to every log line
+     *     @var string $tail Only return this number of log lines from the end of the logs.
     Specify as an integer or `all` to output all log lines.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/vnd.docker.raw-stream|application/vnd.docker.multiplexed-stream|application/json
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceLogsNotFoundException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function serviceLogs(string $id, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+
+     * }
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/vnd.docker.raw-stream|application/vnd.docker.multiplexed-stream|application/json
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ServiceLogsNotFoundException
+     */
+    public function serviceLogs(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ServiceLogs($id, $queryParameters, $accept), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param array $queryParameters {
-    *     @var string $filters A JSON encoded value of the filters (a `map[string][]string`) to
-    process on the tasks list.
-    
-    Available filters:
-    
-    - `desired-state=(running | shutdown | accepted)`
-    - `id=<task id>`
-    - `label=key` or `label="key=value"`
-    - `name=<task name>`
-    - `node=<node id or name>`
-    - `service=<service name>`
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\TaskListInternalServerErrorException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\TaskListServiceUnavailableException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\Task[]|\Psr\Http\Message\ResponseInterface
-    */
-    public function taskList(array $queryParameters = array(), string $fetch = self::FETCH_OBJECT)
+     * @param  array  $queryParameters {
+     *
+     *     @var string $filters A JSON encoded value of the filters (a `map[string][]string`) to
+     * }
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\Task[]|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\TaskListInternalServerErrorException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\TaskListServiceUnavailableException
+     */
+    public function taskList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\TaskList($queryParameters), $fetch);
     }
+
     /**
-     * 
+     * @param  string  $id ID of the task
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\Task|\Psr\Http\Message\ResponseInterface
      *
-     * @param string $id ID of the task
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      * @throws \Mdshack\Docker\API\v1_43\Exception\TaskInspectNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\TaskInspectInternalServerErrorException
      * @throws \Mdshack\Docker\API\v1_43\Exception\TaskInspectServiceUnavailableException
-     *
-     * @return null|\Mdshack\Docker\API\v1_43\Model\Task|\Psr\Http\Message\ResponseInterface
      */
     public function taskInspect(string $id, string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\TaskInspect($id), $fetch);
     }
+
     /**
-    * Get `stdout` and `stderr` logs from a task.
+     * Get `stdout` and `stderr` logs from a task.
     See also [`/containers/{id}/logs`](#operation/ContainerLogs).
-    
-    **Note**: This endpoint works only for services with the `local`,
+
+     **Note**: This endpoint works only for services with the `local`,
     `json-file` or `journald` logging drivers.
-    
-    *
-    * @param string $id ID of the task
-    * @param array $queryParameters {
-    *     @var bool $details Show task context and extra details provided to logs.
-    *     @var bool $follow Keep connection after returning logs.
-    *     @var bool $stdout Return logs from `stdout`
-    *     @var bool $stderr Return logs from `stderr`
-    *     @var int $since Only return logs since this time, as a UNIX timestamp
-    *     @var bool $timestamps Add timestamps to every log line
-    *     @var string $tail Only return this number of log lines from the end of the logs.
+
+     *
+     * @param  string  $id ID of the task
+     * @param  array  $queryParameters {
+     *
+     *     @var bool $details Show task context and extra details provided to logs.
+     *     @var bool $follow Keep connection after returning logs.
+     *     @var bool $stdout Return logs from `stdout`
+     *     @var bool $stderr Return logs from `stderr`
+     *     @var int $since Only return logs since this time, as a UNIX timestamp
+     *     @var bool $timestamps Add timestamps to every log line
+     *     @var string $tail Only return this number of log lines from the end of the logs.
     Specify as an integer or `all` to output all log lines.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/vnd.docker.raw-stream|application/vnd.docker.multiplexed-stream|application/json
-    * @throws \Mdshack\Docker\API\v1_43\Exception\TaskLogsNotFoundException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function taskLogs(string $id, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+
+     * }
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/vnd.docker.raw-stream|application/vnd.docker.multiplexed-stream|application/json
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\TaskLogsNotFoundException
+     */
+    public function taskLogs(string $id, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\TaskLogs($id, $queryParameters, $accept), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param array $queryParameters {
-    *     @var string $filters A JSON encoded value of the filters (a `map[string][]string`) to
-    process on the secrets list.
-    
-    Available filters:
-    
-    - `id=<secret id>`
-    - `label=<key> or label=<key>=value`
-    - `name=<secret name>`
-    - `names=<secret name>`
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\SecretListInternalServerErrorException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\SecretListServiceUnavailableException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\Secret[]|\Psr\Http\Message\ResponseInterface
-    */
-    public function secretList(array $queryParameters = array(), string $fetch = self::FETCH_OBJECT)
+     * @param  array  $queryParameters {
+     *
+     *     @var string $filters A JSON encoded value of the filters (a `map[string][]string`) to
+     * }
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\Secret[]|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\SecretListInternalServerErrorException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\SecretListServiceUnavailableException
+     */
+    public function secretList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\SecretList($queryParameters), $fetch);
     }
+
     /**
-     * 
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\IdResponse|\Psr\Http\Message\ResponseInterface
      *
-     * @param null|\Mdshack\Docker\API\v1_43\Model\SecretsCreatePostBody $requestBody 
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      * @throws \Mdshack\Docker\API\v1_43\Exception\SecretCreateConflictException
      * @throws \Mdshack\Docker\API\v1_43\Exception\SecretCreateInternalServerErrorException
      * @throws \Mdshack\Docker\API\v1_43\Exception\SecretCreateServiceUnavailableException
-     *
-     * @return null|\Mdshack\Docker\API\v1_43\Model\IdResponse|\Psr\Http\Message\ResponseInterface
      */
-    public function secretCreate(?\Mdshack\Docker\API\v1_43\Model\SecretsCreatePostBody $requestBody = null, string $fetch = self::FETCH_OBJECT)
+    public function secretCreate(Model\SecretsCreatePostBody $requestBody = null, string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\SecretCreate($requestBody), $fetch);
     }
+
     /**
-     * 
+     * @param  string  $id ID of the secret
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Psr\Http\Message\ResponseInterface
      *
-     * @param string $id ID of the secret
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      * @throws \Mdshack\Docker\API\v1_43\Exception\SecretDeleteNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\SecretDeleteInternalServerErrorException
      * @throws \Mdshack\Docker\API\v1_43\Exception\SecretDeleteServiceUnavailableException
-     *
-     * @return null|\Psr\Http\Message\ResponseInterface
      */
     public function secretDelete(string $id, string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\SecretDelete($id), $fetch);
     }
+
     /**
-     * 
+     * @param  string  $id ID of the secret
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\Secret|\Psr\Http\Message\ResponseInterface
      *
-     * @param string $id ID of the secret
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      * @throws \Mdshack\Docker\API\v1_43\Exception\SecretInspectNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\SecretInspectInternalServerErrorException
      * @throws \Mdshack\Docker\API\v1_43\Exception\SecretInspectServiceUnavailableException
-     *
-     * @return null|\Mdshack\Docker\API\v1_43\Model\Secret|\Psr\Http\Message\ResponseInterface
      */
     public function secretInspect(string $id, string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\SecretInspect($id), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param string $id The ID or name of the secret
-    * @param null|\Mdshack\Docker\API\v1_43\Model\SecretSpec $requestBody 
-    * @param array $queryParameters {
-    *     @var int $version The version number of the secret object being updated. This is
+     * @param  string  $id The ID or name of the secret
+     * @param  array  $queryParameters {
+     *
+     *     @var int $version The version number of the secret object being updated. This is
     required to avoid conflicting writes.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/json|text/plain
-    * @throws \Mdshack\Docker\API\v1_43\Exception\SecretUpdateBadRequestException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\SecretUpdateNotFoundException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\SecretUpdateInternalServerErrorException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\SecretUpdateServiceUnavailableException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function secretUpdate(string $id, ?\Mdshack\Docker\API\v1_43\Model\SecretSpec $requestBody = null, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+
+     * }
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\SecretUpdateBadRequestException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\SecretUpdateNotFoundException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\SecretUpdateInternalServerErrorException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\SecretUpdateServiceUnavailableException
+     */
+    public function secretUpdate(string $id, Model\SecretSpec $requestBody = null, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\SecretUpdate($id, $requestBody, $queryParameters, $accept), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param array $queryParameters {
-    *     @var string $filters A JSON encoded value of the filters (a `map[string][]string`) to
-    process on the configs list.
-    
-    Available filters:
-    
-    - `id=<config id>`
-    - `label=<key> or label=<key>=value`
-    - `name=<config name>`
-    - `names=<config name>`
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ConfigListInternalServerErrorException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ConfigListServiceUnavailableException
-    *
-    * @return null|\Mdshack\Docker\API\v1_43\Model\Config[]|\Psr\Http\Message\ResponseInterface
-    */
-    public function configList(array $queryParameters = array(), string $fetch = self::FETCH_OBJECT)
+     * @param  array  $queryParameters {
+     *
+     *     @var string $filters A JSON encoded value of the filters (a `map[string][]string`) to
+     * }
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\Config[]|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ConfigListInternalServerErrorException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ConfigListServiceUnavailableException
+     */
+    public function configList(array $queryParameters = [], string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ConfigList($queryParameters), $fetch);
     }
+
     /**
-     * 
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\IdResponse|\Psr\Http\Message\ResponseInterface
      *
-     * @param null|\Mdshack\Docker\API\v1_43\Model\ConfigsCreatePostBody $requestBody 
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      * @throws \Mdshack\Docker\API\v1_43\Exception\ConfigCreateConflictException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ConfigCreateInternalServerErrorException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ConfigCreateServiceUnavailableException
-     *
-     * @return null|\Mdshack\Docker\API\v1_43\Model\IdResponse|\Psr\Http\Message\ResponseInterface
      */
-    public function configCreate(?\Mdshack\Docker\API\v1_43\Model\ConfigsCreatePostBody $requestBody = null, string $fetch = self::FETCH_OBJECT)
+    public function configCreate(Model\ConfigsCreatePostBody $requestBody = null, string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ConfigCreate($requestBody), $fetch);
     }
+
     /**
-     * 
+     * @param  string  $id ID of the config
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Psr\Http\Message\ResponseInterface
      *
-     * @param string $id ID of the config
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      * @throws \Mdshack\Docker\API\v1_43\Exception\ConfigDeleteNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ConfigDeleteInternalServerErrorException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ConfigDeleteServiceUnavailableException
-     *
-     * @return null|\Psr\Http\Message\ResponseInterface
      */
     public function configDelete(string $id, string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ConfigDelete($id), $fetch);
     }
+
     /**
-     * 
+     * @param  string  $id ID of the config
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\Config|\Psr\Http\Message\ResponseInterface
      *
-     * @param string $id ID of the config
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      * @throws \Mdshack\Docker\API\v1_43\Exception\ConfigInspectNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ConfigInspectInternalServerErrorException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ConfigInspectServiceUnavailableException
-     *
-     * @return null|\Mdshack\Docker\API\v1_43\Model\Config|\Psr\Http\Message\ResponseInterface
      */
     public function configInspect(string $id, string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ConfigInspect($id), $fetch);
     }
+
     /**
-    * 
-    *
-    * @param string $id The ID or name of the config
-    * @param null|\Mdshack\Docker\API\v1_43\Model\ConfigSpec $requestBody 
-    * @param array $queryParameters {
-    *     @var int $version The version number of the config object being updated. This is
+     * @param  string  $id The ID or name of the config
+     * @param  array  $queryParameters {
+     *
+     *     @var int $version The version number of the config object being updated. This is
     required to avoid conflicting writes.
-    
-    * }
-    * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-    * @param array $accept Accept content header application/json|text/plain
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ConfigUpdateBadRequestException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ConfigUpdateNotFoundException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ConfigUpdateInternalServerErrorException
-    * @throws \Mdshack\Docker\API\v1_43\Exception\ConfigUpdateServiceUnavailableException
-    *
-    * @return null|\Psr\Http\Message\ResponseInterface
-    */
-    public function configUpdate(string $id, ?\Mdshack\Docker\API\v1_43\Model\ConfigSpec $requestBody = null, array $queryParameters = array(), string $fetch = self::FETCH_OBJECT, array $accept = array())
+
+     * }
+     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  array  $accept Accept content header application/json|text/plain
+     * @return null|\Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ConfigUpdateBadRequestException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ConfigUpdateNotFoundException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ConfigUpdateInternalServerErrorException
+     * @throws \Mdshack\Docker\API\v1_43\Exception\ConfigUpdateServiceUnavailableException
+     */
+    public function configUpdate(string $id, Model\ConfigSpec $requestBody = null, array $queryParameters = [], string $fetch = self::FETCH_OBJECT, array $accept = [])
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\ConfigUpdate($id, $requestBody, $queryParameters, $accept), $fetch);
     }
+
     /**
      * Return image digest and platform information by contacting the registry.
      *
-     * @param string $name Image name or id
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @param  string  $name Image name or id
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
+     * @return null|\Mdshack\Docker\API\v1_43\Model\DistributionInspect|\Psr\Http\Message\ResponseInterface
+     *
      * @throws \Mdshack\Docker\API\v1_43\Exception\DistributionInspectUnauthorizedException
      * @throws \Mdshack\Docker\API\v1_43\Exception\DistributionInspectInternalServerErrorException
-     *
-     * @return null|\Mdshack\Docker\API\v1_43\Model\DistributionInspect|\Psr\Http\Message\ResponseInterface
      */
     public function distributionInspect(string $name, string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\DistributionInspect($name), $fetch);
     }
+
     /**
-     * @param string $fetch Fetch mode to use (can be OBJECT or RESPONSE)
-     *
+     * @param  string  $fetch Fetch mode to use (can be OBJECT or RESPONSE)
      * @return null|\Psr\Http\Message\ResponseInterface
      */
     public function session(string $fetch = self::FETCH_OBJECT)
     {
         return $this->executeEndpoint(new \Mdshack\Docker\API\v1_43\Endpoint\Session(), $fetch);
     }
-    public static function create($httpClient = null, array $additionalPlugins = array(), array $additionalNormalizers = array())
+
+    public static function create($httpClient = null, array $additionalPlugins = [], array $additionalNormalizers = [])
     {
-        if (null === $httpClient) {
+        if ($httpClient === null) {
             $httpClient = \Http\Discovery\Psr18ClientDiscovery::find();
-            $plugins = array();
+            $plugins = [];
             $uri = \Http\Discovery\Psr17FactoryDiscovery::findUriFactory()->createUri('/v1.43');
             $plugins[] = new \Http\Client\Common\Plugin\AddPathPlugin($uri);
             if (count($additionalPlugins) > 0) {
@@ -2481,11 +2258,12 @@ class Client extends \Mdshack\Docker\API\v1_43\Runtime\Client\Client
         }
         $requestFactory = \Http\Discovery\Psr17FactoryDiscovery::findRequestFactory();
         $streamFactory = \Http\Discovery\Psr17FactoryDiscovery::findStreamFactory();
-        $normalizers = array(new \Symfony\Component\Serializer\Normalizer\ArrayDenormalizer(), new \Mdshack\Docker\API\v1_43\Normalizer\JaneObjectNormalizer());
+        $normalizers = [new \Symfony\Component\Serializer\Normalizer\ArrayDenormalizer(), new \Mdshack\Docker\API\v1_43\Normalizer\JaneObjectNormalizer()];
         if (count($additionalNormalizers) > 0) {
             $normalizers = array_merge($normalizers, $additionalNormalizers);
         }
-        $serializer = new \Symfony\Component\Serializer\Serializer($normalizers, array(new \Symfony\Component\Serializer\Encoder\JsonEncoder(new \Symfony\Component\Serializer\Encoder\JsonEncode(), new \Symfony\Component\Serializer\Encoder\JsonDecode(array('json_decode_associative' => true)))));
+        $serializer = new \Symfony\Component\Serializer\Serializer($normalizers, [new \Symfony\Component\Serializer\Encoder\JsonEncoder(new \Symfony\Component\Serializer\Encoder\JsonEncode(), new \Symfony\Component\Serializer\Encoder\JsonDecode(['json_decode_associative' => true]))]);
+
         return new static($httpClient, $requestFactory, $serializer, $streamFactory);
     }
 }

@@ -5,31 +5,34 @@ namespace Mdshack\Docker\API\v1_43\Normalizer;
 use Jane\Component\JsonSchemaRuntime\Reference;
 use Mdshack\Docker\API\v1_43\Runtime\Normalizer\CheckArray;
 use Mdshack\Docker\API\v1_43\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class ServiceNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+class ServiceNormalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null, array $context = array()) : bool
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === 'Mdshack\\Docker\\API\\v1_43\\Model\\Service';
     }
-    public function supportsNormalization($data, $format = null, array $context = array()) : bool
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_object($data) && get_class($data) === 'Mdshack\\Docker\\API\\v1_43\\Model\\Service';
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -38,7 +41,7 @@ class ServiceNormalizer implements DenormalizerInterface, NormalizerInterface, D
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Mdshack\Docker\API\v1_43\Model\Service();
-        if (null === $data || false === \is_array($data)) {
+        if ($data === null || \is_array($data) === false) {
             return $object;
         }
         if (\array_key_exists('ID', $data)) {
@@ -82,39 +85,41 @@ class ServiceNormalizer implements DenormalizerInterface, NormalizerInterface, D
                 $object[$key] = $value;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        if ($object->isInitialized('iD') && null !== $object->getID()) {
+        $data = [];
+        if ($object->isInitialized('iD') && $object->getID() !== null) {
             $data['ID'] = $object->getID();
         }
-        if ($object->isInitialized('version') && null !== $object->getVersion()) {
+        if ($object->isInitialized('version') && $object->getVersion() !== null) {
             $data['Version'] = $this->normalizer->normalize($object->getVersion(), 'json', $context);
         }
-        if ($object->isInitialized('createdAt') && null !== $object->getCreatedAt()) {
+        if ($object->isInitialized('createdAt') && $object->getCreatedAt() !== null) {
             $data['CreatedAt'] = $object->getCreatedAt();
         }
-        if ($object->isInitialized('updatedAt') && null !== $object->getUpdatedAt()) {
+        if ($object->isInitialized('updatedAt') && $object->getUpdatedAt() !== null) {
             $data['UpdatedAt'] = $object->getUpdatedAt();
         }
-        if ($object->isInitialized('spec') && null !== $object->getSpec()) {
+        if ($object->isInitialized('spec') && $object->getSpec() !== null) {
             $data['Spec'] = $this->normalizer->normalize($object->getSpec(), 'json', $context);
         }
-        if ($object->isInitialized('endpoint') && null !== $object->getEndpoint()) {
+        if ($object->isInitialized('endpoint') && $object->getEndpoint() !== null) {
             $data['Endpoint'] = $this->normalizer->normalize($object->getEndpoint(), 'json', $context);
         }
-        if ($object->isInitialized('updateStatus') && null !== $object->getUpdateStatus()) {
+        if ($object->isInitialized('updateStatus') && $object->getUpdateStatus() !== null) {
             $data['UpdateStatus'] = $this->normalizer->normalize($object->getUpdateStatus(), 'json', $context);
         }
-        if ($object->isInitialized('serviceStatus') && null !== $object->getServiceStatus()) {
+        if ($object->isInitialized('serviceStatus') && $object->getServiceStatus() !== null) {
             $data['ServiceStatus'] = $this->normalizer->normalize($object->getServiceStatus(), 'json', $context);
         }
-        if ($object->isInitialized('jobStatus') && null !== $object->getJobStatus()) {
+        if ($object->isInitialized('jobStatus') && $object->getJobStatus() !== null) {
             $data['JobStatus'] = $this->normalizer->normalize($object->getJobStatus(), 'json', $context);
         }
         foreach ($object as $key => $value) {
@@ -122,10 +127,12 @@ class ServiceNormalizer implements DenormalizerInterface, NormalizerInterface, D
                 $data[$key] = $value;
             }
         }
+
         return $data;
     }
-    public function getSupportedTypes(?string $format = null) : array
+
+    public function getSupportedTypes(string $format = null): array
     {
-        return array('Mdshack\\Docker\\API\\v1_43\\Model\\Service' => false);
+        return ['Mdshack\\Docker\\API\\v1_43\\Model\\Service' => false];
     }
 }

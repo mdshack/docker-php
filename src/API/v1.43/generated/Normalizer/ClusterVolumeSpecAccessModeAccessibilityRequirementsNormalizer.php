@@ -5,31 +5,34 @@ namespace Mdshack\Docker\API\v1_43\Normalizer;
 use Jane\Component\JsonSchemaRuntime\Reference;
 use Mdshack\Docker\API\v1_43\Runtime\Normalizer\CheckArray;
 use Mdshack\Docker\API\v1_43\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class ClusterVolumeSpecAccessModeAccessibilityRequirementsNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+class ClusterVolumeSpecAccessModeAccessibilityRequirementsNormalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null, array $context = array()) : bool
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === 'Mdshack\\Docker\\API\\v1_43\\Model\\ClusterVolumeSpecAccessModeAccessibilityRequirements';
     }
-    public function supportsNormalization($data, $format = null, array $context = array()) : bool
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_object($data) && get_class($data) === 'Mdshack\\Docker\\API\\v1_43\\Model\\ClusterVolumeSpecAccessModeAccessibilityRequirements';
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -38,13 +41,13 @@ class ClusterVolumeSpecAccessModeAccessibilityRequirementsNormalizer implements 
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Mdshack\Docker\API\v1_43\Model\ClusterVolumeSpecAccessModeAccessibilityRequirements();
-        if (null === $data || false === \is_array($data)) {
+        if ($data === null || \is_array($data) === false) {
             return $object;
         }
         if (\array_key_exists('Requisite', $data)) {
-            $values = array();
+            $values = [];
             foreach ($data['Requisite'] as $value) {
-                $values_1 = new \ArrayObject(array(), \ArrayObject::ARRAY_AS_PROPS);
+                $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
                 foreach ($value as $key => $value_1) {
                     $values_1[$key] = $value_1;
                 }
@@ -54,9 +57,9 @@ class ClusterVolumeSpecAccessModeAccessibilityRequirementsNormalizer implements 
             unset($data['Requisite']);
         }
         if (\array_key_exists('Preferred', $data)) {
-            $values_2 = array();
+            $values_2 = [];
             foreach ($data['Preferred'] as $value_2) {
-                $values_3 = new \ArrayObject(array(), \ArrayObject::ARRAY_AS_PROPS);
+                $values_3 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
                 foreach ($value_2 as $key_1 => $value_3) {
                     $values_3[$key_1] = $value_3;
                 }
@@ -70,18 +73,20 @@ class ClusterVolumeSpecAccessModeAccessibilityRequirementsNormalizer implements 
                 $object[$key_2] = $value_4;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        if ($object->isInitialized('requisite') && null !== $object->getRequisite()) {
-            $values = array();
+        $data = [];
+        if ($object->isInitialized('requisite') && $object->getRequisite() !== null) {
+            $values = [];
             foreach ($object->getRequisite() as $value) {
-                $values_1 = array();
+                $values_1 = [];
                 foreach ($value as $key => $value_1) {
                     $values_1[$key] = $value_1;
                 }
@@ -89,10 +94,10 @@ class ClusterVolumeSpecAccessModeAccessibilityRequirementsNormalizer implements 
             }
             $data['Requisite'] = $values;
         }
-        if ($object->isInitialized('preferred') && null !== $object->getPreferred()) {
-            $values_2 = array();
+        if ($object->isInitialized('preferred') && $object->getPreferred() !== null) {
+            $values_2 = [];
             foreach ($object->getPreferred() as $value_2) {
-                $values_3 = array();
+                $values_3 = [];
                 foreach ($value_2 as $key_1 => $value_3) {
                     $values_3[$key_1] = $value_3;
                 }
@@ -105,10 +110,12 @@ class ClusterVolumeSpecAccessModeAccessibilityRequirementsNormalizer implements 
                 $data[$key_2] = $value_4;
             }
         }
+
         return $data;
     }
-    public function getSupportedTypes(?string $format = null) : array
+
+    public function getSupportedTypes(string $format = null): array
     {
-        return array('Mdshack\\Docker\\API\\v1_43\\Model\\ClusterVolumeSpecAccessModeAccessibilityRequirements' => false);
+        return ['Mdshack\\Docker\\API\\v1_43\\Model\\ClusterVolumeSpecAccessModeAccessibilityRequirements' => false];
     }
 }

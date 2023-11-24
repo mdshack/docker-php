@@ -5,31 +5,34 @@ namespace Mdshack\Docker\API\v1_43\Normalizer;
 use Jane\Component\JsonSchemaRuntime\Reference;
 use Mdshack\Docker\API\v1_43\Runtime\Normalizer\CheckArray;
 use Mdshack\Docker\API\v1_43\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class PluginConfigLinuxNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+class PluginConfigLinuxNormalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null, array $context = array()) : bool
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === 'Mdshack\\Docker\\API\\v1_43\\Model\\PluginConfigLinux';
     }
-    public function supportsNormalization($data, $format = null, array $context = array()) : bool
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_object($data) && get_class($data) === 'Mdshack\\Docker\\API\\v1_43\\Model\\PluginConfigLinux';
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -38,11 +41,11 @@ class PluginConfigLinuxNormalizer implements DenormalizerInterface, NormalizerIn
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Mdshack\Docker\API\v1_43\Model\PluginConfigLinux();
-        if (null === $data || false === \is_array($data)) {
+        if ($data === null || \is_array($data) === false) {
             return $object;
         }
         if (\array_key_exists('Capabilities', $data)) {
-            $values = array();
+            $values = [];
             foreach ($data['Capabilities'] as $value) {
                 $values[] = $value;
             }
@@ -54,7 +57,7 @@ class PluginConfigLinuxNormalizer implements DenormalizerInterface, NormalizerIn
             unset($data['AllowAllDevices']);
         }
         if (\array_key_exists('Devices', $data)) {
-            $values_1 = array();
+            $values_1 = [];
             foreach ($data['Devices'] as $value_1) {
                 $values_1[] = $this->denormalizer->denormalize($value_1, 'Mdshack\\Docker\\API\\v1_43\\Model\\PluginDevice', 'json', $context);
             }
@@ -66,21 +69,23 @@ class PluginConfigLinuxNormalizer implements DenormalizerInterface, NormalizerIn
                 $object[$key] = $value_2;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        $values = array();
+        $data = [];
+        $values = [];
         foreach ($object->getCapabilities() as $value) {
             $values[] = $value;
         }
         $data['Capabilities'] = $values;
         $data['AllowAllDevices'] = $object->getAllowAllDevices();
-        $values_1 = array();
+        $values_1 = [];
         foreach ($object->getDevices() as $value_1) {
             $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
         }
@@ -90,10 +95,12 @@ class PluginConfigLinuxNormalizer implements DenormalizerInterface, NormalizerIn
                 $data[$key] = $value_2;
             }
         }
+
         return $data;
     }
-    public function getSupportedTypes(?string $format = null) : array
+
+    public function getSupportedTypes(string $format = null): array
     {
-        return array('Mdshack\\Docker\\API\\v1_43\\Model\\PluginConfigLinux' => false);
+        return ['Mdshack\\Docker\\API\\v1_43\\Model\\PluginConfigLinux' => false];
     }
 }

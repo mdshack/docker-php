@@ -5,31 +5,34 @@ namespace Mdshack\Docker\API\v1_43\Normalizer;
 use Jane\Component\JsonSchemaRuntime\Reference;
 use Mdshack\Docker\API\v1_43\Runtime\Normalizer\CheckArray;
 use Mdshack\Docker\API\v1_43\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class NetworkNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+class NetworkNormalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null, array $context = array()) : bool
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === 'Mdshack\\Docker\\API\\v1_43\\Model\\Network';
     }
-    public function supportsNormalization($data, $format = null, array $context = array()) : bool
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_object($data) && get_class($data) === 'Mdshack\\Docker\\API\\v1_43\\Model\\Network';
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -38,7 +41,7 @@ class NetworkNormalizer implements DenormalizerInterface, NormalizerInterface, D
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Mdshack\Docker\API\v1_43\Model\Network();
-        if (null === $data || false === \is_array($data)) {
+        if ($data === null || \is_array($data) === false) {
             return $object;
         }
         if (\array_key_exists('Name', $data)) {
@@ -82,7 +85,7 @@ class NetworkNormalizer implements DenormalizerInterface, NormalizerInterface, D
             unset($data['Ingress']);
         }
         if (\array_key_exists('Containers', $data)) {
-            $values = new \ArrayObject(array(), \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($data['Containers'] as $key => $value) {
                 $values[$key] = $this->denormalizer->denormalize($value, 'Mdshack\\Docker\\API\\v1_43\\Model\\NetworkContainer', 'json', $context);
             }
@@ -90,7 +93,7 @@ class NetworkNormalizer implements DenormalizerInterface, NormalizerInterface, D
             unset($data['Containers']);
         }
         if (\array_key_exists('Options', $data)) {
-            $values_1 = new \ArrayObject(array(), \ArrayObject::ARRAY_AS_PROPS);
+            $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($data['Options'] as $key_1 => $value_1) {
                 $values_1[$key_1] = $value_1;
             }
@@ -98,7 +101,7 @@ class NetworkNormalizer implements DenormalizerInterface, NormalizerInterface, D
             unset($data['Options']);
         }
         if (\array_key_exists('Labels', $data)) {
-            $values_2 = new \ArrayObject(array(), \ArrayObject::ARRAY_AS_PROPS);
+            $values_2 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($data['Labels'] as $key_2 => $value_2) {
                 $values_2[$key_2] = $value_2;
             }
@@ -110,60 +113,62 @@ class NetworkNormalizer implements DenormalizerInterface, NormalizerInterface, D
                 $object[$key_3] = $value_3;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        if ($object->isInitialized('name') && null !== $object->getName()) {
+        $data = [];
+        if ($object->isInitialized('name') && $object->getName() !== null) {
             $data['Name'] = $object->getName();
         }
-        if ($object->isInitialized('id') && null !== $object->getId()) {
+        if ($object->isInitialized('id') && $object->getId() !== null) {
             $data['Id'] = $object->getId();
         }
-        if ($object->isInitialized('created') && null !== $object->getCreated()) {
+        if ($object->isInitialized('created') && $object->getCreated() !== null) {
             $data['Created'] = $object->getCreated();
         }
-        if ($object->isInitialized('scope') && null !== $object->getScope()) {
+        if ($object->isInitialized('scope') && $object->getScope() !== null) {
             $data['Scope'] = $object->getScope();
         }
-        if ($object->isInitialized('driver') && null !== $object->getDriver()) {
+        if ($object->isInitialized('driver') && $object->getDriver() !== null) {
             $data['Driver'] = $object->getDriver();
         }
-        if ($object->isInitialized('enableIPv6') && null !== $object->getEnableIPv6()) {
+        if ($object->isInitialized('enableIPv6') && $object->getEnableIPv6() !== null) {
             $data['EnableIPv6'] = $object->getEnableIPv6();
         }
-        if ($object->isInitialized('iPAM') && null !== $object->getIPAM()) {
+        if ($object->isInitialized('iPAM') && $object->getIPAM() !== null) {
             $data['IPAM'] = $this->normalizer->normalize($object->getIPAM(), 'json', $context);
         }
-        if ($object->isInitialized('internal') && null !== $object->getInternal()) {
+        if ($object->isInitialized('internal') && $object->getInternal() !== null) {
             $data['Internal'] = $object->getInternal();
         }
-        if ($object->isInitialized('attachable') && null !== $object->getAttachable()) {
+        if ($object->isInitialized('attachable') && $object->getAttachable() !== null) {
             $data['Attachable'] = $object->getAttachable();
         }
-        if ($object->isInitialized('ingress') && null !== $object->getIngress()) {
+        if ($object->isInitialized('ingress') && $object->getIngress() !== null) {
             $data['Ingress'] = $object->getIngress();
         }
-        if ($object->isInitialized('containers') && null !== $object->getContainers()) {
-            $values = array();
+        if ($object->isInitialized('containers') && $object->getContainers() !== null) {
+            $values = [];
             foreach ($object->getContainers() as $key => $value) {
                 $values[$key] = $this->normalizer->normalize($value, 'json', $context);
             }
             $data['Containers'] = $values;
         }
-        if ($object->isInitialized('options') && null !== $object->getOptions()) {
-            $values_1 = array();
+        if ($object->isInitialized('options') && $object->getOptions() !== null) {
+            $values_1 = [];
             foreach ($object->getOptions() as $key_1 => $value_1) {
                 $values_1[$key_1] = $value_1;
             }
             $data['Options'] = $values_1;
         }
-        if ($object->isInitialized('labels') && null !== $object->getLabels()) {
-            $values_2 = array();
+        if ($object->isInitialized('labels') && $object->getLabels() !== null) {
+            $values_2 = [];
             foreach ($object->getLabels() as $key_2 => $value_2) {
                 $values_2[$key_2] = $value_2;
             }
@@ -174,10 +179,12 @@ class NetworkNormalizer implements DenormalizerInterface, NormalizerInterface, D
                 $data[$key_3] = $value_3;
             }
         }
+
         return $data;
     }
-    public function getSupportedTypes(?string $format = null) : array
+
+    public function getSupportedTypes(string $format = null): array
     {
-        return array('Mdshack\\Docker\\API\\v1_43\\Model\\Network' => false);
+        return ['Mdshack\\Docker\\API\\v1_43\\Model\\Network' => false];
     }
 }

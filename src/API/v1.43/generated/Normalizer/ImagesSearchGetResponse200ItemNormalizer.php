@@ -5,31 +5,34 @@ namespace Mdshack\Docker\API\v1_43\Normalizer;
 use Jane\Component\JsonSchemaRuntime\Reference;
 use Mdshack\Docker\API\v1_43\Runtime\Normalizer\CheckArray;
 use Mdshack\Docker\API\v1_43\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class ImagesSearchGetResponse200ItemNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+class ImagesSearchGetResponse200ItemNormalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null, array $context = array()) : bool
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === 'Mdshack\\Docker\\API\\v1_43\\Model\\ImagesSearchGetResponse200Item';
     }
-    public function supportsNormalization($data, $format = null, array $context = array()) : bool
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_object($data) && get_class($data) === 'Mdshack\\Docker\\API\\v1_43\\Model\\ImagesSearchGetResponse200Item';
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -38,7 +41,7 @@ class ImagesSearchGetResponse200ItemNormalizer implements DenormalizerInterface,
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Mdshack\Docker\API\v1_43\Model\ImagesSearchGetResponse200Item();
-        if (null === $data || false === \is_array($data)) {
+        if ($data === null || \is_array($data) === false) {
             return $object;
         }
         if (\array_key_exists('description', $data)) {
@@ -66,27 +69,29 @@ class ImagesSearchGetResponse200ItemNormalizer implements DenormalizerInterface,
                 $object[$key] = $value;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        if ($object->isInitialized('description') && null !== $object->getDescription()) {
+        $data = [];
+        if ($object->isInitialized('description') && $object->getDescription() !== null) {
             $data['description'] = $object->getDescription();
         }
-        if ($object->isInitialized('isOfficial') && null !== $object->getIsOfficial()) {
+        if ($object->isInitialized('isOfficial') && $object->getIsOfficial() !== null) {
             $data['is_official'] = $object->getIsOfficial();
         }
-        if ($object->isInitialized('isAutomated') && null !== $object->getIsAutomated()) {
+        if ($object->isInitialized('isAutomated') && $object->getIsAutomated() !== null) {
             $data['is_automated'] = $object->getIsAutomated();
         }
-        if ($object->isInitialized('name') && null !== $object->getName()) {
+        if ($object->isInitialized('name') && $object->getName() !== null) {
             $data['name'] = $object->getName();
         }
-        if ($object->isInitialized('starCount') && null !== $object->getStarCount()) {
+        if ($object->isInitialized('starCount') && $object->getStarCount() !== null) {
             $data['star_count'] = $object->getStarCount();
         }
         foreach ($object as $key => $value) {
@@ -94,10 +99,12 @@ class ImagesSearchGetResponse200ItemNormalizer implements DenormalizerInterface,
                 $data[$key] = $value;
             }
         }
+
         return $data;
     }
-    public function getSupportedTypes(?string $format = null) : array
+
+    public function getSupportedTypes(string $format = null): array
     {
-        return array('Mdshack\\Docker\\API\\v1_43\\Model\\ImagesSearchGetResponse200Item' => false);
+        return ['Mdshack\\Docker\\API\\v1_43\\Model\\ImagesSearchGetResponse200Item' => false];
     }
 }

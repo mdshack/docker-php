@@ -5,60 +5,66 @@ namespace Mdshack\Docker\API\v1_43\Endpoint;
 class ConfigInspect extends \Mdshack\Docker\API\v1_43\Runtime\Client\BaseEndpoint implements \Mdshack\Docker\API\v1_43\Runtime\Client\Endpoint
 {
     protected $id;
+
     /**
-     * 
-     *
-     * @param string $id ID of the config
+     * @param  string  $id ID of the config
      */
     public function __construct(string $id)
     {
         $this->id = $id;
     }
+
     use \Mdshack\Docker\API\v1_43\Runtime\Client\EndpointTrait;
-    public function getMethod() : string
+
+    public function getMethod(): string
     {
         return 'GET';
     }
-    public function getUri() : string
+
+    public function getUri(): string
     {
-        return str_replace(array('{id}'), array($this->id), '/configs/{id}');
+        return str_replace(['{id}'], [$this->id], '/configs/{id}');
     }
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null) : array
+
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
-        return array(array(), null);
+        return [[], null];
     }
-    public function getExtraHeaders() : array
+
+    public function getExtraHeaders(): array
     {
-        return array('Accept' => array('application/json'));
+        return ['Accept' => ['application/json']];
     }
+
     /**
      * {@inheritdoc}
+     *
+     * @return null|\Mdshack\Docker\API\v1_43\Model\Config
      *
      * @throws \Mdshack\Docker\API\v1_43\Exception\ConfigInspectNotFoundException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ConfigInspectInternalServerErrorException
      * @throws \Mdshack\Docker\API\v1_43\Exception\ConfigInspectServiceUnavailableException
-     *
-     * @return null|\Mdshack\Docker\API\v1_43\Model\Config
      */
-    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if (is_null($contentType) === false && (200 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && ($status === 200 && mb_strpos($contentType, 'application/json') !== false)) {
             return $serializer->deserialize($body, 'Mdshack\\Docker\\API\\v1_43\\Model\\Config', 'json');
         }
-        if (is_null($contentType) === false && (404 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && ($status === 404 && mb_strpos($contentType, 'application/json') !== false)) {
             throw new \Mdshack\Docker\API\v1_43\Exception\ConfigInspectNotFoundException($serializer->deserialize($body, 'Mdshack\\Docker\\API\\v1_43\\Model\\ErrorResponse', 'json'), $response);
         }
-        if (is_null($contentType) === false && (500 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && ($status === 500 && mb_strpos($contentType, 'application/json') !== false)) {
             throw new \Mdshack\Docker\API\v1_43\Exception\ConfigInspectInternalServerErrorException($serializer->deserialize($body, 'Mdshack\\Docker\\API\\v1_43\\Model\\ErrorResponse', 'json'), $response);
         }
-        if (is_null($contentType) === false && (503 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && ($status === 503 && mb_strpos($contentType, 'application/json') !== false)) {
             throw new \Mdshack\Docker\API\v1_43\Exception\ConfigInspectServiceUnavailableException($serializer->deserialize($body, 'Mdshack\\Docker\\API\\v1_43\\Model\\ErrorResponse', 'json'), $response);
         }
     }
-    public function getAuthenticationScopes() : array
+
+    public function getAuthenticationScopes(): array
     {
-        return array();
+        return [];
     }
 }

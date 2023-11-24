@@ -5,31 +5,34 @@ namespace Mdshack\Docker\API\v1_43\Normalizer;
 use Jane\Component\JsonSchemaRuntime\Reference;
 use Mdshack\Docker\API\v1_43\Runtime\Normalizer\CheckArray;
 use Mdshack\Docker\API\v1_43\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class TaskSpecNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+class TaskSpecNormalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null, array $context = array()) : bool
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === 'Mdshack\\Docker\\API\\v1_43\\Model\\TaskSpec';
     }
-    public function supportsNormalization($data, $format = null, array $context = array()) : bool
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_object($data) && get_class($data) === 'Mdshack\\Docker\\API\\v1_43\\Model\\TaskSpec';
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -38,7 +41,7 @@ class TaskSpecNormalizer implements DenormalizerInterface, NormalizerInterface, 
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Mdshack\Docker\API\v1_43\Model\TaskSpec();
-        if (null === $data || false === \is_array($data)) {
+        if ($data === null || \is_array($data) === false) {
             return $object;
         }
         if (\array_key_exists('PluginSpec', $data)) {
@@ -74,7 +77,7 @@ class TaskSpecNormalizer implements DenormalizerInterface, NormalizerInterface, 
             unset($data['Runtime']);
         }
         if (\array_key_exists('Networks', $data)) {
-            $values = array();
+            $values = [];
             foreach ($data['Networks'] as $value) {
                 $values[] = $this->denormalizer->denormalize($value, 'Mdshack\\Docker\\API\\v1_43\\Model\\NetworkAttachmentConfig', 'json', $context);
             }
@@ -90,46 +93,48 @@ class TaskSpecNormalizer implements DenormalizerInterface, NormalizerInterface, 
                 $object[$key] = $value_1;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        if ($object->isInitialized('pluginSpec') && null !== $object->getPluginSpec()) {
+        $data = [];
+        if ($object->isInitialized('pluginSpec') && $object->getPluginSpec() !== null) {
             $data['PluginSpec'] = $this->normalizer->normalize($object->getPluginSpec(), 'json', $context);
         }
-        if ($object->isInitialized('containerSpec') && null !== $object->getContainerSpec()) {
+        if ($object->isInitialized('containerSpec') && $object->getContainerSpec() !== null) {
             $data['ContainerSpec'] = $this->normalizer->normalize($object->getContainerSpec(), 'json', $context);
         }
-        if ($object->isInitialized('networkAttachmentSpec') && null !== $object->getNetworkAttachmentSpec()) {
+        if ($object->isInitialized('networkAttachmentSpec') && $object->getNetworkAttachmentSpec() !== null) {
             $data['NetworkAttachmentSpec'] = $this->normalizer->normalize($object->getNetworkAttachmentSpec(), 'json', $context);
         }
-        if ($object->isInitialized('resources') && null !== $object->getResources()) {
+        if ($object->isInitialized('resources') && $object->getResources() !== null) {
             $data['Resources'] = $this->normalizer->normalize($object->getResources(), 'json', $context);
         }
-        if ($object->isInitialized('restartPolicy') && null !== $object->getRestartPolicy()) {
+        if ($object->isInitialized('restartPolicy') && $object->getRestartPolicy() !== null) {
             $data['RestartPolicy'] = $this->normalizer->normalize($object->getRestartPolicy(), 'json', $context);
         }
-        if ($object->isInitialized('placement') && null !== $object->getPlacement()) {
+        if ($object->isInitialized('placement') && $object->getPlacement() !== null) {
             $data['Placement'] = $this->normalizer->normalize($object->getPlacement(), 'json', $context);
         }
-        if ($object->isInitialized('forceUpdate') && null !== $object->getForceUpdate()) {
+        if ($object->isInitialized('forceUpdate') && $object->getForceUpdate() !== null) {
             $data['ForceUpdate'] = $object->getForceUpdate();
         }
-        if ($object->isInitialized('runtime') && null !== $object->getRuntime()) {
+        if ($object->isInitialized('runtime') && $object->getRuntime() !== null) {
             $data['Runtime'] = $object->getRuntime();
         }
-        if ($object->isInitialized('networks') && null !== $object->getNetworks()) {
-            $values = array();
+        if ($object->isInitialized('networks') && $object->getNetworks() !== null) {
+            $values = [];
             foreach ($object->getNetworks() as $value) {
                 $values[] = $this->normalizer->normalize($value, 'json', $context);
             }
             $data['Networks'] = $values;
         }
-        if ($object->isInitialized('logDriver') && null !== $object->getLogDriver()) {
+        if ($object->isInitialized('logDriver') && $object->getLogDriver() !== null) {
             $data['LogDriver'] = $this->normalizer->normalize($object->getLogDriver(), 'json', $context);
         }
         foreach ($object as $key => $value_1) {
@@ -137,10 +142,12 @@ class TaskSpecNormalizer implements DenormalizerInterface, NormalizerInterface, 
                 $data[$key] = $value_1;
             }
         }
+
         return $data;
     }
-    public function getSupportedTypes(?string $format = null) : array
+
+    public function getSupportedTypes(string $format = null): array
     {
-        return array('Mdshack\\Docker\\API\\v1_43\\Model\\TaskSpec' => false);
+        return ['Mdshack\\Docker\\API\\v1_43\\Model\\TaskSpec' => false];
     }
 }
