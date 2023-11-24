@@ -5,31 +5,34 @@ namespace Mdshack\Docker\API\v1_42\Normalizer;
 use Jane\Component\JsonSchemaRuntime\Reference;
 use Mdshack\Docker\API\v1_42\Runtime\Normalizer\CheckArray;
 use Mdshack\Docker\API\v1_42\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class PluginsInfoNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+class PluginsInfoNormalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null, array $context = array()) : bool
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === 'Mdshack\\Docker\\API\\v1_42\\Model\\PluginsInfo';
     }
-    public function supportsNormalization($data, $format = null, array $context = array()) : bool
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_object($data) && get_class($data) === 'Mdshack\\Docker\\API\\v1_42\\Model\\PluginsInfo';
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -38,11 +41,11 @@ class PluginsInfoNormalizer implements DenormalizerInterface, NormalizerInterfac
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Mdshack\Docker\API\v1_42\Model\PluginsInfo();
-        if (null === $data || false === \is_array($data)) {
+        if ($data === null || \is_array($data) === false) {
             return $object;
         }
         if (\array_key_exists('Volume', $data)) {
-            $values = array();
+            $values = [];
             foreach ($data['Volume'] as $value) {
                 $values[] = $value;
             }
@@ -50,7 +53,7 @@ class PluginsInfoNormalizer implements DenormalizerInterface, NormalizerInterfac
             unset($data['Volume']);
         }
         if (\array_key_exists('Network', $data)) {
-            $values_1 = array();
+            $values_1 = [];
             foreach ($data['Network'] as $value_1) {
                 $values_1[] = $value_1;
             }
@@ -58,7 +61,7 @@ class PluginsInfoNormalizer implements DenormalizerInterface, NormalizerInterfac
             unset($data['Network']);
         }
         if (\array_key_exists('Authorization', $data)) {
-            $values_2 = array();
+            $values_2 = [];
             foreach ($data['Authorization'] as $value_2) {
                 $values_2[] = $value_2;
             }
@@ -66,7 +69,7 @@ class PluginsInfoNormalizer implements DenormalizerInterface, NormalizerInterfac
             unset($data['Authorization']);
         }
         if (\array_key_exists('Log', $data)) {
-            $values_3 = array();
+            $values_3 = [];
             foreach ($data['Log'] as $value_3) {
                 $values_3[] = $value_3;
             }
@@ -78,37 +81,39 @@ class PluginsInfoNormalizer implements DenormalizerInterface, NormalizerInterfac
                 $object[$key] = $value_4;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        if ($object->isInitialized('volume') && null !== $object->getVolume()) {
-            $values = array();
+        $data = [];
+        if ($object->isInitialized('volume') && $object->getVolume() !== null) {
+            $values = [];
             foreach ($object->getVolume() as $value) {
                 $values[] = $value;
             }
             $data['Volume'] = $values;
         }
-        if ($object->isInitialized('network') && null !== $object->getNetwork()) {
-            $values_1 = array();
+        if ($object->isInitialized('network') && $object->getNetwork() !== null) {
+            $values_1 = [];
             foreach ($object->getNetwork() as $value_1) {
                 $values_1[] = $value_1;
             }
             $data['Network'] = $values_1;
         }
-        if ($object->isInitialized('authorization') && null !== $object->getAuthorization()) {
-            $values_2 = array();
+        if ($object->isInitialized('authorization') && $object->getAuthorization() !== null) {
+            $values_2 = [];
             foreach ($object->getAuthorization() as $value_2) {
                 $values_2[] = $value_2;
             }
             $data['Authorization'] = $values_2;
         }
-        if ($object->isInitialized('log') && null !== $object->getLog()) {
-            $values_3 = array();
+        if ($object->isInitialized('log') && $object->getLog() !== null) {
+            $values_3 = [];
             foreach ($object->getLog() as $value_3) {
                 $values_3[] = $value_3;
             }
@@ -119,10 +124,12 @@ class PluginsInfoNormalizer implements DenormalizerInterface, NormalizerInterfac
                 $data[$key] = $value_4;
             }
         }
+
         return $data;
     }
-    public function getSupportedTypes(?string $format = null) : array
+
+    public function getSupportedTypes(string $format = null): array
     {
-        return array('Mdshack\\Docker\\API\\v1_42\\Model\\PluginsInfo' => false);
+        return ['Mdshack\\Docker\\API\\v1_42\\Model\\PluginsInfo' => false];
     }
 }

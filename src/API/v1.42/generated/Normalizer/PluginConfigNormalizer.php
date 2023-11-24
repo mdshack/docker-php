@@ -5,31 +5,34 @@ namespace Mdshack\Docker\API\v1_42\Normalizer;
 use Jane\Component\JsonSchemaRuntime\Reference;
 use Mdshack\Docker\API\v1_42\Runtime\Normalizer\CheckArray;
 use Mdshack\Docker\API\v1_42\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class PluginConfigNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+class PluginConfigNormalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null, array $context = array()) : bool
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === 'Mdshack\\Docker\\API\\v1_42\\Model\\PluginConfig';
     }
-    public function supportsNormalization($data, $format = null, array $context = array()) : bool
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_object($data) && get_class($data) === 'Mdshack\\Docker\\API\\v1_42\\Model\\PluginConfig';
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -38,7 +41,7 @@ class PluginConfigNormalizer implements DenormalizerInterface, NormalizerInterfa
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Mdshack\Docker\API\v1_42\Model\PluginConfig();
-        if (null === $data || false === \is_array($data)) {
+        if ($data === null || \is_array($data) === false) {
             return $object;
         }
         if (\array_key_exists('DockerVersion', $data)) {
@@ -58,7 +61,7 @@ class PluginConfigNormalizer implements DenormalizerInterface, NormalizerInterfa
             unset($data['Interface']);
         }
         if (\array_key_exists('Entrypoint', $data)) {
-            $values = array();
+            $values = [];
             foreach ($data['Entrypoint'] as $value) {
                 $values[] = $value;
             }
@@ -94,7 +97,7 @@ class PluginConfigNormalizer implements DenormalizerInterface, NormalizerInterfa
             unset($data['PidHost']);
         }
         if (\array_key_exists('Mounts', $data)) {
-            $values_1 = array();
+            $values_1 = [];
             foreach ($data['Mounts'] as $value_1) {
                 $values_1[] = $this->denormalizer->denormalize($value_1, 'Mdshack\\Docker\\API\\v1_42\\Model\\PluginMount', 'json', $context);
             }
@@ -102,7 +105,7 @@ class PluginConfigNormalizer implements DenormalizerInterface, NormalizerInterfa
             unset($data['Mounts']);
         }
         if (\array_key_exists('Env', $data)) {
-            $values_2 = array();
+            $values_2 = [];
             foreach ($data['Env'] as $value_2) {
                 $values_2[] = $this->denormalizer->denormalize($value_2, 'Mdshack\\Docker\\API\\v1_42\\Model\\PluginEnv', 'json', $context);
             }
@@ -122,27 +125,29 @@ class PluginConfigNormalizer implements DenormalizerInterface, NormalizerInterfa
                 $object[$key] = $value_3;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        if ($object->isInitialized('dockerVersion') && null !== $object->getDockerVersion()) {
+        $data = [];
+        if ($object->isInitialized('dockerVersion') && $object->getDockerVersion() !== null) {
             $data['DockerVersion'] = $object->getDockerVersion();
         }
         $data['Description'] = $object->getDescription();
         $data['Documentation'] = $object->getDocumentation();
         $data['Interface'] = $this->normalizer->normalize($object->getInterface(), 'json', $context);
-        $values = array();
+        $values = [];
         foreach ($object->getEntrypoint() as $value) {
             $values[] = $value;
         }
         $data['Entrypoint'] = $values;
         $data['WorkDir'] = $object->getWorkDir();
-        if ($object->isInitialized('user') && null !== $object->getUser()) {
+        if ($object->isInitialized('user') && $object->getUser() !== null) {
             $data['User'] = $this->normalizer->normalize($object->getUser(), 'json', $context);
         }
         $data['Network'] = $this->normalizer->normalize($object->getNetwork(), 'json', $context);
@@ -150,18 +155,18 @@ class PluginConfigNormalizer implements DenormalizerInterface, NormalizerInterfa
         $data['PropagatedMount'] = $object->getPropagatedMount();
         $data['IpcHost'] = $object->getIpcHost();
         $data['PidHost'] = $object->getPidHost();
-        $values_1 = array();
+        $values_1 = [];
         foreach ($object->getMounts() as $value_1) {
             $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
         }
         $data['Mounts'] = $values_1;
-        $values_2 = array();
+        $values_2 = [];
         foreach ($object->getEnv() as $value_2) {
             $values_2[] = $this->normalizer->normalize($value_2, 'json', $context);
         }
         $data['Env'] = $values_2;
         $data['Args'] = $this->normalizer->normalize($object->getArgs(), 'json', $context);
-        if ($object->isInitialized('rootfs') && null !== $object->getRootfs()) {
+        if ($object->isInitialized('rootfs') && $object->getRootfs() !== null) {
             $data['rootfs'] = $this->normalizer->normalize($object->getRootfs(), 'json', $context);
         }
         foreach ($object as $key => $value_3) {
@@ -169,10 +174,12 @@ class PluginConfigNormalizer implements DenormalizerInterface, NormalizerInterfa
                 $data[$key] = $value_3;
             }
         }
+
         return $data;
     }
-    public function getSupportedTypes(?string $format = null) : array
+
+    public function getSupportedTypes(string $format = null): array
     {
-        return array('Mdshack\\Docker\\API\\v1_42\\Model\\PluginConfig' => false);
+        return ['Mdshack\\Docker\\API\\v1_42\\Model\\PluginConfig' => false];
     }
 }

@@ -5,31 +5,34 @@ namespace Mdshack\Docker\API\v1_42\Normalizer;
 use Jane\Component\JsonSchemaRuntime\Reference;
 use Mdshack\Docker\API\v1_42\Runtime\Normalizer\CheckArray;
 use Mdshack\Docker\API\v1_42\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class AuthConfigNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+class AuthConfigNormalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null, array $context = array()) : bool
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === 'Mdshack\\Docker\\API\\v1_42\\Model\\AuthConfig';
     }
-    public function supportsNormalization($data, $format = null, array $context = array()) : bool
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_object($data) && get_class($data) === 'Mdshack\\Docker\\API\\v1_42\\Model\\AuthConfig';
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -38,7 +41,7 @@ class AuthConfigNormalizer implements DenormalizerInterface, NormalizerInterface
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Mdshack\Docker\API\v1_42\Model\AuthConfig();
-        if (null === $data || false === \is_array($data)) {
+        if ($data === null || \is_array($data) === false) {
             return $object;
         }
         if (\array_key_exists('username', $data)) {
@@ -62,24 +65,26 @@ class AuthConfigNormalizer implements DenormalizerInterface, NormalizerInterface
                 $object[$key] = $value;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        if ($object->isInitialized('username') && null !== $object->getUsername()) {
+        $data = [];
+        if ($object->isInitialized('username') && $object->getUsername() !== null) {
             $data['username'] = $object->getUsername();
         }
-        if ($object->isInitialized('password') && null !== $object->getPassword()) {
+        if ($object->isInitialized('password') && $object->getPassword() !== null) {
             $data['password'] = $object->getPassword();
         }
-        if ($object->isInitialized('email') && null !== $object->getEmail()) {
+        if ($object->isInitialized('email') && $object->getEmail() !== null) {
             $data['email'] = $object->getEmail();
         }
-        if ($object->isInitialized('serveraddress') && null !== $object->getServeraddress()) {
+        if ($object->isInitialized('serveraddress') && $object->getServeraddress() !== null) {
             $data['serveraddress'] = $object->getServeraddress();
         }
         foreach ($object as $key => $value) {
@@ -87,10 +92,12 @@ class AuthConfigNormalizer implements DenormalizerInterface, NormalizerInterface
                 $data[$key] = $value;
             }
         }
+
         return $data;
     }
-    public function getSupportedTypes(?string $format = null) : array
+
+    public function getSupportedTypes(string $format = null): array
     {
-        return array('Mdshack\\Docker\\API\\v1_42\\Model\\AuthConfig' => false);
+        return ['Mdshack\\Docker\\API\\v1_42\\Model\\AuthConfig' => false];
     }
 }

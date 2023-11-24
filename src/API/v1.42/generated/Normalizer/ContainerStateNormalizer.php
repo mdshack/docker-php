@@ -5,31 +5,34 @@ namespace Mdshack\Docker\API\v1_42\Normalizer;
 use Jane\Component\JsonSchemaRuntime\Reference;
 use Mdshack\Docker\API\v1_42\Runtime\Normalizer\CheckArray;
 use Mdshack\Docker\API\v1_42\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class ContainerStateNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+class ContainerStateNormalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null, array $context = array()) : bool
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === 'Mdshack\\Docker\\API\\v1_42\\Model\\ContainerState';
     }
-    public function supportsNormalization($data, $format = null, array $context = array()) : bool
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_object($data) && get_class($data) === 'Mdshack\\Docker\\API\\v1_42\\Model\\ContainerState';
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -38,7 +41,7 @@ class ContainerStateNormalizer implements DenormalizerInterface, NormalizerInter
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Mdshack\Docker\API\v1_42\Model\ContainerState();
-        if (null === $data || false === \is_array($data)) {
+        if ($data === null || \is_array($data) === false) {
             return $object;
         }
         if (\array_key_exists('Status', $data)) {
@@ -88,8 +91,7 @@ class ContainerStateNormalizer implements DenormalizerInterface, NormalizerInter
         if (\array_key_exists('Health', $data) && $data['Health'] !== null) {
             $object->setHealth($this->denormalizer->denormalize($data['Health'], 'Mdshack\\Docker\\API\\v1_42\\Model\\Health', 'json', $context));
             unset($data['Health']);
-        }
-        elseif (\array_key_exists('Health', $data) && $data['Health'] === null) {
+        } elseif (\array_key_exists('Health', $data) && $data['Health'] === null) {
             $object->setHealth(null);
         }
         foreach ($data as $key => $value) {
@@ -97,48 +99,50 @@ class ContainerStateNormalizer implements DenormalizerInterface, NormalizerInter
                 $object[$key] = $value;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        if ($object->isInitialized('status') && null !== $object->getStatus()) {
+        $data = [];
+        if ($object->isInitialized('status') && $object->getStatus() !== null) {
             $data['Status'] = $object->getStatus();
         }
-        if ($object->isInitialized('running') && null !== $object->getRunning()) {
+        if ($object->isInitialized('running') && $object->getRunning() !== null) {
             $data['Running'] = $object->getRunning();
         }
-        if ($object->isInitialized('paused') && null !== $object->getPaused()) {
+        if ($object->isInitialized('paused') && $object->getPaused() !== null) {
             $data['Paused'] = $object->getPaused();
         }
-        if ($object->isInitialized('restarting') && null !== $object->getRestarting()) {
+        if ($object->isInitialized('restarting') && $object->getRestarting() !== null) {
             $data['Restarting'] = $object->getRestarting();
         }
-        if ($object->isInitialized('oOMKilled') && null !== $object->getOOMKilled()) {
+        if ($object->isInitialized('oOMKilled') && $object->getOOMKilled() !== null) {
             $data['OOMKilled'] = $object->getOOMKilled();
         }
-        if ($object->isInitialized('dead') && null !== $object->getDead()) {
+        if ($object->isInitialized('dead') && $object->getDead() !== null) {
             $data['Dead'] = $object->getDead();
         }
-        if ($object->isInitialized('pid') && null !== $object->getPid()) {
+        if ($object->isInitialized('pid') && $object->getPid() !== null) {
             $data['Pid'] = $object->getPid();
         }
-        if ($object->isInitialized('exitCode') && null !== $object->getExitCode()) {
+        if ($object->isInitialized('exitCode') && $object->getExitCode() !== null) {
             $data['ExitCode'] = $object->getExitCode();
         }
-        if ($object->isInitialized('error') && null !== $object->getError()) {
+        if ($object->isInitialized('error') && $object->getError() !== null) {
             $data['Error'] = $object->getError();
         }
-        if ($object->isInitialized('startedAt') && null !== $object->getStartedAt()) {
+        if ($object->isInitialized('startedAt') && $object->getStartedAt() !== null) {
             $data['StartedAt'] = $object->getStartedAt();
         }
-        if ($object->isInitialized('finishedAt') && null !== $object->getFinishedAt()) {
+        if ($object->isInitialized('finishedAt') && $object->getFinishedAt() !== null) {
             $data['FinishedAt'] = $object->getFinishedAt();
         }
-        if ($object->isInitialized('health') && null !== $object->getHealth()) {
+        if ($object->isInitialized('health') && $object->getHealth() !== null) {
             $data['Health'] = $this->normalizer->normalize($object->getHealth(), 'json', $context);
         }
         foreach ($object as $key => $value) {
@@ -146,10 +150,12 @@ class ContainerStateNormalizer implements DenormalizerInterface, NormalizerInter
                 $data[$key] = $value;
             }
         }
+
         return $data;
     }
-    public function getSupportedTypes(?string $format = null) : array
+
+    public function getSupportedTypes(string $format = null): array
     {
-        return array('Mdshack\\Docker\\API\\v1_42\\Model\\ContainerState' => false);
+        return ['Mdshack\\Docker\\API\\v1_42\\Model\\ContainerState' => false];
     }
 }

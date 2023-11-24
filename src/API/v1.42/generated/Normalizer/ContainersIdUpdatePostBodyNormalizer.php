@@ -5,31 +5,34 @@ namespace Mdshack\Docker\API\v1_42\Normalizer;
 use Jane\Component\JsonSchemaRuntime\Reference;
 use Mdshack\Docker\API\v1_42\Runtime\Normalizer\CheckArray;
 use Mdshack\Docker\API\v1_42\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class ContainersIdUpdatePostBodyNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+class ContainersIdUpdatePostBodyNormalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null, array $context = array()) : bool
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === 'Mdshack\\Docker\\API\\v1_42\\Model\\ContainersIdUpdatePostBody';
     }
-    public function supportsNormalization($data, $format = null, array $context = array()) : bool
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_object($data) && get_class($data) === 'Mdshack\\Docker\\API\\v1_42\\Model\\ContainersIdUpdatePostBody';
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -38,7 +41,7 @@ class ContainersIdUpdatePostBodyNormalizer implements DenormalizerInterface, Nor
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Mdshack\Docker\API\v1_42\Model\ContainersIdUpdatePostBody();
-        if (null === $data || false === \is_array($data)) {
+        if ($data === null || \is_array($data) === false) {
             return $object;
         }
         if (\array_key_exists('CpuShares', $data)) {
@@ -58,7 +61,7 @@ class ContainersIdUpdatePostBodyNormalizer implements DenormalizerInterface, Nor
             unset($data['BlkioWeight']);
         }
         if (\array_key_exists('BlkioWeightDevice', $data)) {
-            $values = array();
+            $values = [];
             foreach ($data['BlkioWeightDevice'] as $value) {
                 $values[] = $this->denormalizer->denormalize($value, 'Mdshack\\Docker\\API\\v1_42\\Model\\ResourcesBlkioWeightDeviceItem', 'json', $context);
             }
@@ -66,7 +69,7 @@ class ContainersIdUpdatePostBodyNormalizer implements DenormalizerInterface, Nor
             unset($data['BlkioWeightDevice']);
         }
         if (\array_key_exists('BlkioDeviceReadBps', $data)) {
-            $values_1 = array();
+            $values_1 = [];
             foreach ($data['BlkioDeviceReadBps'] as $value_1) {
                 $values_1[] = $this->denormalizer->denormalize($value_1, 'Mdshack\\Docker\\API\\v1_42\\Model\\ThrottleDevice', 'json', $context);
             }
@@ -74,7 +77,7 @@ class ContainersIdUpdatePostBodyNormalizer implements DenormalizerInterface, Nor
             unset($data['BlkioDeviceReadBps']);
         }
         if (\array_key_exists('BlkioDeviceWriteBps', $data)) {
-            $values_2 = array();
+            $values_2 = [];
             foreach ($data['BlkioDeviceWriteBps'] as $value_2) {
                 $values_2[] = $this->denormalizer->denormalize($value_2, 'Mdshack\\Docker\\API\\v1_42\\Model\\ThrottleDevice', 'json', $context);
             }
@@ -82,7 +85,7 @@ class ContainersIdUpdatePostBodyNormalizer implements DenormalizerInterface, Nor
             unset($data['BlkioDeviceWriteBps']);
         }
         if (\array_key_exists('BlkioDeviceReadIOps', $data)) {
-            $values_3 = array();
+            $values_3 = [];
             foreach ($data['BlkioDeviceReadIOps'] as $value_3) {
                 $values_3[] = $this->denormalizer->denormalize($value_3, 'Mdshack\\Docker\\API\\v1_42\\Model\\ThrottleDevice', 'json', $context);
             }
@@ -90,7 +93,7 @@ class ContainersIdUpdatePostBodyNormalizer implements DenormalizerInterface, Nor
             unset($data['BlkioDeviceReadIOps']);
         }
         if (\array_key_exists('BlkioDeviceWriteIOps', $data)) {
-            $values_4 = array();
+            $values_4 = [];
             foreach ($data['BlkioDeviceWriteIOps'] as $value_4) {
                 $values_4[] = $this->denormalizer->denormalize($value_4, 'Mdshack\\Docker\\API\\v1_42\\Model\\ThrottleDevice', 'json', $context);
             }
@@ -122,7 +125,7 @@ class ContainersIdUpdatePostBodyNormalizer implements DenormalizerInterface, Nor
             unset($data['CpusetMems']);
         }
         if (\array_key_exists('Devices', $data)) {
-            $values_5 = array();
+            $values_5 = [];
             foreach ($data['Devices'] as $value_5) {
                 $values_5[] = $this->denormalizer->denormalize($value_5, 'Mdshack\\Docker\\API\\v1_42\\Model\\DeviceMapping', 'json', $context);
             }
@@ -130,7 +133,7 @@ class ContainersIdUpdatePostBodyNormalizer implements DenormalizerInterface, Nor
             unset($data['Devices']);
         }
         if (\array_key_exists('DeviceCgroupRules', $data)) {
-            $values_6 = array();
+            $values_6 = [];
             foreach ($data['DeviceCgroupRules'] as $value_6) {
                 $values_6[] = $value_6;
             }
@@ -138,7 +141,7 @@ class ContainersIdUpdatePostBodyNormalizer implements DenormalizerInterface, Nor
             unset($data['DeviceCgroupRules']);
         }
         if (\array_key_exists('DeviceRequests', $data)) {
-            $values_7 = array();
+            $values_7 = [];
             foreach ($data['DeviceRequests'] as $value_7) {
                 $values_7[] = $this->denormalizer->denormalize($value_7, 'Mdshack\\Docker\\API\\v1_42\\Model\\DeviceRequest', 'json', $context);
             }
@@ -172,19 +175,17 @@ class ContainersIdUpdatePostBodyNormalizer implements DenormalizerInterface, Nor
         if (\array_key_exists('Init', $data) && $data['Init'] !== null) {
             $object->setInit($data['Init']);
             unset($data['Init']);
-        }
-        elseif (\array_key_exists('Init', $data) && $data['Init'] === null) {
+        } elseif (\array_key_exists('Init', $data) && $data['Init'] === null) {
             $object->setInit(null);
         }
         if (\array_key_exists('PidsLimit', $data) && $data['PidsLimit'] !== null) {
             $object->setPidsLimit($data['PidsLimit']);
             unset($data['PidsLimit']);
-        }
-        elseif (\array_key_exists('PidsLimit', $data) && $data['PidsLimit'] === null) {
+        } elseif (\array_key_exists('PidsLimit', $data) && $data['PidsLimit'] === null) {
             $object->setPidsLimit(null);
         }
         if (\array_key_exists('Ulimits', $data)) {
-            $values_8 = array();
+            $values_8 = [];
             foreach ($data['Ulimits'] as $value_8) {
                 $values_8[] = $this->denormalizer->denormalize($value_8, 'Mdshack\\Docker\\API\\v1_42\\Model\\ResourcesUlimitsItem', 'json', $context);
             }
@@ -216,144 +217,146 @@ class ContainersIdUpdatePostBodyNormalizer implements DenormalizerInterface, Nor
                 $object[$key] = $value_9;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        if ($object->isInitialized('cpuShares') && null !== $object->getCpuShares()) {
+        $data = [];
+        if ($object->isInitialized('cpuShares') && $object->getCpuShares() !== null) {
             $data['CpuShares'] = $object->getCpuShares();
         }
-        if ($object->isInitialized('memory') && null !== $object->getMemory()) {
+        if ($object->isInitialized('memory') && $object->getMemory() !== null) {
             $data['Memory'] = $object->getMemory();
         }
-        if ($object->isInitialized('cgroupParent') && null !== $object->getCgroupParent()) {
+        if ($object->isInitialized('cgroupParent') && $object->getCgroupParent() !== null) {
             $data['CgroupParent'] = $object->getCgroupParent();
         }
-        if ($object->isInitialized('blkioWeight') && null !== $object->getBlkioWeight()) {
+        if ($object->isInitialized('blkioWeight') && $object->getBlkioWeight() !== null) {
             $data['BlkioWeight'] = $object->getBlkioWeight();
         }
-        if ($object->isInitialized('blkioWeightDevice') && null !== $object->getBlkioWeightDevice()) {
-            $values = array();
+        if ($object->isInitialized('blkioWeightDevice') && $object->getBlkioWeightDevice() !== null) {
+            $values = [];
             foreach ($object->getBlkioWeightDevice() as $value) {
                 $values[] = $this->normalizer->normalize($value, 'json', $context);
             }
             $data['BlkioWeightDevice'] = $values;
         }
-        if ($object->isInitialized('blkioDeviceReadBps') && null !== $object->getBlkioDeviceReadBps()) {
-            $values_1 = array();
+        if ($object->isInitialized('blkioDeviceReadBps') && $object->getBlkioDeviceReadBps() !== null) {
+            $values_1 = [];
             foreach ($object->getBlkioDeviceReadBps() as $value_1) {
                 $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
             }
             $data['BlkioDeviceReadBps'] = $values_1;
         }
-        if ($object->isInitialized('blkioDeviceWriteBps') && null !== $object->getBlkioDeviceWriteBps()) {
-            $values_2 = array();
+        if ($object->isInitialized('blkioDeviceWriteBps') && $object->getBlkioDeviceWriteBps() !== null) {
+            $values_2 = [];
             foreach ($object->getBlkioDeviceWriteBps() as $value_2) {
                 $values_2[] = $this->normalizer->normalize($value_2, 'json', $context);
             }
             $data['BlkioDeviceWriteBps'] = $values_2;
         }
-        if ($object->isInitialized('blkioDeviceReadIOps') && null !== $object->getBlkioDeviceReadIOps()) {
-            $values_3 = array();
+        if ($object->isInitialized('blkioDeviceReadIOps') && $object->getBlkioDeviceReadIOps() !== null) {
+            $values_3 = [];
             foreach ($object->getBlkioDeviceReadIOps() as $value_3) {
                 $values_3[] = $this->normalizer->normalize($value_3, 'json', $context);
             }
             $data['BlkioDeviceReadIOps'] = $values_3;
         }
-        if ($object->isInitialized('blkioDeviceWriteIOps') && null !== $object->getBlkioDeviceWriteIOps()) {
-            $values_4 = array();
+        if ($object->isInitialized('blkioDeviceWriteIOps') && $object->getBlkioDeviceWriteIOps() !== null) {
+            $values_4 = [];
             foreach ($object->getBlkioDeviceWriteIOps() as $value_4) {
                 $values_4[] = $this->normalizer->normalize($value_4, 'json', $context);
             }
             $data['BlkioDeviceWriteIOps'] = $values_4;
         }
-        if ($object->isInitialized('cpuPeriod') && null !== $object->getCpuPeriod()) {
+        if ($object->isInitialized('cpuPeriod') && $object->getCpuPeriod() !== null) {
             $data['CpuPeriod'] = $object->getCpuPeriod();
         }
-        if ($object->isInitialized('cpuQuota') && null !== $object->getCpuQuota()) {
+        if ($object->isInitialized('cpuQuota') && $object->getCpuQuota() !== null) {
             $data['CpuQuota'] = $object->getCpuQuota();
         }
-        if ($object->isInitialized('cpuRealtimePeriod') && null !== $object->getCpuRealtimePeriod()) {
+        if ($object->isInitialized('cpuRealtimePeriod') && $object->getCpuRealtimePeriod() !== null) {
             $data['CpuRealtimePeriod'] = $object->getCpuRealtimePeriod();
         }
-        if ($object->isInitialized('cpuRealtimeRuntime') && null !== $object->getCpuRealtimeRuntime()) {
+        if ($object->isInitialized('cpuRealtimeRuntime') && $object->getCpuRealtimeRuntime() !== null) {
             $data['CpuRealtimeRuntime'] = $object->getCpuRealtimeRuntime();
         }
-        if ($object->isInitialized('cpusetCpus') && null !== $object->getCpusetCpus()) {
+        if ($object->isInitialized('cpusetCpus') && $object->getCpusetCpus() !== null) {
             $data['CpusetCpus'] = $object->getCpusetCpus();
         }
-        if ($object->isInitialized('cpusetMems') && null !== $object->getCpusetMems()) {
+        if ($object->isInitialized('cpusetMems') && $object->getCpusetMems() !== null) {
             $data['CpusetMems'] = $object->getCpusetMems();
         }
-        if ($object->isInitialized('devices') && null !== $object->getDevices()) {
-            $values_5 = array();
+        if ($object->isInitialized('devices') && $object->getDevices() !== null) {
+            $values_5 = [];
             foreach ($object->getDevices() as $value_5) {
                 $values_5[] = $this->normalizer->normalize($value_5, 'json', $context);
             }
             $data['Devices'] = $values_5;
         }
-        if ($object->isInitialized('deviceCgroupRules') && null !== $object->getDeviceCgroupRules()) {
-            $values_6 = array();
+        if ($object->isInitialized('deviceCgroupRules') && $object->getDeviceCgroupRules() !== null) {
+            $values_6 = [];
             foreach ($object->getDeviceCgroupRules() as $value_6) {
                 $values_6[] = $value_6;
             }
             $data['DeviceCgroupRules'] = $values_6;
         }
-        if ($object->isInitialized('deviceRequests') && null !== $object->getDeviceRequests()) {
-            $values_7 = array();
+        if ($object->isInitialized('deviceRequests') && $object->getDeviceRequests() !== null) {
+            $values_7 = [];
             foreach ($object->getDeviceRequests() as $value_7) {
                 $values_7[] = $this->normalizer->normalize($value_7, 'json', $context);
             }
             $data['DeviceRequests'] = $values_7;
         }
-        if ($object->isInitialized('kernelMemoryTCP') && null !== $object->getKernelMemoryTCP()) {
+        if ($object->isInitialized('kernelMemoryTCP') && $object->getKernelMemoryTCP() !== null) {
             $data['KernelMemoryTCP'] = $object->getKernelMemoryTCP();
         }
-        if ($object->isInitialized('memoryReservation') && null !== $object->getMemoryReservation()) {
+        if ($object->isInitialized('memoryReservation') && $object->getMemoryReservation() !== null) {
             $data['MemoryReservation'] = $object->getMemoryReservation();
         }
-        if ($object->isInitialized('memorySwap') && null !== $object->getMemorySwap()) {
+        if ($object->isInitialized('memorySwap') && $object->getMemorySwap() !== null) {
             $data['MemorySwap'] = $object->getMemorySwap();
         }
-        if ($object->isInitialized('memorySwappiness') && null !== $object->getMemorySwappiness()) {
+        if ($object->isInitialized('memorySwappiness') && $object->getMemorySwappiness() !== null) {
             $data['MemorySwappiness'] = $object->getMemorySwappiness();
         }
-        if ($object->isInitialized('nanoCpus') && null !== $object->getNanoCpus()) {
+        if ($object->isInitialized('nanoCpus') && $object->getNanoCpus() !== null) {
             $data['NanoCpus'] = $object->getNanoCpus();
         }
-        if ($object->isInitialized('oomKillDisable') && null !== $object->getOomKillDisable()) {
+        if ($object->isInitialized('oomKillDisable') && $object->getOomKillDisable() !== null) {
             $data['OomKillDisable'] = $object->getOomKillDisable();
         }
-        if ($object->isInitialized('init') && null !== $object->getInit()) {
+        if ($object->isInitialized('init') && $object->getInit() !== null) {
             $data['Init'] = $object->getInit();
         }
-        if ($object->isInitialized('pidsLimit') && null !== $object->getPidsLimit()) {
+        if ($object->isInitialized('pidsLimit') && $object->getPidsLimit() !== null) {
             $data['PidsLimit'] = $object->getPidsLimit();
         }
-        if ($object->isInitialized('ulimits') && null !== $object->getUlimits()) {
-            $values_8 = array();
+        if ($object->isInitialized('ulimits') && $object->getUlimits() !== null) {
+            $values_8 = [];
             foreach ($object->getUlimits() as $value_8) {
                 $values_8[] = $this->normalizer->normalize($value_8, 'json', $context);
             }
             $data['Ulimits'] = $values_8;
         }
-        if ($object->isInitialized('cpuCount') && null !== $object->getCpuCount()) {
+        if ($object->isInitialized('cpuCount') && $object->getCpuCount() !== null) {
             $data['CpuCount'] = $object->getCpuCount();
         }
-        if ($object->isInitialized('cpuPercent') && null !== $object->getCpuPercent()) {
+        if ($object->isInitialized('cpuPercent') && $object->getCpuPercent() !== null) {
             $data['CpuPercent'] = $object->getCpuPercent();
         }
-        if ($object->isInitialized('iOMaximumIOps') && null !== $object->getIOMaximumIOps()) {
+        if ($object->isInitialized('iOMaximumIOps') && $object->getIOMaximumIOps() !== null) {
             $data['IOMaximumIOps'] = $object->getIOMaximumIOps();
         }
-        if ($object->isInitialized('iOMaximumBandwidth') && null !== $object->getIOMaximumBandwidth()) {
+        if ($object->isInitialized('iOMaximumBandwidth') && $object->getIOMaximumBandwidth() !== null) {
             $data['IOMaximumBandwidth'] = $object->getIOMaximumBandwidth();
         }
-        if ($object->isInitialized('restartPolicy') && null !== $object->getRestartPolicy()) {
+        if ($object->isInitialized('restartPolicy') && $object->getRestartPolicy() !== null) {
             $data['RestartPolicy'] = $this->normalizer->normalize($object->getRestartPolicy(), 'json', $context);
         }
         foreach ($object as $key => $value_9) {
@@ -361,10 +364,12 @@ class ContainersIdUpdatePostBodyNormalizer implements DenormalizerInterface, Nor
                 $data[$key] = $value_9;
             }
         }
+
         return $data;
     }
-    public function getSupportedTypes(?string $format = null) : array
+
+    public function getSupportedTypes(string $format = null): array
     {
-        return array('Mdshack\\Docker\\API\\v1_42\\Model\\ContainersIdUpdatePostBody' => false);
+        return ['Mdshack\\Docker\\API\\v1_42\\Model\\ContainersIdUpdatePostBody' => false];
     }
 }

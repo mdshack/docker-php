@@ -5,31 +5,34 @@ namespace Mdshack\Docker\API\v1_42\Normalizer;
 use Jane\Component\JsonSchemaRuntime\Reference;
 use Mdshack\Docker\API\v1_42\Runtime\Normalizer\CheckArray;
 use Mdshack\Docker\API\v1_42\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class EventMessageNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+class EventMessageNormalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null, array $context = array()) : bool
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === 'Mdshack\\Docker\\API\\v1_42\\Model\\EventMessage';
     }
-    public function supportsNormalization($data, $format = null, array $context = array()) : bool
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_object($data) && get_class($data) === 'Mdshack\\Docker\\API\\v1_42\\Model\\EventMessage';
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -38,7 +41,7 @@ class EventMessageNormalizer implements DenormalizerInterface, NormalizerInterfa
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Mdshack\Docker\API\v1_42\Model\EventMessage();
-        if (null === $data || false === \is_array($data)) {
+        if ($data === null || \is_array($data) === false) {
             return $object;
         }
         if (\array_key_exists('Type', $data)) {
@@ -70,30 +73,32 @@ class EventMessageNormalizer implements DenormalizerInterface, NormalizerInterfa
                 $object[$key] = $value;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        if ($object->isInitialized('type') && null !== $object->getType()) {
+        $data = [];
+        if ($object->isInitialized('type') && $object->getType() !== null) {
             $data['Type'] = $object->getType();
         }
-        if ($object->isInitialized('action') && null !== $object->getAction()) {
+        if ($object->isInitialized('action') && $object->getAction() !== null) {
             $data['Action'] = $object->getAction();
         }
-        if ($object->isInitialized('actor') && null !== $object->getActor()) {
+        if ($object->isInitialized('actor') && $object->getActor() !== null) {
             $data['Actor'] = $this->normalizer->normalize($object->getActor(), 'json', $context);
         }
-        if ($object->isInitialized('scope') && null !== $object->getScope()) {
+        if ($object->isInitialized('scope') && $object->getScope() !== null) {
             $data['scope'] = $object->getScope();
         }
-        if ($object->isInitialized('time') && null !== $object->getTime()) {
+        if ($object->isInitialized('time') && $object->getTime() !== null) {
             $data['time'] = $object->getTime();
         }
-        if ($object->isInitialized('timeNano') && null !== $object->getTimeNano()) {
+        if ($object->isInitialized('timeNano') && $object->getTimeNano() !== null) {
             $data['timeNano'] = $object->getTimeNano();
         }
         foreach ($object as $key => $value) {
@@ -101,10 +106,12 @@ class EventMessageNormalizer implements DenormalizerInterface, NormalizerInterfa
                 $data[$key] = $value;
             }
         }
+
         return $data;
     }
-    public function getSupportedTypes(?string $format = null) : array
+
+    public function getSupportedTypes(string $format = null): array
     {
-        return array('Mdshack\\Docker\\API\\v1_42\\Model\\EventMessage' => false);
+        return ['Mdshack\\Docker\\API\\v1_42\\Model\\EventMessage' => false];
     }
 }

@@ -7,37 +7,34 @@ class ContainersIdUpdatePostResponse200 extends \ArrayObject
     /**
      * @var array
      */
-    protected $initialized = array();
-    public function isInitialized($property) : bool
+    protected $initialized = [];
+
+    public function isInitialized($property): bool
     {
         return array_key_exists($property, $this->initialized);
     }
+
     /**
-     * 
-     *
      * @var string[]
      */
     protected $warnings;
+
     /**
-     * 
-     *
      * @return string[]
      */
-    public function getWarnings() : array
+    public function getWarnings(): array
     {
         return $this->warnings;
     }
+
     /**
-     * 
-     *
-     * @param string[] $warnings
-     *
-     * @return self
+     * @param  string[]  $warnings
      */
-    public function setWarnings(array $warnings) : self
+    public function setWarnings(array $warnings): self
     {
         $this->initialized['warnings'] = true;
         $this->warnings = $warnings;
+
         return $this;
     }
 }

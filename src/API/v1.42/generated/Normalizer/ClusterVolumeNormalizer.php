@@ -5,31 +5,34 @@ namespace Mdshack\Docker\API\v1_42\Normalizer;
 use Jane\Component\JsonSchemaRuntime\Reference;
 use Mdshack\Docker\API\v1_42\Runtime\Normalizer\CheckArray;
 use Mdshack\Docker\API\v1_42\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class ClusterVolumeNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+class ClusterVolumeNormalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null, array $context = array()) : bool
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === 'Mdshack\\Docker\\API\\v1_42\\Model\\ClusterVolume';
     }
-    public function supportsNormalization($data, $format = null, array $context = array()) : bool
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_object($data) && get_class($data) === 'Mdshack\\Docker\\API\\v1_42\\Model\\ClusterVolume';
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -38,7 +41,7 @@ class ClusterVolumeNormalizer implements DenormalizerInterface, NormalizerInterf
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Mdshack\Docker\API\v1_42\Model\ClusterVolume();
-        if (null === $data || false === \is_array($data)) {
+        if ($data === null || \is_array($data) === false) {
             return $object;
         }
         if (\array_key_exists('ID', $data)) {
@@ -66,7 +69,7 @@ class ClusterVolumeNormalizer implements DenormalizerInterface, NormalizerInterf
             unset($data['Info']);
         }
         if (\array_key_exists('PublishStatus', $data)) {
-            $values = array();
+            $values = [];
             foreach ($data['PublishStatus'] as $value) {
                 $values[] = $this->denormalizer->denormalize($value, 'Mdshack\\Docker\\API\\v1_42\\Model\\ClusterVolumePublishStatusItem', 'json', $context);
             }
@@ -78,34 +81,36 @@ class ClusterVolumeNormalizer implements DenormalizerInterface, NormalizerInterf
                 $object[$key] = $value_1;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        if ($object->isInitialized('iD') && null !== $object->getID()) {
+        $data = [];
+        if ($object->isInitialized('iD') && $object->getID() !== null) {
             $data['ID'] = $object->getID();
         }
-        if ($object->isInitialized('version') && null !== $object->getVersion()) {
+        if ($object->isInitialized('version') && $object->getVersion() !== null) {
             $data['Version'] = $this->normalizer->normalize($object->getVersion(), 'json', $context);
         }
-        if ($object->isInitialized('createdAt') && null !== $object->getCreatedAt()) {
+        if ($object->isInitialized('createdAt') && $object->getCreatedAt() !== null) {
             $data['CreatedAt'] = $object->getCreatedAt();
         }
-        if ($object->isInitialized('updatedAt') && null !== $object->getUpdatedAt()) {
+        if ($object->isInitialized('updatedAt') && $object->getUpdatedAt() !== null) {
             $data['UpdatedAt'] = $object->getUpdatedAt();
         }
-        if ($object->isInitialized('spec') && null !== $object->getSpec()) {
+        if ($object->isInitialized('spec') && $object->getSpec() !== null) {
             $data['Spec'] = $this->normalizer->normalize($object->getSpec(), 'json', $context);
         }
-        if ($object->isInitialized('info') && null !== $object->getInfo()) {
+        if ($object->isInitialized('info') && $object->getInfo() !== null) {
             $data['Info'] = $this->normalizer->normalize($object->getInfo(), 'json', $context);
         }
-        if ($object->isInitialized('publishStatus') && null !== $object->getPublishStatus()) {
-            $values = array();
+        if ($object->isInitialized('publishStatus') && $object->getPublishStatus() !== null) {
+            $values = [];
             foreach ($object->getPublishStatus() as $value) {
                 $values[] = $this->normalizer->normalize($value, 'json', $context);
             }
@@ -116,10 +121,12 @@ class ClusterVolumeNormalizer implements DenormalizerInterface, NormalizerInterf
                 $data[$key] = $value_1;
             }
         }
+
         return $data;
     }
-    public function getSupportedTypes(?string $format = null) : array
+
+    public function getSupportedTypes(string $format = null): array
     {
-        return array('Mdshack\\Docker\\API\\v1_42\\Model\\ClusterVolume' => false);
+        return ['Mdshack\\Docker\\API\\v1_42\\Model\\ClusterVolume' => false];
     }
 }
