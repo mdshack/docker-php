@@ -1,0 +1,90 @@
+on: 
+  workflow_dispatch:
+    inputs: 
+      openapiSpec: 
+        description: "URL of OpenAPI spec"
+        required: true
+      openapiSpecType: 
+        description: "File type of OpenAPI spec"
+        default: yaml
+        type: choice
+        options: 
+          - yaml
+          - json
+
+jobs: 
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Download OpenAPI Spec"
+        id: "download"
+        run: |
+          mkdir -p ${{ runner.temp }}/openapi/spec/
+          wget -P ${{ runner.temp }}/openapi/spec/ ${{ inputs.openapiSpec }}
+
+          OPENAPI_SPEC_NAME="$(basename ${{ inputs.openapiSpec }})"
+
+          echo "openapi_spec_path=${{ runner.temp }}/openapi/spec/$OPENAPI_SPEC_NAME" >> "$GITHUB_OUTPUT"
+          echo "openapi_version_name=${OPENAPI_SPEC_NAME%.*}" >> "$GITHUB_OUTPUT"
+
+      - name: "Configure version"
+        run: |
+          VERSION_PATH="${{ github.workspace }}/src/API/${{ steps.download.outputs.openapi_version_name }}"
+
+          # Create a spec
+          mkdir -p $VERSION_PATH
+          
+          # Convert to OpenAPI v3 & JSONify spec
+          curl \
+            -X 'POST' \
+            'https://converter.swagger.io/api/convert' \
+            -H 'accept: application/json' \
+            -H 'Content-Type: application/yaml' \
+            --data-binary '@${{ steps.download.outputs.openapi_version_name }} > $VERSION_PATH/spec.json'
+
+          NAMESPACE="echo ${{ steps.download.outputs.openapi_version_name }} |  sed -r 's/./_/g'"
+
+          # Create Jane Configuration
+          JANE_CONFIG_PATH="$VERSION_PATH/jane-openapi-configuration.php"
+          echo '<?php' > $JANE_CONFIG_PATH
+          echo '' > $JANE_CONFIG_PATH
+          echo 'return [' > $JANE_CONFIG_PATH
+          echo "    'openapi-file' => __DIR__ . '/spec.json'," > $JANE_CONFIG_PATH
+          echo "    'namespace' => 'Mdshack\Docker\API\$NAMESPACE'," > $JANE_CONFIG_PATH
+          echo "    'directory' => __DIR__ . '/generated'," > $JANE_CONFIG_PATH
+          echo '];' > $JANE_CONFIG_PATH
+
+          BRANCH="feat/version/${{ steps.download.outputs.openapi_version_name }}"
+
+          git checkout -b $BRANCH
+
+          git add src
+          git commit -m "feat (automated): Create configuration for ${{ steps.download.outputs.openapi_version_name }}"
+          git push --set-upstream origin $BRANCH
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: "Generate from configuration"
+        run: |
+          php vendor/bin/jane-openapi generate --config-file $JANE_CONFIG_PATH
+
+          git add src
+          git commit -m "feat (automated): Generate client for ${{ steps.download.outputs.openapi_version_name }}"
+          git push
+
+      # - name: "Lint"
+      #   run: |
+
+      #     git add src
+      #     git commit -m "chore (automated): Lint"
+      #     git push
+
+      - name: "Create Pull Request"
+        run: |
+          gh pr create \
+            -B main \
+            -t "feat (automated): ${{ steps.download.outputs.openapi_version_name }}" \
+            -b "Automated version generated for ${{ steps.download.outputs.openapi_version_name }}"
