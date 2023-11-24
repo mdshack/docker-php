@@ -5,31 +5,34 @@ namespace Mdshack\Docker\API\v1_41\Normalizer;
 use Jane\Component\JsonSchemaRuntime\Reference;
 use Mdshack\Docker\API\v1_41\Runtime\Normalizer\CheckArray;
 use Mdshack\Docker\API\v1_41\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class TLSInfoNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+class TLSInfoNormalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null, array $context = array()) : bool
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === 'Mdshack\\Docker\\API\\v1_41\\Model\\TLSInfo';
     }
-    public function supportsNormalization($data, $format = null, array $context = array()) : bool
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_object($data) && get_class($data) === 'Mdshack\\Docker\\API\\v1_41\\Model\\TLSInfo';
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -38,7 +41,7 @@ class TLSInfoNormalizer implements DenormalizerInterface, NormalizerInterface, D
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Mdshack\Docker\API\v1_41\Model\TLSInfo();
-        if (null === $data || false === \is_array($data)) {
+        if ($data === null || \is_array($data) === false) {
             return $object;
         }
         if (\array_key_exists('TrustRoot', $data)) {
@@ -58,21 +61,23 @@ class TLSInfoNormalizer implements DenormalizerInterface, NormalizerInterface, D
                 $object[$key] = $value;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        if ($object->isInitialized('trustRoot') && null !== $object->getTrustRoot()) {
+        $data = [];
+        if ($object->isInitialized('trustRoot') && $object->getTrustRoot() !== null) {
             $data['TrustRoot'] = $object->getTrustRoot();
         }
-        if ($object->isInitialized('certIssuerSubject') && null !== $object->getCertIssuerSubject()) {
+        if ($object->isInitialized('certIssuerSubject') && $object->getCertIssuerSubject() !== null) {
             $data['CertIssuerSubject'] = $object->getCertIssuerSubject();
         }
-        if ($object->isInitialized('certIssuerPublicKey') && null !== $object->getCertIssuerPublicKey()) {
+        if ($object->isInitialized('certIssuerPublicKey') && $object->getCertIssuerPublicKey() !== null) {
             $data['CertIssuerPublicKey'] = $object->getCertIssuerPublicKey();
         }
         foreach ($object as $key => $value) {
@@ -80,10 +85,12 @@ class TLSInfoNormalizer implements DenormalizerInterface, NormalizerInterface, D
                 $data[$key] = $value;
             }
         }
+
         return $data;
     }
-    public function getSupportedTypes(?string $format = null) : array
+
+    public function getSupportedTypes(string $format = null): array
     {
-        return array('Mdshack\\Docker\\API\\v1_41\\Model\\TLSInfo' => false);
+        return ['Mdshack\\Docker\\API\\v1_41\\Model\\TLSInfo' => false];
     }
 }

@@ -5,74 +5,86 @@ namespace Mdshack\Docker\API\v1_41\Endpoint;
 class PluginCreate extends \Mdshack\Docker\API\v1_41\Runtime\Client\BaseEndpoint implements \Mdshack\Docker\API\v1_41\Runtime\Client\Endpoint
 {
     protected $accept;
+
     /**
-    * 
-    *
-    * @param null|string|resource|\Psr\Http\Message\StreamInterface $requestBody 
-    * @param array $queryParameters {
-    *     @var string $name The name of the plugin. The `:latest` tag is optional, and is the
+     * @param  null|string|resource|\Psr\Http\Message\StreamInterface  $requestBody
+     * @param  array  $queryParameters {
+     *
+     *     @var string $name The name of the plugin. The `:latest` tag is optional, and is the
     default if omitted.
-    
-    * }
-    * @param array $accept Accept content header application/json|text/plain
-    */
-    public function __construct($requestBody = null, array $queryParameters = array(), array $accept = array())
+
+     * }
+     *
+     * @param  array  $accept Accept content header application/json|text/plain
+     */
+    public function __construct($requestBody = null, array $queryParameters = [], array $accept = [])
     {
         $this->body = $requestBody;
         $this->queryParameters = $queryParameters;
         $this->accept = $accept;
     }
+
     use \Mdshack\Docker\API\v1_41\Runtime\Client\EndpointTrait;
-    public function getMethod() : string
+
+    public function getMethod(): string
     {
         return 'POST';
     }
-    public function getUri() : string
+
+    public function getUri(): string
     {
         return '/plugins/create';
     }
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null) : array
+
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         if (is_string($this->body) or is_resource($this->body) or $this->body instanceof \Psr\Http\Message\StreamInterface) {
-            return array(array('Content-Type' => array('application/x-tar')), $this->body);
+            return [['Content-Type' => ['application/x-tar']], $this->body];
         }
-        return array(array(), null);
+
+        return [[], null];
     }
-    public function getExtraHeaders() : array
+
+    public function getExtraHeaders(): array
     {
         if (empty($this->accept)) {
-            return array('Accept' => array('application/json', 'text/plain'));
+            return ['Accept' => ['application/json', 'text/plain']];
         }
+
         return $this->accept;
     }
-    protected function getQueryOptionsResolver() : \Symfony\Component\OptionsResolver\OptionsResolver
+
+    protected function getQueryOptionsResolver(): \Symfony\Component\OptionsResolver\OptionsResolver
     {
         $optionsResolver = parent::getQueryOptionsResolver();
-        $optionsResolver->setDefined(array('name'));
-        $optionsResolver->setRequired(array('name'));
-        $optionsResolver->setDefaults(array());
-        $optionsResolver->addAllowedTypes('name', array('string'));
+        $optionsResolver->setDefined(['name']);
+        $optionsResolver->setRequired(['name']);
+        $optionsResolver->setDefaults([]);
+        $optionsResolver->addAllowedTypes('name', ['string']);
+
         return $optionsResolver;
     }
+
     /**
      * {@inheritdoc}
      *
-     * @throws \Mdshack\Docker\API\v1_41\Exception\PluginCreateInternalServerErrorException
-     *
      * @return null
+     *
+     * @throws \Mdshack\Docker\API\v1_41\Exception\PluginCreateInternalServerErrorException
      */
-    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if (204 === $status) {
+        if ($status === 204) {
         }
-        if (is_null($contentType) === false && (500 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && ($status === 500 && mb_strpos($contentType, 'application/json') !== false)) {
             throw new \Mdshack\Docker\API\v1_41\Exception\PluginCreateInternalServerErrorException($serializer->deserialize($body, 'Mdshack\\Docker\\API\\v1_41\\Model\\ErrorResponse', 'json'), $response);
         }
     }
-    public function getAuthenticationScopes() : array
+
+    public function getAuthenticationScopes(): array
     {
-        return array();
+        return [];
     }
 }

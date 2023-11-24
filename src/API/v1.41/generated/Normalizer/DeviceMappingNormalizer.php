@@ -5,31 +5,34 @@ namespace Mdshack\Docker\API\v1_41\Normalizer;
 use Jane\Component\JsonSchemaRuntime\Reference;
 use Mdshack\Docker\API\v1_41\Runtime\Normalizer\CheckArray;
 use Mdshack\Docker\API\v1_41\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class DeviceMappingNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+class DeviceMappingNormalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null, array $context = array()) : bool
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === 'Mdshack\\Docker\\API\\v1_41\\Model\\DeviceMapping';
     }
-    public function supportsNormalization($data, $format = null, array $context = array()) : bool
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_object($data) && get_class($data) === 'Mdshack\\Docker\\API\\v1_41\\Model\\DeviceMapping';
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -38,7 +41,7 @@ class DeviceMappingNormalizer implements DenormalizerInterface, NormalizerInterf
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Mdshack\Docker\API\v1_41\Model\DeviceMapping();
-        if (null === $data || false === \is_array($data)) {
+        if ($data === null || \is_array($data) === false) {
             return $object;
         }
         if (\array_key_exists('PathOnHost', $data)) {
@@ -58,21 +61,23 @@ class DeviceMappingNormalizer implements DenormalizerInterface, NormalizerInterf
                 $object[$key] = $value;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        if ($object->isInitialized('pathOnHost') && null !== $object->getPathOnHost()) {
+        $data = [];
+        if ($object->isInitialized('pathOnHost') && $object->getPathOnHost() !== null) {
             $data['PathOnHost'] = $object->getPathOnHost();
         }
-        if ($object->isInitialized('pathInContainer') && null !== $object->getPathInContainer()) {
+        if ($object->isInitialized('pathInContainer') && $object->getPathInContainer() !== null) {
             $data['PathInContainer'] = $object->getPathInContainer();
         }
-        if ($object->isInitialized('cgroupPermissions') && null !== $object->getCgroupPermissions()) {
+        if ($object->isInitialized('cgroupPermissions') && $object->getCgroupPermissions() !== null) {
             $data['CgroupPermissions'] = $object->getCgroupPermissions();
         }
         foreach ($object as $key => $value) {
@@ -80,10 +85,12 @@ class DeviceMappingNormalizer implements DenormalizerInterface, NormalizerInterf
                 $data[$key] = $value;
             }
         }
+
         return $data;
     }
-    public function getSupportedTypes(?string $format = null) : array
+
+    public function getSupportedTypes(string $format = null): array
     {
-        return array('Mdshack\\Docker\\API\\v1_41\\Model\\DeviceMapping' => false);
+        return ['Mdshack\\Docker\\API\\v1_41\\Model\\DeviceMapping' => false];
     }
 }

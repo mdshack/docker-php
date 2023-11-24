@@ -5,74 +5,88 @@ namespace Mdshack\Docker\API\v1_41\Endpoint;
 class ContainerResize extends \Mdshack\Docker\API\v1_41\Runtime\Client\BaseEndpoint implements \Mdshack\Docker\API\v1_41\Runtime\Client\Endpoint
 {
     protected $id;
+
     protected $accept;
+
     /**
      * Resize the TTY for a container.
      *
-     * @param string $id ID or name of the container
-     * @param array $queryParameters {
+     * @param  string  $id ID or name of the container
+     * @param  array  $queryParameters {
+     *
      *     @var int $h Height of the TTY session in characters
      *     @var int $w Width of the TTY session in characters
      * }
-     * @param array $accept Accept content header text/plain|application/json
+     *
+     * @param  array  $accept Accept content header text/plain|application/json
      */
-    public function __construct(string $id, array $queryParameters = array(), array $accept = array())
+    public function __construct(string $id, array $queryParameters = [], array $accept = [])
     {
         $this->id = $id;
         $this->queryParameters = $queryParameters;
         $this->accept = $accept;
     }
+
     use \Mdshack\Docker\API\v1_41\Runtime\Client\EndpointTrait;
-    public function getMethod() : string
+
+    public function getMethod(): string
     {
         return 'POST';
     }
-    public function getUri() : string
+
+    public function getUri(): string
     {
-        return str_replace(array('{id}'), array($this->id), '/containers/{id}/resize');
+        return str_replace(['{id}'], [$this->id], '/containers/{id}/resize');
     }
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null) : array
+
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
-        return array(array(), null);
+        return [[], null];
     }
-    public function getExtraHeaders() : array
+
+    public function getExtraHeaders(): array
     {
         if (empty($this->accept)) {
-            return array('Accept' => array('text/plain', 'application/json'));
+            return ['Accept' => ['text/plain', 'application/json']];
         }
+
         return $this->accept;
     }
-    protected function getQueryOptionsResolver() : \Symfony\Component\OptionsResolver\OptionsResolver
+
+    protected function getQueryOptionsResolver(): \Symfony\Component\OptionsResolver\OptionsResolver
     {
         $optionsResolver = parent::getQueryOptionsResolver();
-        $optionsResolver->setDefined(array('h', 'w'));
-        $optionsResolver->setRequired(array());
-        $optionsResolver->setDefaults(array());
-        $optionsResolver->addAllowedTypes('h', array('int'));
-        $optionsResolver->addAllowedTypes('w', array('int'));
+        $optionsResolver->setDefined(['h', 'w']);
+        $optionsResolver->setRequired([]);
+        $optionsResolver->setDefaults([]);
+        $optionsResolver->addAllowedTypes('h', ['int']);
+        $optionsResolver->addAllowedTypes('w', ['int']);
+
         return $optionsResolver;
     }
+
     /**
      * {@inheritdoc}
      *
-     * @throws \Mdshack\Docker\API\v1_41\Exception\ContainerResizeNotFoundException
-     *
      * @return null
+     *
+     * @throws \Mdshack\Docker\API\v1_41\Exception\ContainerResizeNotFoundException
      */
-    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if (200 === $status) {
+        if ($status === 200) {
         }
-        if (is_null($contentType) === false && (404 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && ($status === 404 && mb_strpos($contentType, 'application/json') !== false)) {
             throw new \Mdshack\Docker\API\v1_41\Exception\ContainerResizeNotFoundException($response);
         }
-        if (500 === $status) {
+        if ($status === 500) {
         }
     }
-    public function getAuthenticationScopes() : array
+
+    public function getAuthenticationScopes(): array
     {
-        return array();
+        return [];
     }
 }

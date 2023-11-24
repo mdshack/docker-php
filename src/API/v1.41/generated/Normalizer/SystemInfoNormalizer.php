@@ -5,31 +5,34 @@ namespace Mdshack\Docker\API\v1_41\Normalizer;
 use Jane\Component\JsonSchemaRuntime\Reference;
 use Mdshack\Docker\API\v1_41\Runtime\Normalizer\CheckArray;
 use Mdshack\Docker\API\v1_41\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+class SystemInfoNormalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null, array $context = array()) : bool
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === 'Mdshack\\Docker\\API\\v1_41\\Model\\SystemInfo';
     }
-    public function supportsNormalization($data, $format = null, array $context = array()) : bool
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_object($data) && get_class($data) === 'Mdshack\\Docker\\API\\v1_41\\Model\\SystemInfo';
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -38,7 +41,7 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Mdshack\Docker\API\v1_41\Model\SystemInfo();
-        if (null === $data || false === \is_array($data)) {
+        if ($data === null || \is_array($data) === false) {
             return $object;
         }
         if (\array_key_exists('ID', $data)) {
@@ -70,9 +73,9 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
             unset($data['Driver']);
         }
         if (\array_key_exists('DriverStatus', $data)) {
-            $values = array();
+            $values = [];
             foreach ($data['DriverStatus'] as $value) {
-                $values_1 = array();
+                $values_1 = [];
                 foreach ($value as $value_1) {
                     $values_1[] = $value_1;
                 }
@@ -208,12 +211,11 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
         if (\array_key_exists('RegistryConfig', $data) && $data['RegistryConfig'] !== null) {
             $object->setRegistryConfig($this->denormalizer->denormalize($data['RegistryConfig'], 'Mdshack\\Docker\\API\\v1_41\\Model\\RegistryServiceConfig', 'json', $context));
             unset($data['RegistryConfig']);
-        }
-        elseif (\array_key_exists('RegistryConfig', $data) && $data['RegistryConfig'] === null) {
+        } elseif (\array_key_exists('RegistryConfig', $data) && $data['RegistryConfig'] === null) {
             $object->setRegistryConfig(null);
         }
         if (\array_key_exists('GenericResources', $data)) {
-            $values_2 = array();
+            $values_2 = [];
             foreach ($data['GenericResources'] as $value_2) {
                 $values_2[] = $this->denormalizer->denormalize($value_2, 'Mdshack\\Docker\\API\\v1_41\\Model\\GenericResourcesItem', 'json', $context);
             }
@@ -237,7 +239,7 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
             unset($data['Name']);
         }
         if (\array_key_exists('Labels', $data)) {
-            $values_3 = array();
+            $values_3 = [];
             foreach ($data['Labels'] as $value_3) {
                 $values_3[] = $value_3;
             }
@@ -261,7 +263,7 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
             unset($data['ClusterAdvertise']);
         }
         if (\array_key_exists('Runtimes', $data)) {
-            $values_4 = new \ArrayObject(array(), \ArrayObject::ARRAY_AS_PROPS);
+            $values_4 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($data['Runtimes'] as $key => $value_4) {
                 $values_4[$key] = $this->denormalizer->denormalize($value_4, 'Mdshack\\Docker\\API\\v1_41\\Model\\Runtime', 'json', $context);
             }
@@ -301,7 +303,7 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
             unset($data['InitCommit']);
         }
         if (\array_key_exists('SecurityOptions', $data)) {
-            $values_5 = array();
+            $values_5 = [];
             foreach ($data['SecurityOptions'] as $value_5) {
                 $values_5[] = $value_5;
             }
@@ -313,7 +315,7 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
             unset($data['ProductLicense']);
         }
         if (\array_key_exists('DefaultAddressPools', $data)) {
-            $values_6 = array();
+            $values_6 = [];
             foreach ($data['DefaultAddressPools'] as $value_6) {
                 $values_6[] = $this->denormalizer->denormalize($value_6, 'Mdshack\\Docker\\API\\v1_41\\Model\\SystemInfoDefaultAddressPoolsItem', 'json', $context);
             }
@@ -321,7 +323,7 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
             unset($data['DefaultAddressPools']);
         }
         if (\array_key_exists('Warnings', $data)) {
-            $values_7 = array();
+            $values_7 = [];
             foreach ($data['Warnings'] as $value_7) {
                 $values_7[] = $value_7;
             }
@@ -333,39 +335,41 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
                 $object[$key_1] = $value_8;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        if ($object->isInitialized('iD') && null !== $object->getID()) {
+        $data = [];
+        if ($object->isInitialized('iD') && $object->getID() !== null) {
             $data['ID'] = $object->getID();
         }
-        if ($object->isInitialized('containers') && null !== $object->getContainers()) {
+        if ($object->isInitialized('containers') && $object->getContainers() !== null) {
             $data['Containers'] = $object->getContainers();
         }
-        if ($object->isInitialized('containersRunning') && null !== $object->getContainersRunning()) {
+        if ($object->isInitialized('containersRunning') && $object->getContainersRunning() !== null) {
             $data['ContainersRunning'] = $object->getContainersRunning();
         }
-        if ($object->isInitialized('containersPaused') && null !== $object->getContainersPaused()) {
+        if ($object->isInitialized('containersPaused') && $object->getContainersPaused() !== null) {
             $data['ContainersPaused'] = $object->getContainersPaused();
         }
-        if ($object->isInitialized('containersStopped') && null !== $object->getContainersStopped()) {
+        if ($object->isInitialized('containersStopped') && $object->getContainersStopped() !== null) {
             $data['ContainersStopped'] = $object->getContainersStopped();
         }
-        if ($object->isInitialized('images') && null !== $object->getImages()) {
+        if ($object->isInitialized('images') && $object->getImages() !== null) {
             $data['Images'] = $object->getImages();
         }
-        if ($object->isInitialized('driver') && null !== $object->getDriver()) {
+        if ($object->isInitialized('driver') && $object->getDriver() !== null) {
             $data['Driver'] = $object->getDriver();
         }
-        if ($object->isInitialized('driverStatus') && null !== $object->getDriverStatus()) {
-            $values = array();
+        if ($object->isInitialized('driverStatus') && $object->getDriverStatus() !== null) {
+            $values = [];
             foreach ($object->getDriverStatus() as $value) {
-                $values_1 = array();
+                $values_1 = [];
                 foreach ($value as $value_1) {
                     $values_1[] = $value_1;
                 }
@@ -373,190 +377,190 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
             }
             $data['DriverStatus'] = $values;
         }
-        if ($object->isInitialized('dockerRootDir') && null !== $object->getDockerRootDir()) {
+        if ($object->isInitialized('dockerRootDir') && $object->getDockerRootDir() !== null) {
             $data['DockerRootDir'] = $object->getDockerRootDir();
         }
-        if ($object->isInitialized('plugins') && null !== $object->getPlugins()) {
+        if ($object->isInitialized('plugins') && $object->getPlugins() !== null) {
             $data['Plugins'] = $this->normalizer->normalize($object->getPlugins(), 'json', $context);
         }
-        if ($object->isInitialized('memoryLimit') && null !== $object->getMemoryLimit()) {
+        if ($object->isInitialized('memoryLimit') && $object->getMemoryLimit() !== null) {
             $data['MemoryLimit'] = $object->getMemoryLimit();
         }
-        if ($object->isInitialized('swapLimit') && null !== $object->getSwapLimit()) {
+        if ($object->isInitialized('swapLimit') && $object->getSwapLimit() !== null) {
             $data['SwapLimit'] = $object->getSwapLimit();
         }
-        if ($object->isInitialized('kernelMemory') && null !== $object->getKernelMemory()) {
+        if ($object->isInitialized('kernelMemory') && $object->getKernelMemory() !== null) {
             $data['KernelMemory'] = $object->getKernelMemory();
         }
-        if ($object->isInitialized('kernelMemoryTCP') && null !== $object->getKernelMemoryTCP()) {
+        if ($object->isInitialized('kernelMemoryTCP') && $object->getKernelMemoryTCP() !== null) {
             $data['KernelMemoryTCP'] = $object->getKernelMemoryTCP();
         }
-        if ($object->isInitialized('cpuCfsPeriod') && null !== $object->getCpuCfsPeriod()) {
+        if ($object->isInitialized('cpuCfsPeriod') && $object->getCpuCfsPeriod() !== null) {
             $data['CpuCfsPeriod'] = $object->getCpuCfsPeriod();
         }
-        if ($object->isInitialized('cpuCfsQuota') && null !== $object->getCpuCfsQuota()) {
+        if ($object->isInitialized('cpuCfsQuota') && $object->getCpuCfsQuota() !== null) {
             $data['CpuCfsQuota'] = $object->getCpuCfsQuota();
         }
-        if ($object->isInitialized('cPUShares') && null !== $object->getCPUShares()) {
+        if ($object->isInitialized('cPUShares') && $object->getCPUShares() !== null) {
             $data['CPUShares'] = $object->getCPUShares();
         }
-        if ($object->isInitialized('cPUSet') && null !== $object->getCPUSet()) {
+        if ($object->isInitialized('cPUSet') && $object->getCPUSet() !== null) {
             $data['CPUSet'] = $object->getCPUSet();
         }
-        if ($object->isInitialized('pidsLimit') && null !== $object->getPidsLimit()) {
+        if ($object->isInitialized('pidsLimit') && $object->getPidsLimit() !== null) {
             $data['PidsLimit'] = $object->getPidsLimit();
         }
-        if ($object->isInitialized('oomKillDisable') && null !== $object->getOomKillDisable()) {
+        if ($object->isInitialized('oomKillDisable') && $object->getOomKillDisable() !== null) {
             $data['OomKillDisable'] = $object->getOomKillDisable();
         }
-        if ($object->isInitialized('iPv4Forwarding') && null !== $object->getIPv4Forwarding()) {
+        if ($object->isInitialized('iPv4Forwarding') && $object->getIPv4Forwarding() !== null) {
             $data['IPv4Forwarding'] = $object->getIPv4Forwarding();
         }
-        if ($object->isInitialized('bridgeNfIptables') && null !== $object->getBridgeNfIptables()) {
+        if ($object->isInitialized('bridgeNfIptables') && $object->getBridgeNfIptables() !== null) {
             $data['BridgeNfIptables'] = $object->getBridgeNfIptables();
         }
-        if ($object->isInitialized('bridgeNfIp6tables') && null !== $object->getBridgeNfIp6tables()) {
+        if ($object->isInitialized('bridgeNfIp6tables') && $object->getBridgeNfIp6tables() !== null) {
             $data['BridgeNfIp6tables'] = $object->getBridgeNfIp6tables();
         }
-        if ($object->isInitialized('debug') && null !== $object->getDebug()) {
+        if ($object->isInitialized('debug') && $object->getDebug() !== null) {
             $data['Debug'] = $object->getDebug();
         }
-        if ($object->isInitialized('nFd') && null !== $object->getNFd()) {
+        if ($object->isInitialized('nFd') && $object->getNFd() !== null) {
             $data['NFd'] = $object->getNFd();
         }
-        if ($object->isInitialized('nGoroutines') && null !== $object->getNGoroutines()) {
+        if ($object->isInitialized('nGoroutines') && $object->getNGoroutines() !== null) {
             $data['NGoroutines'] = $object->getNGoroutines();
         }
-        if ($object->isInitialized('systemTime') && null !== $object->getSystemTime()) {
+        if ($object->isInitialized('systemTime') && $object->getSystemTime() !== null) {
             $data['SystemTime'] = $object->getSystemTime();
         }
-        if ($object->isInitialized('loggingDriver') && null !== $object->getLoggingDriver()) {
+        if ($object->isInitialized('loggingDriver') && $object->getLoggingDriver() !== null) {
             $data['LoggingDriver'] = $object->getLoggingDriver();
         }
-        if ($object->isInitialized('cgroupDriver') && null !== $object->getCgroupDriver()) {
+        if ($object->isInitialized('cgroupDriver') && $object->getCgroupDriver() !== null) {
             $data['CgroupDriver'] = $object->getCgroupDriver();
         }
-        if ($object->isInitialized('cgroupVersion') && null !== $object->getCgroupVersion()) {
+        if ($object->isInitialized('cgroupVersion') && $object->getCgroupVersion() !== null) {
             $data['CgroupVersion'] = $object->getCgroupVersion();
         }
-        if ($object->isInitialized('nEventsListener') && null !== $object->getNEventsListener()) {
+        if ($object->isInitialized('nEventsListener') && $object->getNEventsListener() !== null) {
             $data['NEventsListener'] = $object->getNEventsListener();
         }
-        if ($object->isInitialized('kernelVersion') && null !== $object->getKernelVersion()) {
+        if ($object->isInitialized('kernelVersion') && $object->getKernelVersion() !== null) {
             $data['KernelVersion'] = $object->getKernelVersion();
         }
-        if ($object->isInitialized('operatingSystem') && null !== $object->getOperatingSystem()) {
+        if ($object->isInitialized('operatingSystem') && $object->getOperatingSystem() !== null) {
             $data['OperatingSystem'] = $object->getOperatingSystem();
         }
-        if ($object->isInitialized('oSVersion') && null !== $object->getOSVersion()) {
+        if ($object->isInitialized('oSVersion') && $object->getOSVersion() !== null) {
             $data['OSVersion'] = $object->getOSVersion();
         }
-        if ($object->isInitialized('oSType') && null !== $object->getOSType()) {
+        if ($object->isInitialized('oSType') && $object->getOSType() !== null) {
             $data['OSType'] = $object->getOSType();
         }
-        if ($object->isInitialized('architecture') && null !== $object->getArchitecture()) {
+        if ($object->isInitialized('architecture') && $object->getArchitecture() !== null) {
             $data['Architecture'] = $object->getArchitecture();
         }
-        if ($object->isInitialized('nCPU') && null !== $object->getNCPU()) {
+        if ($object->isInitialized('nCPU') && $object->getNCPU() !== null) {
             $data['NCPU'] = $object->getNCPU();
         }
-        if ($object->isInitialized('memTotal') && null !== $object->getMemTotal()) {
+        if ($object->isInitialized('memTotal') && $object->getMemTotal() !== null) {
             $data['MemTotal'] = $object->getMemTotal();
         }
-        if ($object->isInitialized('indexServerAddress') && null !== $object->getIndexServerAddress()) {
+        if ($object->isInitialized('indexServerAddress') && $object->getIndexServerAddress() !== null) {
             $data['IndexServerAddress'] = $object->getIndexServerAddress();
         }
-        if ($object->isInitialized('registryConfig') && null !== $object->getRegistryConfig()) {
+        if ($object->isInitialized('registryConfig') && $object->getRegistryConfig() !== null) {
             $data['RegistryConfig'] = $this->normalizer->normalize($object->getRegistryConfig(), 'json', $context);
         }
-        if ($object->isInitialized('genericResources') && null !== $object->getGenericResources()) {
-            $values_2 = array();
+        if ($object->isInitialized('genericResources') && $object->getGenericResources() !== null) {
+            $values_2 = [];
             foreach ($object->getGenericResources() as $value_2) {
                 $values_2[] = $this->normalizer->normalize($value_2, 'json', $context);
             }
             $data['GenericResources'] = $values_2;
         }
-        if ($object->isInitialized('httpProxy') && null !== $object->getHttpProxy()) {
+        if ($object->isInitialized('httpProxy') && $object->getHttpProxy() !== null) {
             $data['HttpProxy'] = $object->getHttpProxy();
         }
-        if ($object->isInitialized('httpsProxy') && null !== $object->getHttpsProxy()) {
+        if ($object->isInitialized('httpsProxy') && $object->getHttpsProxy() !== null) {
             $data['HttpsProxy'] = $object->getHttpsProxy();
         }
-        if ($object->isInitialized('noProxy') && null !== $object->getNoProxy()) {
+        if ($object->isInitialized('noProxy') && $object->getNoProxy() !== null) {
             $data['NoProxy'] = $object->getNoProxy();
         }
-        if ($object->isInitialized('name') && null !== $object->getName()) {
+        if ($object->isInitialized('name') && $object->getName() !== null) {
             $data['Name'] = $object->getName();
         }
-        if ($object->isInitialized('labels') && null !== $object->getLabels()) {
-            $values_3 = array();
+        if ($object->isInitialized('labels') && $object->getLabels() !== null) {
+            $values_3 = [];
             foreach ($object->getLabels() as $value_3) {
                 $values_3[] = $value_3;
             }
             $data['Labels'] = $values_3;
         }
-        if ($object->isInitialized('experimentalBuild') && null !== $object->getExperimentalBuild()) {
+        if ($object->isInitialized('experimentalBuild') && $object->getExperimentalBuild() !== null) {
             $data['ExperimentalBuild'] = $object->getExperimentalBuild();
         }
-        if ($object->isInitialized('serverVersion') && null !== $object->getServerVersion()) {
+        if ($object->isInitialized('serverVersion') && $object->getServerVersion() !== null) {
             $data['ServerVersion'] = $object->getServerVersion();
         }
-        if ($object->isInitialized('clusterStore') && null !== $object->getClusterStore()) {
+        if ($object->isInitialized('clusterStore') && $object->getClusterStore() !== null) {
             $data['ClusterStore'] = $object->getClusterStore();
         }
-        if ($object->isInitialized('clusterAdvertise') && null !== $object->getClusterAdvertise()) {
+        if ($object->isInitialized('clusterAdvertise') && $object->getClusterAdvertise() !== null) {
             $data['ClusterAdvertise'] = $object->getClusterAdvertise();
         }
-        if ($object->isInitialized('runtimes') && null !== $object->getRuntimes()) {
-            $values_4 = array();
+        if ($object->isInitialized('runtimes') && $object->getRuntimes() !== null) {
+            $values_4 = [];
             foreach ($object->getRuntimes() as $key => $value_4) {
                 $values_4[$key] = $this->normalizer->normalize($value_4, 'json', $context);
             }
             $data['Runtimes'] = $values_4;
         }
-        if ($object->isInitialized('defaultRuntime') && null !== $object->getDefaultRuntime()) {
+        if ($object->isInitialized('defaultRuntime') && $object->getDefaultRuntime() !== null) {
             $data['DefaultRuntime'] = $object->getDefaultRuntime();
         }
-        if ($object->isInitialized('swarm') && null !== $object->getSwarm()) {
+        if ($object->isInitialized('swarm') && $object->getSwarm() !== null) {
             $data['Swarm'] = $this->normalizer->normalize($object->getSwarm(), 'json', $context);
         }
-        if ($object->isInitialized('liveRestoreEnabled') && null !== $object->getLiveRestoreEnabled()) {
+        if ($object->isInitialized('liveRestoreEnabled') && $object->getLiveRestoreEnabled() !== null) {
             $data['LiveRestoreEnabled'] = $object->getLiveRestoreEnabled();
         }
-        if ($object->isInitialized('isolation') && null !== $object->getIsolation()) {
+        if ($object->isInitialized('isolation') && $object->getIsolation() !== null) {
             $data['Isolation'] = $object->getIsolation();
         }
-        if ($object->isInitialized('initBinary') && null !== $object->getInitBinary()) {
+        if ($object->isInitialized('initBinary') && $object->getInitBinary() !== null) {
             $data['InitBinary'] = $object->getInitBinary();
         }
-        if ($object->isInitialized('containerdCommit') && null !== $object->getContainerdCommit()) {
+        if ($object->isInitialized('containerdCommit') && $object->getContainerdCommit() !== null) {
             $data['ContainerdCommit'] = $this->normalizer->normalize($object->getContainerdCommit(), 'json', $context);
         }
-        if ($object->isInitialized('runcCommit') && null !== $object->getRuncCommit()) {
+        if ($object->isInitialized('runcCommit') && $object->getRuncCommit() !== null) {
             $data['RuncCommit'] = $this->normalizer->normalize($object->getRuncCommit(), 'json', $context);
         }
-        if ($object->isInitialized('initCommit') && null !== $object->getInitCommit()) {
+        if ($object->isInitialized('initCommit') && $object->getInitCommit() !== null) {
             $data['InitCommit'] = $this->normalizer->normalize($object->getInitCommit(), 'json', $context);
         }
-        if ($object->isInitialized('securityOptions') && null !== $object->getSecurityOptions()) {
-            $values_5 = array();
+        if ($object->isInitialized('securityOptions') && $object->getSecurityOptions() !== null) {
+            $values_5 = [];
             foreach ($object->getSecurityOptions() as $value_5) {
                 $values_5[] = $value_5;
             }
             $data['SecurityOptions'] = $values_5;
         }
-        if ($object->isInitialized('productLicense') && null !== $object->getProductLicense()) {
+        if ($object->isInitialized('productLicense') && $object->getProductLicense() !== null) {
             $data['ProductLicense'] = $object->getProductLicense();
         }
-        if ($object->isInitialized('defaultAddressPools') && null !== $object->getDefaultAddressPools()) {
-            $values_6 = array();
+        if ($object->isInitialized('defaultAddressPools') && $object->getDefaultAddressPools() !== null) {
+            $values_6 = [];
             foreach ($object->getDefaultAddressPools() as $value_6) {
                 $values_6[] = $this->normalizer->normalize($value_6, 'json', $context);
             }
             $data['DefaultAddressPools'] = $values_6;
         }
-        if ($object->isInitialized('warnings') && null !== $object->getWarnings()) {
-            $values_7 = array();
+        if ($object->isInitialized('warnings') && $object->getWarnings() !== null) {
+            $values_7 = [];
             foreach ($object->getWarnings() as $value_7) {
                 $values_7[] = $value_7;
             }
@@ -567,10 +571,12 @@ class SystemInfoNormalizer implements DenormalizerInterface, NormalizerInterface
                 $data[$key_1] = $value_8;
             }
         }
+
         return $data;
     }
-    public function getSupportedTypes(?string $format = null) : array
+
+    public function getSupportedTypes(string $format = null): array
     {
-        return array('Mdshack\\Docker\\API\\v1_41\\Model\\SystemInfo' => false);
+        return ['Mdshack\\Docker\\API\\v1_41\\Model\\SystemInfo' => false];
     }
 }

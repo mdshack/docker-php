@@ -5,31 +5,34 @@ namespace Mdshack\Docker\API\v1_41\Normalizer;
 use Jane\Component\JsonSchemaRuntime\Reference;
 use Mdshack\Docker\API\v1_41\Runtime\Normalizer\CheckArray;
 use Mdshack\Docker\API\v1_41\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class SwarmSpecRaftNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+class SwarmSpecRaftNormalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null, array $context = array()) : bool
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === 'Mdshack\\Docker\\API\\v1_41\\Model\\SwarmSpecRaft';
     }
-    public function supportsNormalization($data, $format = null, array $context = array()) : bool
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_object($data) && get_class($data) === 'Mdshack\\Docker\\API\\v1_41\\Model\\SwarmSpecRaft';
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -38,7 +41,7 @@ class SwarmSpecRaftNormalizer implements DenormalizerInterface, NormalizerInterf
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Mdshack\Docker\API\v1_41\Model\SwarmSpecRaft();
-        if (null === $data || false === \is_array($data)) {
+        if ($data === null || \is_array($data) === false) {
             return $object;
         }
         if (\array_key_exists('SnapshotInterval', $data)) {
@@ -66,27 +69,29 @@ class SwarmSpecRaftNormalizer implements DenormalizerInterface, NormalizerInterf
                 $object[$key] = $value;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        if ($object->isInitialized('snapshotInterval') && null !== $object->getSnapshotInterval()) {
+        $data = [];
+        if ($object->isInitialized('snapshotInterval') && $object->getSnapshotInterval() !== null) {
             $data['SnapshotInterval'] = $object->getSnapshotInterval();
         }
-        if ($object->isInitialized('keepOldSnapshots') && null !== $object->getKeepOldSnapshots()) {
+        if ($object->isInitialized('keepOldSnapshots') && $object->getKeepOldSnapshots() !== null) {
             $data['KeepOldSnapshots'] = $object->getKeepOldSnapshots();
         }
-        if ($object->isInitialized('logEntriesForSlowFollowers') && null !== $object->getLogEntriesForSlowFollowers()) {
+        if ($object->isInitialized('logEntriesForSlowFollowers') && $object->getLogEntriesForSlowFollowers() !== null) {
             $data['LogEntriesForSlowFollowers'] = $object->getLogEntriesForSlowFollowers();
         }
-        if ($object->isInitialized('electionTick') && null !== $object->getElectionTick()) {
+        if ($object->isInitialized('electionTick') && $object->getElectionTick() !== null) {
             $data['ElectionTick'] = $object->getElectionTick();
         }
-        if ($object->isInitialized('heartbeatTick') && null !== $object->getHeartbeatTick()) {
+        if ($object->isInitialized('heartbeatTick') && $object->getHeartbeatTick() !== null) {
             $data['HeartbeatTick'] = $object->getHeartbeatTick();
         }
         foreach ($object as $key => $value) {
@@ -94,10 +99,12 @@ class SwarmSpecRaftNormalizer implements DenormalizerInterface, NormalizerInterf
                 $data[$key] = $value;
             }
         }
+
         return $data;
     }
-    public function getSupportedTypes(?string $format = null) : array
+
+    public function getSupportedTypes(string $format = null): array
     {
-        return array('Mdshack\\Docker\\API\\v1_41\\Model\\SwarmSpecRaft' => false);
+        return ['Mdshack\\Docker\\API\\v1_41\\Model\\SwarmSpecRaft' => false];
     }
 }

@@ -7,194 +7,181 @@ class HealthConfig extends \ArrayObject
     /**
      * @var array
      */
-    protected $initialized = array();
-    public function isInitialized($property) : bool
+    protected $initialized = [];
+
+    public function isInitialized($property): bool
     {
         return array_key_exists($property, $this->initialized);
     }
+
     /**
-    * The test to perform. Possible values are:
-    
+     * The test to perform. Possible values are:
+
     - `[]` inherit healthcheck from image or parent image
     - `["NONE"]` disable healthcheck
     - `["CMD", args...]` exec arguments directly
     - `["CMD-SHELL", command]` run command with system's default shell
-    
-    *
-    * @var string[]
-    */
+
+     *
+     * @var string[]
+     */
     protected $test;
+
     /**
-    * The time to wait between checks in nanoseconds. It should be 0 or at
+     * The time to wait between checks in nanoseconds. It should be 0 or at
     least 1000000 (1 ms). 0 means inherit.
-    
-    *
-    * @var int
-    */
+
+     *
+     * @var int
+     */
     protected $interval;
+
     /**
-    * The time to wait before considering the check to have hung. It should
+     * The time to wait before considering the check to have hung. It should
     be 0 or at least 1000000 (1 ms). 0 means inherit.
-    
-    *
-    * @var int
-    */
+
+     *
+     * @var int
+     */
     protected $timeout;
+
     /**
-    * The number of consecutive failures needed to consider a container as
+     * The number of consecutive failures needed to consider a container as
     unhealthy. 0 means inherit.
-    
-    *
-    * @var int
-    */
+
+     *
+     * @var int
+     */
     protected $retries;
+
     /**
-    * Start period for the container to initialize before starting
+     * Start period for the container to initialize before starting
     health-retries countdown in nanoseconds. It should be 0 or at least
     1000000 (1 ms). 0 means inherit.
-    
-    *
-    * @var int
-    */
+
+     *
+     * @var int
+     */
     protected $startPeriod;
+
     /**
-    * The test to perform. Possible values are:
-    
+     * The test to perform. Possible values are:
+
     - `[]` inherit healthcheck from image or parent image
     - `["NONE"]` disable healthcheck
     - `["CMD", args...]` exec arguments directly
     - `["CMD-SHELL", command]` run command with system's default shell
-    
-    *
-    * @return string[]
-    */
-    public function getTest() : array
+
+     *
+     * @return string[]
+     */
+    public function getTest(): array
     {
         return $this->test;
     }
+
     /**
-    * The test to perform. Possible values are:
-    
+     * The test to perform. Possible values are:
+
     - `[]` inherit healthcheck from image or parent image
     - `["NONE"]` disable healthcheck
     - `["CMD", args...]` exec arguments directly
     - `["CMD-SHELL", command]` run command with system's default shell
-    
-    *
-    * @param string[] $test
-    *
-    * @return self
-    */
-    public function setTest(array $test) : self
+
+     *
+     * @param  string[]  $test
+     */
+    public function setTest(array $test): self
     {
         $this->initialized['test'] = true;
         $this->test = $test;
+
         return $this;
     }
+
     /**
-    * The time to wait between checks in nanoseconds. It should be 0 or at
+     * The time to wait between checks in nanoseconds. It should be 0 or at
     least 1000000 (1 ms). 0 means inherit.
-    
-    *
-    * @return int
-    */
-    public function getInterval() : int
+     */
+    public function getInterval(): int
     {
         return $this->interval;
     }
+
     /**
-    * The time to wait between checks in nanoseconds. It should be 0 or at
+     * The time to wait between checks in nanoseconds. It should be 0 or at
     least 1000000 (1 ms). 0 means inherit.
-    
-    *
-    * @param int $interval
-    *
-    * @return self
-    */
-    public function setInterval(int $interval) : self
+     */
+    public function setInterval(int $interval): self
     {
         $this->initialized['interval'] = true;
         $this->interval = $interval;
+
         return $this;
     }
+
     /**
-    * The time to wait before considering the check to have hung. It should
+     * The time to wait before considering the check to have hung. It should
     be 0 or at least 1000000 (1 ms). 0 means inherit.
-    
-    *
-    * @return int
-    */
-    public function getTimeout() : int
+     */
+    public function getTimeout(): int
     {
         return $this->timeout;
     }
+
     /**
-    * The time to wait before considering the check to have hung. It should
+     * The time to wait before considering the check to have hung. It should
     be 0 or at least 1000000 (1 ms). 0 means inherit.
-    
-    *
-    * @param int $timeout
-    *
-    * @return self
-    */
-    public function setTimeout(int $timeout) : self
+     */
+    public function setTimeout(int $timeout): self
     {
         $this->initialized['timeout'] = true;
         $this->timeout = $timeout;
+
         return $this;
     }
+
     /**
-    * The number of consecutive failures needed to consider a container as
+     * The number of consecutive failures needed to consider a container as
     unhealthy. 0 means inherit.
-    
-    *
-    * @return int
-    */
-    public function getRetries() : int
+     */
+    public function getRetries(): int
     {
         return $this->retries;
     }
+
     /**
-    * The number of consecutive failures needed to consider a container as
+     * The number of consecutive failures needed to consider a container as
     unhealthy. 0 means inherit.
-    
-    *
-    * @param int $retries
-    *
-    * @return self
-    */
-    public function setRetries(int $retries) : self
+     */
+    public function setRetries(int $retries): self
     {
         $this->initialized['retries'] = true;
         $this->retries = $retries;
+
         return $this;
     }
+
     /**
-    * Start period for the container to initialize before starting
+     * Start period for the container to initialize before starting
     health-retries countdown in nanoseconds. It should be 0 or at least
     1000000 (1 ms). 0 means inherit.
-    
-    *
-    * @return int
-    */
-    public function getStartPeriod() : int
+     */
+    public function getStartPeriod(): int
     {
         return $this->startPeriod;
     }
+
     /**
-    * Start period for the container to initialize before starting
+     * Start period for the container to initialize before starting
     health-retries countdown in nanoseconds. It should be 0 or at least
     1000000 (1 ms). 0 means inherit.
-    
-    *
-    * @param int $startPeriod
-    *
-    * @return self
-    */
-    public function setStartPeriod(int $startPeriod) : self
+     */
+    public function setStartPeriod(int $startPeriod): self
     {
         $this->initialized['startPeriod'] = true;
         $this->startPeriod = $startPeriod;
+
         return $this;
     }
 }

@@ -5,31 +5,34 @@ namespace Mdshack\Docker\API\v1_41\Normalizer;
 use Jane\Component\JsonSchemaRuntime\Reference;
 use Mdshack\Docker\API\v1_41\Runtime\Normalizer\CheckArray;
 use Mdshack\Docker\API\v1_41\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class SwarmJoinPostBodyNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+class SwarmJoinPostBodyNormalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null, array $context = array()) : bool
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === 'Mdshack\\Docker\\API\\v1_41\\Model\\SwarmJoinPostBody';
     }
-    public function supportsNormalization($data, $format = null, array $context = array()) : bool
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_object($data) && get_class($data) === 'Mdshack\\Docker\\API\\v1_41\\Model\\SwarmJoinPostBody';
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -38,7 +41,7 @@ class SwarmJoinPostBodyNormalizer implements DenormalizerInterface, NormalizerIn
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Mdshack\Docker\API\v1_41\Model\SwarmJoinPostBody();
-        if (null === $data || false === \is_array($data)) {
+        if ($data === null || \is_array($data) === false) {
             return $object;
         }
         if (\array_key_exists('ListenAddr', $data)) {
@@ -54,7 +57,7 @@ class SwarmJoinPostBodyNormalizer implements DenormalizerInterface, NormalizerIn
             unset($data['DataPathAddr']);
         }
         if (\array_key_exists('RemoteAddrs', $data)) {
-            $values = array();
+            $values = [];
             foreach ($data['RemoteAddrs'] as $value) {
                 $values[] = $value;
             }
@@ -70,31 +73,33 @@ class SwarmJoinPostBodyNormalizer implements DenormalizerInterface, NormalizerIn
                 $object[$key] = $value_1;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        if ($object->isInitialized('listenAddr') && null !== $object->getListenAddr()) {
+        $data = [];
+        if ($object->isInitialized('listenAddr') && $object->getListenAddr() !== null) {
             $data['ListenAddr'] = $object->getListenAddr();
         }
-        if ($object->isInitialized('advertiseAddr') && null !== $object->getAdvertiseAddr()) {
+        if ($object->isInitialized('advertiseAddr') && $object->getAdvertiseAddr() !== null) {
             $data['AdvertiseAddr'] = $object->getAdvertiseAddr();
         }
-        if ($object->isInitialized('dataPathAddr') && null !== $object->getDataPathAddr()) {
+        if ($object->isInitialized('dataPathAddr') && $object->getDataPathAddr() !== null) {
             $data['DataPathAddr'] = $object->getDataPathAddr();
         }
-        if ($object->isInitialized('remoteAddrs') && null !== $object->getRemoteAddrs()) {
-            $values = array();
+        if ($object->isInitialized('remoteAddrs') && $object->getRemoteAddrs() !== null) {
+            $values = [];
             foreach ($object->getRemoteAddrs() as $value) {
                 $values[] = $value;
             }
             $data['RemoteAddrs'] = $values;
         }
-        if ($object->isInitialized('joinToken') && null !== $object->getJoinToken()) {
+        if ($object->isInitialized('joinToken') && $object->getJoinToken() !== null) {
             $data['JoinToken'] = $object->getJoinToken();
         }
         foreach ($object as $key => $value_1) {
@@ -102,10 +107,12 @@ class SwarmJoinPostBodyNormalizer implements DenormalizerInterface, NormalizerIn
                 $data[$key] = $value_1;
             }
         }
+
         return $data;
     }
-    public function getSupportedTypes(?string $format = null) : array
+
+    public function getSupportedTypes(string $format = null): array
     {
-        return array('Mdshack\\Docker\\API\\v1_41\\Model\\SwarmJoinPostBody' => false);
+        return ['Mdshack\\Docker\\API\\v1_41\\Model\\SwarmJoinPostBody' => false];
     }
 }

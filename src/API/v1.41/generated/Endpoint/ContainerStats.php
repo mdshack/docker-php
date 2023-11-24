@@ -5,101 +5,110 @@ namespace Mdshack\Docker\API\v1_41\Endpoint;
 class ContainerStats extends \Mdshack\Docker\API\v1_41\Runtime\Client\BaseEndpoint implements \Mdshack\Docker\API\v1_41\Runtime\Client\Endpoint
 {
     protected $id;
+
     /**
-    * This endpoint returns a live stream of a container’s resource usage
+     * This endpoint returns a live stream of a container’s resource usage
     statistics.
-    
+
     The `precpu_stats` is the CPU statistic of the *previous* read, and is
     used to calculate the CPU usage percentage. It is not an exact copy
     of the `cpu_stats` field.
-    
+
     If either `precpu_stats.online_cpus` or `cpu_stats.online_cpus` is
     nil then for compatibility with older daemons the length of the
     corresponding `cpu_usage.percpu_usage` array should be used.
-    
+
     On a cgroup v2 host, the following fields are not set
-    * `blkio_stats`: all fields other than `io_service_bytes_recursive`
-    * `cpu_stats`: `cpu_usage.percpu_usage`
-    * `memory_stats`: `max_usage` and `failcnt`
+     * `blkio_stats`: all fields other than `io_service_bytes_recursive`
+     * `cpu_stats`: `cpu_usage.percpu_usage`
+     * `memory_stats`: `max_usage` and `failcnt`
     Also, `memory_stats.stats` fields are incompatible with cgroup v1.
-    
+
     To calculate the values shown by the `stats` command of the docker cli tool
     the following formulas can be used:
-    * used_memory = `memory_stats.usage - memory_stats.stats.cache`
-    * available_memory = `memory_stats.limit`
-    * Memory usage % = `(used_memory / available_memory) * 100.0`
-    * cpu_delta = `cpu_stats.cpu_usage.total_usage - precpu_stats.cpu_usage.total_usage`
-    * system_cpu_delta = `cpu_stats.system_cpu_usage - precpu_stats.system_cpu_usage`
-    * number_cpus = `lenght(cpu_stats.cpu_usage.percpu_usage)` or `cpu_stats.online_cpus`
-    * CPU usage % = `(cpu_delta / system_cpu_delta) * number_cpus * 100.0`
-    
-    *
-    * @param string $id ID or name of the container
-    * @param array $queryParameters {
-    *     @var bool $stream Stream the output. If false, the stats will be output once and then
-    it will disconnect.
-    
-    *     @var bool $one-shot Only get a single stat instead of waiting for 2 cycles. Must be used
+     * used_memory = `memory_stats.usage - memory_stats.stats.cache`
+     * available_memory = `memory_stats.limit`
+     * Memory usage % = `(used_memory / available_memory) * 100.0`
+     * cpu_delta = `cpu_stats.cpu_usage.total_usage - precpu_stats.cpu_usage.total_usage`
+     * system_cpu_delta = `cpu_stats.system_cpu_usage - precpu_stats.system_cpu_usage`
+     * number_cpus = `lenght(cpu_stats.cpu_usage.percpu_usage)` or `cpu_stats.online_cpus`
+     * CPU usage % = `(cpu_delta / system_cpu_delta) * number_cpus * 100.0`
+
+     *
+     * @param  string  $id ID or name of the container
+     * @param  array  $queryParameters {
+     *
+     *     @var bool $stream Stream the output. If false, the stats will be output once and then
+     *     @var bool $one-shot Only get a single stat instead of waiting for 2 cycles. Must be used
     with `stream=false`.
-    
-    * }
-    */
-    public function __construct(string $id, array $queryParameters = array())
+
+     * }
+     */
+    public function __construct(string $id, array $queryParameters = [])
     {
         $this->id = $id;
         $this->queryParameters = $queryParameters;
     }
+
     use \Mdshack\Docker\API\v1_41\Runtime\Client\EndpointTrait;
-    public function getMethod() : string
+
+    public function getMethod(): string
     {
         return 'GET';
     }
-    public function getUri() : string
+
+    public function getUri(): string
     {
-        return str_replace(array('{id}'), array($this->id), '/containers/{id}/stats');
+        return str_replace(['{id}'], [$this->id], '/containers/{id}/stats');
     }
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null) : array
+
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
-        return array(array(), null);
+        return [[], null];
     }
-    public function getExtraHeaders() : array
+
+    public function getExtraHeaders(): array
     {
-        return array('Accept' => array('application/json'));
+        return ['Accept' => ['application/json']];
     }
-    protected function getQueryOptionsResolver() : \Symfony\Component\OptionsResolver\OptionsResolver
+
+    protected function getQueryOptionsResolver(): \Symfony\Component\OptionsResolver\OptionsResolver
     {
         $optionsResolver = parent::getQueryOptionsResolver();
-        $optionsResolver->setDefined(array('stream', 'one-shot'));
-        $optionsResolver->setRequired(array());
-        $optionsResolver->setDefaults(array('stream' => true, 'one-shot' => false));
-        $optionsResolver->addAllowedTypes('stream', array('bool'));
-        $optionsResolver->addAllowedTypes('one-shot', array('bool'));
+        $optionsResolver->setDefined(['stream', 'one-shot']);
+        $optionsResolver->setRequired([]);
+        $optionsResolver->setDefaults(['stream' => true, 'one-shot' => false]);
+        $optionsResolver->addAllowedTypes('stream', ['bool']);
+        $optionsResolver->addAllowedTypes('one-shot', ['bool']);
+
         return $optionsResolver;
     }
+
     /**
      * {@inheritdoc}
      *
+     * @return null
+     *
      * @throws \Mdshack\Docker\API\v1_41\Exception\ContainerStatsNotFoundException
      * @throws \Mdshack\Docker\API\v1_41\Exception\ContainerStatsInternalServerErrorException
-     *
-     * @return null
      */
-    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType = null)
+    protected function transformResponseBody(\Psr\Http\Message\ResponseInterface $response, \Symfony\Component\Serializer\SerializerInterface $serializer, string $contentType = null)
     {
         $status = $response->getStatusCode();
         $body = (string) $response->getBody();
-        if (is_null($contentType) === false && (200 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && ($status === 200 && mb_strpos($contentType, 'application/json') !== false)) {
             return json_decode($body);
         }
-        if (is_null($contentType) === false && (404 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && ($status === 404 && mb_strpos($contentType, 'application/json') !== false)) {
             throw new \Mdshack\Docker\API\v1_41\Exception\ContainerStatsNotFoundException($serializer->deserialize($body, 'Mdshack\\Docker\\API\\v1_41\\Model\\ErrorResponse', 'json'), $response);
         }
-        if (is_null($contentType) === false && (500 === $status && mb_strpos($contentType, 'application/json') !== false)) {
+        if (is_null($contentType) === false && ($status === 500 && mb_strpos($contentType, 'application/json') !== false)) {
             throw new \Mdshack\Docker\API\v1_41\Exception\ContainerStatsInternalServerErrorException($serializer->deserialize($body, 'Mdshack\\Docker\\API\\v1_41\\Model\\ErrorResponse', 'json'), $response);
         }
     }
-    public function getAuthenticationScopes() : array
+
+    public function getAuthenticationScopes(): array
     {
-        return array();
+        return [];
     }
 }

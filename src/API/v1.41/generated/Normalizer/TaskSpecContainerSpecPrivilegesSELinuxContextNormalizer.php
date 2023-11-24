@@ -5,31 +5,34 @@ namespace Mdshack\Docker\API\v1_41\Normalizer;
 use Jane\Component\JsonSchemaRuntime\Reference;
 use Mdshack\Docker\API\v1_41\Runtime\Normalizer\CheckArray;
 use Mdshack\Docker\API\v1_41\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class TaskSpecContainerSpecPrivilegesSELinuxContextNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+class TaskSpecContainerSpecPrivilegesSELinuxContextNormalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null, array $context = array()) : bool
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === 'Mdshack\\Docker\\API\\v1_41\\Model\\TaskSpecContainerSpecPrivilegesSELinuxContext';
     }
-    public function supportsNormalization($data, $format = null, array $context = array()) : bool
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_object($data) && get_class($data) === 'Mdshack\\Docker\\API\\v1_41\\Model\\TaskSpecContainerSpecPrivilegesSELinuxContext';
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -38,7 +41,7 @@ class TaskSpecContainerSpecPrivilegesSELinuxContextNormalizer implements Denorma
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Mdshack\Docker\API\v1_41\Model\TaskSpecContainerSpecPrivilegesSELinuxContext();
-        if (null === $data || false === \is_array($data)) {
+        if ($data === null || \is_array($data) === false) {
             return $object;
         }
         if (\array_key_exists('Disable', $data)) {
@@ -66,27 +69,29 @@ class TaskSpecContainerSpecPrivilegesSELinuxContextNormalizer implements Denorma
                 $object[$key] = $value;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        if ($object->isInitialized('disable') && null !== $object->getDisable()) {
+        $data = [];
+        if ($object->isInitialized('disable') && $object->getDisable() !== null) {
             $data['Disable'] = $object->getDisable();
         }
-        if ($object->isInitialized('user') && null !== $object->getUser()) {
+        if ($object->isInitialized('user') && $object->getUser() !== null) {
             $data['User'] = $object->getUser();
         }
-        if ($object->isInitialized('role') && null !== $object->getRole()) {
+        if ($object->isInitialized('role') && $object->getRole() !== null) {
             $data['Role'] = $object->getRole();
         }
-        if ($object->isInitialized('type') && null !== $object->getType()) {
+        if ($object->isInitialized('type') && $object->getType() !== null) {
             $data['Type'] = $object->getType();
         }
-        if ($object->isInitialized('level') && null !== $object->getLevel()) {
+        if ($object->isInitialized('level') && $object->getLevel() !== null) {
             $data['Level'] = $object->getLevel();
         }
         foreach ($object as $key => $value) {
@@ -94,10 +99,12 @@ class TaskSpecContainerSpecPrivilegesSELinuxContextNormalizer implements Denorma
                 $data[$key] = $value;
             }
         }
+
         return $data;
     }
-    public function getSupportedTypes(?string $format = null) : array
+
+    public function getSupportedTypes(string $format = null): array
     {
-        return array('Mdshack\\Docker\\API\\v1_41\\Model\\TaskSpecContainerSpecPrivilegesSELinuxContext' => false);
+        return ['Mdshack\\Docker\\API\\v1_41\\Model\\TaskSpecContainerSpecPrivilegesSELinuxContext' => false];
     }
 }

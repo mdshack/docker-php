@@ -5,31 +5,34 @@ namespace Mdshack\Docker\API\v1_41\Normalizer;
 use Jane\Component\JsonSchemaRuntime\Reference;
 use Mdshack\Docker\API\v1_41\Runtime\Normalizer\CheckArray;
 use Mdshack\Docker\API\v1_41\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class SecretsCreatePostBodyNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+class SecretsCreatePostBodyNormalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null, array $context = array()) : bool
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === 'Mdshack\\Docker\\API\\v1_41\\Model\\SecretsCreatePostBody';
     }
-    public function supportsNormalization($data, $format = null, array $context = array()) : bool
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_object($data) && get_class($data) === 'Mdshack\\Docker\\API\\v1_41\\Model\\SecretsCreatePostBody';
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -38,7 +41,7 @@ class SecretsCreatePostBodyNormalizer implements DenormalizerInterface, Normaliz
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Mdshack\Docker\API\v1_41\Model\SecretsCreatePostBody();
-        if (null === $data || false === \is_array($data)) {
+        if ($data === null || \is_array($data) === false) {
             return $object;
         }
         if (\array_key_exists('Name', $data)) {
@@ -46,7 +49,7 @@ class SecretsCreatePostBodyNormalizer implements DenormalizerInterface, Normaliz
             unset($data['Name']);
         }
         if (\array_key_exists('Labels', $data)) {
-            $values = new \ArrayObject(array(), \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($data['Labels'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -70,31 +73,33 @@ class SecretsCreatePostBodyNormalizer implements DenormalizerInterface, Normaliz
                 $object[$key_1] = $value_1;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        if ($object->isInitialized('name') && null !== $object->getName()) {
+        $data = [];
+        if ($object->isInitialized('name') && $object->getName() !== null) {
             $data['Name'] = $object->getName();
         }
-        if ($object->isInitialized('labels') && null !== $object->getLabels()) {
-            $values = array();
+        if ($object->isInitialized('labels') && $object->getLabels() !== null) {
+            $values = [];
             foreach ($object->getLabels() as $key => $value) {
                 $values[$key] = $value;
             }
             $data['Labels'] = $values;
         }
-        if ($object->isInitialized('data') && null !== $object->getData()) {
+        if ($object->isInitialized('data') && $object->getData() !== null) {
             $data['Data'] = $object->getData();
         }
-        if ($object->isInitialized('driver') && null !== $object->getDriver()) {
+        if ($object->isInitialized('driver') && $object->getDriver() !== null) {
             $data['Driver'] = $this->normalizer->normalize($object->getDriver(), 'json', $context);
         }
-        if ($object->isInitialized('templating') && null !== $object->getTemplating()) {
+        if ($object->isInitialized('templating') && $object->getTemplating() !== null) {
             $data['Templating'] = $this->normalizer->normalize($object->getTemplating(), 'json', $context);
         }
         foreach ($object as $key_1 => $value_1) {
@@ -102,10 +107,12 @@ class SecretsCreatePostBodyNormalizer implements DenormalizerInterface, Normaliz
                 $data[$key_1] = $value_1;
             }
         }
+
         return $data;
     }
-    public function getSupportedTypes(?string $format = null) : array
+
+    public function getSupportedTypes(string $format = null): array
     {
-        return array('Mdshack\\Docker\\API\\v1_41\\Model\\SecretsCreatePostBody' => false);
+        return ['Mdshack\\Docker\\API\\v1_41\\Model\\SecretsCreatePostBody' => false];
     }
 }
