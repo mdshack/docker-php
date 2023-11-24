@@ -74,6 +74,9 @@ jobs:
         with:
           php-version: '8.2'
 
+      - name: Install Packages
+        run: composer install
+
       - name: "Generate from configuration"
         run: |
           php vendor/bin/jane-openapi generate --config-file $JANE_CONFIG_PATH
