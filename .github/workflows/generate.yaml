@@ -50,7 +50,7 @@ jobs:
             -H 'Content-Type: application/${{ inputs.openapiSpecType }}' \
             --data-binary '@${{ steps.download.outputs.openapi_spec_path }}' > $VERSION_PATH/spec.json
 
-          NAMESPACE="echo ${{ steps.download.outputs.openapi_version_name }} |  sed -r 's/./_/g'"
+          NAMESPACE="$(echo ${{ steps.download.outputs.openapi_version_name }} |  sed -r 's/./_/g')"
 
           # Create Jane Configuration
           JANE_CONFIG_PATH="$VERSION_PATH/jane-openapi-configuration.php"
