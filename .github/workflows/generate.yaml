@@ -35,6 +35,7 @@ jobs:
           git config --global user.name "GitHub Actions"
 
       - name: "Configure version"
+        id: configure
         run: |
           VERSION_PATH="${{ github.workspace }}/src/API/${{ steps.download.outputs.openapi_version_name }}"
 
@@ -69,6 +70,8 @@ jobs:
           git commit -m "feat (automated): Create configuration for ${{ steps.download.outputs.openapi_version_name }}"
           git push --set-upstream origin $BRANCH
 
+          echo "config_path=$JANE_CONFIG_PATH" >> "$GITHUB_OUTPUT"
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -79,7 +82,7 @@ jobs:
 
       - name: "Generate from configuration"
         run: |
-          php vendor/bin/jane-openapi generate --config-file $JANE_CONFIG_PATH
+          php vendor/bin/jane-openapi generate --config-file ${{ steps.configure.outputs.config_path }}
 
           git add src
           git commit -m "feat (automated): Generate client for ${{ steps.download.outputs.openapi_version_name }}"
