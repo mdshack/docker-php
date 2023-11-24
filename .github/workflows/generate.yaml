@@ -102,4 +102,4 @@ jobs:
           gh pr create \
             -B main \
             -t "feat (automated): ${{ steps.download.outputs.openapi_version_name }}" \
-            -b "Automated version generated for ${{ steps.download.outputs.openapi_version_name }}"
+            -b "Automated version generated for ${{ steps.download.outputs.openapi_version_name }}\n\nGenerated from: ${{ inputs.openapiSpec }}"
