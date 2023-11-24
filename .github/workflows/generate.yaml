@@ -70,6 +70,7 @@ jobs:
           git commit -m "feat (automated): Create configuration for ${{ steps.download.outputs.openapi_version_name }}"
           git push --set-upstream origin $BRANCH
 
+          echo "version_path=$VERSION_PATH" >> "$GITHUB_OUTPUT"
           echo "config_path=$JANE_CONFIG_PATH" >> "$GITHUB_OUTPUT"
 
       - name: Setup PHP
@@ -88,12 +89,13 @@ jobs:
           git commit -m "feat (automated): Generate client for ${{ steps.download.outputs.openapi_version_name }}"
           git push
 
-      # - name: "Lint"
-      #   run: |
+      - name: "Lint"
+        run: |
+          vendor/bin/pint ${{ steps.configure.outputs.config_path }}
 
-      #     git add src
-      #     git commit -m "chore (automated): Lint"
-      #     git push
+          git add src
+          git commit -m "chore (automated): Lint"
+          git push
 
       - name: "Create Pull Request"
         env:
