@@ -27,6 +27,8 @@ jobs:
           echo "openapi_spec_path=${{ runner.temp }}/openapi/spec/$OPENAPI_SPEC_NAME" >> "$GITHUB_OUTPUT"
           echo "openapi_version_name=${OPENAPI_SPEC_NAME%.*}" >> "$GITHUB_OUTPUT"
 
+      - uses: actions/checkout@v4
+
       - name: "Configure version"
         run: |
           VERSION_PATH="${{ github.workspace }}/src/API/${{ steps.download.outputs.openapi_version_name }}"
