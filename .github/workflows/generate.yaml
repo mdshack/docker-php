@@ -91,7 +91,7 @@ jobs:
 
       - name: "Lint"
         run: |
-          vendor/bin/pint ${{ steps.configure.outputs.config_path }}
+          vendor/bin/pint ${{ steps.configure.outputs.version_path }}
 
           git add src
           git commit -m "chore (automated): Lint"
@@ -104,4 +104,4 @@ jobs:
           gh pr create \
             -B main \
             -t "feat (automated): ${{ steps.download.outputs.openapi_version_name }}" \
-            -b "Automated version generated for ${{ steps.download.outputs.openapi_version_name }}<br/><br/>Generated from: ${{ inputs.openapiSpec }}"
+            -b "Automated version generated for [${{ steps.download.outputs.openapi_version_name }}](${{ inputs.openapiSpec }})"
