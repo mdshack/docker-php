@@ -7,235 +7,188 @@ class Service extends \ArrayObject
     /**
      * @var array
      */
-    protected $initialized = array();
-    public function isInitialized($property) : bool
+    protected $initialized = [];
+
+    public function isInitialized($property): bool
     {
         return array_key_exists($property, $this->initialized);
     }
+
     /**
-     * 
-     *
      * @var string
      */
     protected $iD;
+
     /**
-    * The version number of the object such as node, service, etc. This is needed
+     * The version number of the object such as node, service, etc. This is needed
     to avoid conflicting writes. The client must send the version number along
     with the modified specification when updating these objects.
-    
+
     This approach ensures safe concurrency and determinism in that the change
     on the object may not be applied if the version number has changed from the
     last read. In other words, if two update requests specify the same base
     version, only one of the requests can succeed. As a result, two separate
     update requests that happen at the same time will not unintentionally
     overwrite each other.
-    
-    *
-    * @var ObjectVersion
-    */
-    protected $version;
-    /**
-     * 
+
      *
+     * @var ObjectVersion
+     */
+    protected $version;
+
+    /**
      * @var string
      */
     protected $createdAt;
+
     /**
-     * 
-     *
      * @var string
      */
     protected $updatedAt;
+
     /**
      * User modifiable configuration for a service.
      *
      * @var ServiceSpec
      */
     protected $spec;
+
     /**
-     * 
-     *
      * @var ServiceEndpoint
      */
     protected $endpoint;
+
     /**
      * The status of a service update.
      *
      * @var ServiceUpdateStatus
      */
     protected $updateStatus;
-    /**
-     * 
-     *
-     * @return string
-     */
-    public function getID() : string
+
+    public function getID(): string
     {
         return $this->iD;
     }
-    /**
-     * 
-     *
-     * @param string $iD
-     *
-     * @return self
-     */
-    public function setID(string $iD) : self
+
+    public function setID(string $iD): self
     {
         $this->initialized['iD'] = true;
         $this->iD = $iD;
+
         return $this;
     }
+
     /**
-    * The version number of the object such as node, service, etc. This is needed
+     * The version number of the object such as node, service, etc. This is needed
     to avoid conflicting writes. The client must send the version number along
     with the modified specification when updating these objects.
-    
+
     This approach ensures safe concurrency and determinism in that the change
     on the object may not be applied if the version number has changed from the
     last read. In other words, if two update requests specify the same base
     version, only one of the requests can succeed. As a result, two separate
     update requests that happen at the same time will not unintentionally
     overwrite each other.
-    
-    *
-    * @return ObjectVersion
-    */
-    public function getVersion() : ObjectVersion
+     */
+    public function getVersion(): ObjectVersion
     {
         return $this->version;
     }
+
     /**
-    * The version number of the object such as node, service, etc. This is needed
+     * The version number of the object such as node, service, etc. This is needed
     to avoid conflicting writes. The client must send the version number along
     with the modified specification when updating these objects.
-    
+
     This approach ensures safe concurrency and determinism in that the change
     on the object may not be applied if the version number has changed from the
     last read. In other words, if two update requests specify the same base
     version, only one of the requests can succeed. As a result, two separate
     update requests that happen at the same time will not unintentionally
     overwrite each other.
-    
-    *
-    * @param ObjectVersion $version
-    *
-    * @return self
-    */
-    public function setVersion(ObjectVersion $version) : self
+     */
+    public function setVersion(ObjectVersion $version): self
     {
         $this->initialized['version'] = true;
         $this->version = $version;
+
         return $this;
     }
-    /**
-     * 
-     *
-     * @return string
-     */
-    public function getCreatedAt() : string
+
+    public function getCreatedAt(): string
     {
         return $this->createdAt;
     }
-    /**
-     * 
-     *
-     * @param string $createdAt
-     *
-     * @return self
-     */
-    public function setCreatedAt(string $createdAt) : self
+
+    public function setCreatedAt(string $createdAt): self
     {
         $this->initialized['createdAt'] = true;
         $this->createdAt = $createdAt;
+
         return $this;
     }
-    /**
-     * 
-     *
-     * @return string
-     */
-    public function getUpdatedAt() : string
+
+    public function getUpdatedAt(): string
     {
         return $this->updatedAt;
     }
-    /**
-     * 
-     *
-     * @param string $updatedAt
-     *
-     * @return self
-     */
-    public function setUpdatedAt(string $updatedAt) : self
+
+    public function setUpdatedAt(string $updatedAt): self
     {
         $this->initialized['updatedAt'] = true;
         $this->updatedAt = $updatedAt;
+
         return $this;
     }
+
     /**
      * User modifiable configuration for a service.
-     *
-     * @return ServiceSpec
      */
-    public function getSpec() : ServiceSpec
+    public function getSpec(): ServiceSpec
     {
         return $this->spec;
     }
+
     /**
      * User modifiable configuration for a service.
-     *
-     * @param ServiceSpec $spec
-     *
-     * @return self
      */
-    public function setSpec(ServiceSpec $spec) : self
+    public function setSpec(ServiceSpec $spec): self
     {
         $this->initialized['spec'] = true;
         $this->spec = $spec;
+
         return $this;
     }
-    /**
-     * 
-     *
-     * @return ServiceEndpoint
-     */
-    public function getEndpoint() : ServiceEndpoint
+
+    public function getEndpoint(): ServiceEndpoint
     {
         return $this->endpoint;
     }
-    /**
-     * 
-     *
-     * @param ServiceEndpoint $endpoint
-     *
-     * @return self
-     */
-    public function setEndpoint(ServiceEndpoint $endpoint) : self
+
+    public function setEndpoint(ServiceEndpoint $endpoint): self
     {
         $this->initialized['endpoint'] = true;
         $this->endpoint = $endpoint;
+
         return $this;
     }
+
     /**
      * The status of a service update.
-     *
-     * @return ServiceUpdateStatus
      */
-    public function getUpdateStatus() : ServiceUpdateStatus
+    public function getUpdateStatus(): ServiceUpdateStatus
     {
         return $this->updateStatus;
     }
+
     /**
      * The status of a service update.
-     *
-     * @param ServiceUpdateStatus $updateStatus
-     *
-     * @return self
      */
-    public function setUpdateStatus(ServiceUpdateStatus $updateStatus) : self
+    public function setUpdateStatus(ServiceUpdateStatus $updateStatus): self
     {
         $this->initialized['updateStatus'] = true;
         $this->updateStatus = $updateStatus;
+
         return $this;
     }
 }

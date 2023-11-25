@@ -5,31 +5,34 @@ namespace Mdshack\Docker\API\v1_40\Normalizer;
 use Jane\Component\JsonSchemaRuntime\Reference;
 use Mdshack\Docker\API\v1_40\Runtime\Normalizer\CheckArray;
 use Mdshack\Docker\API\v1_40\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class ServiceSpecUpdateConfigNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+class ServiceSpecUpdateConfigNormalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null, array $context = array()) : bool
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === 'Mdshack\\Docker\\API\\v1_40\\Model\\ServiceSpecUpdateConfig';
     }
-    public function supportsNormalization($data, $format = null, array $context = array()) : bool
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_object($data) && get_class($data) === 'Mdshack\\Docker\\API\\v1_40\\Model\\ServiceSpecUpdateConfig';
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -39,9 +42,9 @@ class ServiceSpecUpdateConfigNormalizer implements DenormalizerInterface, Normal
         }
         $object = new \Mdshack\Docker\API\v1_40\Model\ServiceSpecUpdateConfig();
         if (\array_key_exists('MaxFailureRatio', $data) && \is_int($data['MaxFailureRatio'])) {
-            $data['MaxFailureRatio'] = (double) $data['MaxFailureRatio'];
+            $data['MaxFailureRatio'] = (float) $data['MaxFailureRatio'];
         }
-        if (null === $data || false === \is_array($data)) {
+        if ($data === null || \is_array($data) === false) {
             return $object;
         }
         if (\array_key_exists('Parallelism', $data)) {
@@ -73,30 +76,32 @@ class ServiceSpecUpdateConfigNormalizer implements DenormalizerInterface, Normal
                 $object[$key] = $value;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        if ($object->isInitialized('parallelism') && null !== $object->getParallelism()) {
+        $data = [];
+        if ($object->isInitialized('parallelism') && $object->getParallelism() !== null) {
             $data['Parallelism'] = $object->getParallelism();
         }
-        if ($object->isInitialized('delay') && null !== $object->getDelay()) {
+        if ($object->isInitialized('delay') && $object->getDelay() !== null) {
             $data['Delay'] = $object->getDelay();
         }
-        if ($object->isInitialized('failureAction') && null !== $object->getFailureAction()) {
+        if ($object->isInitialized('failureAction') && $object->getFailureAction() !== null) {
             $data['FailureAction'] = $object->getFailureAction();
         }
-        if ($object->isInitialized('monitor') && null !== $object->getMonitor()) {
+        if ($object->isInitialized('monitor') && $object->getMonitor() !== null) {
             $data['Monitor'] = $object->getMonitor();
         }
-        if ($object->isInitialized('maxFailureRatio') && null !== $object->getMaxFailureRatio()) {
+        if ($object->isInitialized('maxFailureRatio') && $object->getMaxFailureRatio() !== null) {
             $data['MaxFailureRatio'] = $object->getMaxFailureRatio();
         }
-        if ($object->isInitialized('order') && null !== $object->getOrder()) {
+        if ($object->isInitialized('order') && $object->getOrder() !== null) {
             $data['Order'] = $object->getOrder();
         }
         foreach ($object as $key => $value) {
@@ -104,10 +109,12 @@ class ServiceSpecUpdateConfigNormalizer implements DenormalizerInterface, Normal
                 $data[$key] = $value;
             }
         }
+
         return $data;
     }
-    public function getSupportedTypes(?string $format = null) : array
+
+    public function getSupportedTypes(string $format = null): array
     {
-        return array('Mdshack\\Docker\\API\\v1_40\\Model\\ServiceSpecUpdateConfig' => false);
+        return ['Mdshack\\Docker\\API\\v1_40\\Model\\ServiceSpecUpdateConfig' => false];
     }
 }

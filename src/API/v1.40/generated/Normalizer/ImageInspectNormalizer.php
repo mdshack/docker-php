@@ -5,31 +5,34 @@ namespace Mdshack\Docker\API\v1_40\Normalizer;
 use Jane\Component\JsonSchemaRuntime\Reference;
 use Mdshack\Docker\API\v1_40\Runtime\Normalizer\CheckArray;
 use Mdshack\Docker\API\v1_40\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class ImageInspectNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+class ImageInspectNormalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null, array $context = array()) : bool
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === 'Mdshack\\Docker\\API\\v1_40\\Model\\ImageInspect';
     }
-    public function supportsNormalization($data, $format = null, array $context = array()) : bool
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_object($data) && get_class($data) === 'Mdshack\\Docker\\API\\v1_40\\Model\\ImageInspect';
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -38,7 +41,7 @@ class ImageInspectNormalizer implements DenormalizerInterface, NormalizerInterfa
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Mdshack\Docker\API\v1_40\Model\ImageInspect();
-        if (null === $data || false === \is_array($data)) {
+        if ($data === null || \is_array($data) === false) {
             return $object;
         }
         if (\array_key_exists('Id', $data)) {
@@ -46,7 +49,7 @@ class ImageInspectNormalizer implements DenormalizerInterface, NormalizerInterfa
             unset($data['Id']);
         }
         if (\array_key_exists('RepoTags', $data)) {
-            $values = array();
+            $values = [];
             foreach ($data['RepoTags'] as $value) {
                 $values[] = $value;
             }
@@ -54,7 +57,7 @@ class ImageInspectNormalizer implements DenormalizerInterface, NormalizerInterfa
             unset($data['RepoTags']);
         }
         if (\array_key_exists('RepoDigests', $data)) {
-            $values_1 = array();
+            $values_1 = [];
             foreach ($data['RepoDigests'] as $value_1) {
                 $values_1[] = $value_1;
             }
@@ -100,8 +103,7 @@ class ImageInspectNormalizer implements DenormalizerInterface, NormalizerInterfa
         if (\array_key_exists('Variant', $data) && $data['Variant'] !== null) {
             $object->setVariant($data['Variant']);
             unset($data['Variant']);
-        }
-        elseif (\array_key_exists('Variant', $data) && $data['Variant'] === null) {
+        } elseif (\array_key_exists('Variant', $data) && $data['Variant'] === null) {
             $object->setVariant(null);
         }
         if (\array_key_exists('Os', $data)) {
@@ -111,8 +113,7 @@ class ImageInspectNormalizer implements DenormalizerInterface, NormalizerInterfa
         if (\array_key_exists('OsVersion', $data) && $data['OsVersion'] !== null) {
             $object->setOsVersion($data['OsVersion']);
             unset($data['OsVersion']);
-        }
-        elseif (\array_key_exists('OsVersion', $data) && $data['OsVersion'] === null) {
+        } elseif (\array_key_exists('OsVersion', $data) && $data['OsVersion'] === null) {
             $object->setOsVersion(null);
         }
         if (\array_key_exists('Size', $data)) {
@@ -140,80 +141,82 @@ class ImageInspectNormalizer implements DenormalizerInterface, NormalizerInterfa
                 $object[$key] = $value_2;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        if ($object->isInitialized('id') && null !== $object->getId()) {
+        $data = [];
+        if ($object->isInitialized('id') && $object->getId() !== null) {
             $data['Id'] = $object->getId();
         }
-        if ($object->isInitialized('repoTags') && null !== $object->getRepoTags()) {
-            $values = array();
+        if ($object->isInitialized('repoTags') && $object->getRepoTags() !== null) {
+            $values = [];
             foreach ($object->getRepoTags() as $value) {
                 $values[] = $value;
             }
             $data['RepoTags'] = $values;
         }
-        if ($object->isInitialized('repoDigests') && null !== $object->getRepoDigests()) {
-            $values_1 = array();
+        if ($object->isInitialized('repoDigests') && $object->getRepoDigests() !== null) {
+            $values_1 = [];
             foreach ($object->getRepoDigests() as $value_1) {
                 $values_1[] = $value_1;
             }
             $data['RepoDigests'] = $values_1;
         }
-        if ($object->isInitialized('parent') && null !== $object->getParent()) {
+        if ($object->isInitialized('parent') && $object->getParent() !== null) {
             $data['Parent'] = $object->getParent();
         }
-        if ($object->isInitialized('comment') && null !== $object->getComment()) {
+        if ($object->isInitialized('comment') && $object->getComment() !== null) {
             $data['Comment'] = $object->getComment();
         }
-        if ($object->isInitialized('created') && null !== $object->getCreated()) {
+        if ($object->isInitialized('created') && $object->getCreated() !== null) {
             $data['Created'] = $object->getCreated();
         }
-        if ($object->isInitialized('container') && null !== $object->getContainer()) {
+        if ($object->isInitialized('container') && $object->getContainer() !== null) {
             $data['Container'] = $object->getContainer();
         }
-        if ($object->isInitialized('containerConfig') && null !== $object->getContainerConfig()) {
+        if ($object->isInitialized('containerConfig') && $object->getContainerConfig() !== null) {
             $data['ContainerConfig'] = $this->normalizer->normalize($object->getContainerConfig(), 'json', $context);
         }
-        if ($object->isInitialized('dockerVersion') && null !== $object->getDockerVersion()) {
+        if ($object->isInitialized('dockerVersion') && $object->getDockerVersion() !== null) {
             $data['DockerVersion'] = $object->getDockerVersion();
         }
-        if ($object->isInitialized('author') && null !== $object->getAuthor()) {
+        if ($object->isInitialized('author') && $object->getAuthor() !== null) {
             $data['Author'] = $object->getAuthor();
         }
-        if ($object->isInitialized('config') && null !== $object->getConfig()) {
+        if ($object->isInitialized('config') && $object->getConfig() !== null) {
             $data['Config'] = $this->normalizer->normalize($object->getConfig(), 'json', $context);
         }
-        if ($object->isInitialized('architecture') && null !== $object->getArchitecture()) {
+        if ($object->isInitialized('architecture') && $object->getArchitecture() !== null) {
             $data['Architecture'] = $object->getArchitecture();
         }
-        if ($object->isInitialized('variant') && null !== $object->getVariant()) {
+        if ($object->isInitialized('variant') && $object->getVariant() !== null) {
             $data['Variant'] = $object->getVariant();
         }
-        if ($object->isInitialized('os') && null !== $object->getOs()) {
+        if ($object->isInitialized('os') && $object->getOs() !== null) {
             $data['Os'] = $object->getOs();
         }
-        if ($object->isInitialized('osVersion') && null !== $object->getOsVersion()) {
+        if ($object->isInitialized('osVersion') && $object->getOsVersion() !== null) {
             $data['OsVersion'] = $object->getOsVersion();
         }
-        if ($object->isInitialized('size') && null !== $object->getSize()) {
+        if ($object->isInitialized('size') && $object->getSize() !== null) {
             $data['Size'] = $object->getSize();
         }
-        if ($object->isInitialized('virtualSize') && null !== $object->getVirtualSize()) {
+        if ($object->isInitialized('virtualSize') && $object->getVirtualSize() !== null) {
             $data['VirtualSize'] = $object->getVirtualSize();
         }
-        if ($object->isInitialized('graphDriver') && null !== $object->getGraphDriver()) {
+        if ($object->isInitialized('graphDriver') && $object->getGraphDriver() !== null) {
             $data['GraphDriver'] = $this->normalizer->normalize($object->getGraphDriver(), 'json', $context);
         }
-        if ($object->isInitialized('rootFS') && null !== $object->getRootFS()) {
+        if ($object->isInitialized('rootFS') && $object->getRootFS() !== null) {
             $data['RootFS'] = $this->normalizer->normalize($object->getRootFS(), 'json', $context);
         }
-        if ($object->isInitialized('metadata') && null !== $object->getMetadata()) {
+        if ($object->isInitialized('metadata') && $object->getMetadata() !== null) {
             $data['Metadata'] = $this->normalizer->normalize($object->getMetadata(), 'json', $context);
         }
         foreach ($object as $key => $value_2) {
@@ -221,10 +224,12 @@ class ImageInspectNormalizer implements DenormalizerInterface, NormalizerInterfa
                 $data[$key] = $value_2;
             }
         }
+
         return $data;
     }
-    public function getSupportedTypes(?string $format = null) : array
+
+    public function getSupportedTypes(string $format = null): array
     {
-        return array('Mdshack\\Docker\\API\\v1_40\\Model\\ImageInspect' => false);
+        return ['Mdshack\\Docker\\API\\v1_40\\Model\\ImageInspect' => false];
     }
 }

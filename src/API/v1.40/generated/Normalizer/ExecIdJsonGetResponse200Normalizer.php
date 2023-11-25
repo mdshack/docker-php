@@ -5,31 +5,34 @@ namespace Mdshack\Docker\API\v1_40\Normalizer;
 use Jane\Component\JsonSchemaRuntime\Reference;
 use Mdshack\Docker\API\v1_40\Runtime\Normalizer\CheckArray;
 use Mdshack\Docker\API\v1_40\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class ExecIdJsonGetResponse200Normalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+class ExecIdJsonGetResponse200Normalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null, array $context = array()) : bool
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === 'Mdshack\\Docker\\API\\v1_40\\Model\\ExecIdJsonGetResponse200';
     }
-    public function supportsNormalization($data, $format = null, array $context = array()) : bool
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_object($data) && get_class($data) === 'Mdshack\\Docker\\API\\v1_40\\Model\\ExecIdJsonGetResponse200';
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -38,7 +41,7 @@ class ExecIdJsonGetResponse200Normalizer implements DenormalizerInterface, Norma
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Mdshack\Docker\API\v1_40\Model\ExecIdJsonGetResponse200();
-        if (null === $data || false === \is_array($data)) {
+        if ($data === null || \is_array($data) === false) {
             return $object;
         }
         if (\array_key_exists('CanRemove', $data)) {
@@ -90,45 +93,47 @@ class ExecIdJsonGetResponse200Normalizer implements DenormalizerInterface, Norma
                 $object[$key] = $value;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        if ($object->isInitialized('canRemove') && null !== $object->getCanRemove()) {
+        $data = [];
+        if ($object->isInitialized('canRemove') && $object->getCanRemove() !== null) {
             $data['CanRemove'] = $object->getCanRemove();
         }
-        if ($object->isInitialized('detachKeys') && null !== $object->getDetachKeys()) {
+        if ($object->isInitialized('detachKeys') && $object->getDetachKeys() !== null) {
             $data['DetachKeys'] = $object->getDetachKeys();
         }
-        if ($object->isInitialized('iD') && null !== $object->getID()) {
+        if ($object->isInitialized('iD') && $object->getID() !== null) {
             $data['ID'] = $object->getID();
         }
-        if ($object->isInitialized('running') && null !== $object->getRunning()) {
+        if ($object->isInitialized('running') && $object->getRunning() !== null) {
             $data['Running'] = $object->getRunning();
         }
-        if ($object->isInitialized('exitCode') && null !== $object->getExitCode()) {
+        if ($object->isInitialized('exitCode') && $object->getExitCode() !== null) {
             $data['ExitCode'] = $object->getExitCode();
         }
-        if ($object->isInitialized('processConfig') && null !== $object->getProcessConfig()) {
+        if ($object->isInitialized('processConfig') && $object->getProcessConfig() !== null) {
             $data['ProcessConfig'] = $this->normalizer->normalize($object->getProcessConfig(), 'json', $context);
         }
-        if ($object->isInitialized('openStdin') && null !== $object->getOpenStdin()) {
+        if ($object->isInitialized('openStdin') && $object->getOpenStdin() !== null) {
             $data['OpenStdin'] = $object->getOpenStdin();
         }
-        if ($object->isInitialized('openStderr') && null !== $object->getOpenStderr()) {
+        if ($object->isInitialized('openStderr') && $object->getOpenStderr() !== null) {
             $data['OpenStderr'] = $object->getOpenStderr();
         }
-        if ($object->isInitialized('openStdout') && null !== $object->getOpenStdout()) {
+        if ($object->isInitialized('openStdout') && $object->getOpenStdout() !== null) {
             $data['OpenStdout'] = $object->getOpenStdout();
         }
-        if ($object->isInitialized('containerID') && null !== $object->getContainerID()) {
+        if ($object->isInitialized('containerID') && $object->getContainerID() !== null) {
             $data['ContainerID'] = $object->getContainerID();
         }
-        if ($object->isInitialized('pid') && null !== $object->getPid()) {
+        if ($object->isInitialized('pid') && $object->getPid() !== null) {
             $data['Pid'] = $object->getPid();
         }
         foreach ($object as $key => $value) {
@@ -136,10 +141,12 @@ class ExecIdJsonGetResponse200Normalizer implements DenormalizerInterface, Norma
                 $data[$key] = $value;
             }
         }
+
         return $data;
     }
-    public function getSupportedTypes(?string $format = null) : array
+
+    public function getSupportedTypes(string $format = null): array
     {
-        return array('Mdshack\\Docker\\API\\v1_40\\Model\\ExecIdJsonGetResponse200' => false);
+        return ['Mdshack\\Docker\\API\\v1_40\\Model\\ExecIdJsonGetResponse200' => false];
     }
 }

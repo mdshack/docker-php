@@ -5,31 +5,34 @@ namespace Mdshack\Docker\API\v1_40\Normalizer;
 use Jane\Component\JsonSchemaRuntime\Reference;
 use Mdshack\Docker\API\v1_40\Runtime\Normalizer\CheckArray;
 use Mdshack\Docker\API\v1_40\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class MountPointNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+class MountPointNormalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null, array $context = array()) : bool
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === 'Mdshack\\Docker\\API\\v1_40\\Model\\MountPoint';
     }
-    public function supportsNormalization($data, $format = null, array $context = array()) : bool
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_object($data) && get_class($data) === 'Mdshack\\Docker\\API\\v1_40\\Model\\MountPoint';
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -38,7 +41,7 @@ class MountPointNormalizer implements DenormalizerInterface, NormalizerInterface
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Mdshack\Docker\API\v1_40\Model\MountPoint();
-        if (null === $data || false === \is_array($data)) {
+        if ($data === null || \is_array($data) === false) {
             return $object;
         }
         if (\array_key_exists('Type', $data)) {
@@ -78,36 +81,38 @@ class MountPointNormalizer implements DenormalizerInterface, NormalizerInterface
                 $object[$key] = $value;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        if ($object->isInitialized('type') && null !== $object->getType()) {
+        $data = [];
+        if ($object->isInitialized('type') && $object->getType() !== null) {
             $data['Type'] = $object->getType();
         }
-        if ($object->isInitialized('name') && null !== $object->getName()) {
+        if ($object->isInitialized('name') && $object->getName() !== null) {
             $data['Name'] = $object->getName();
         }
-        if ($object->isInitialized('source') && null !== $object->getSource()) {
+        if ($object->isInitialized('source') && $object->getSource() !== null) {
             $data['Source'] = $object->getSource();
         }
-        if ($object->isInitialized('destination') && null !== $object->getDestination()) {
+        if ($object->isInitialized('destination') && $object->getDestination() !== null) {
             $data['Destination'] = $object->getDestination();
         }
-        if ($object->isInitialized('driver') && null !== $object->getDriver()) {
+        if ($object->isInitialized('driver') && $object->getDriver() !== null) {
             $data['Driver'] = $object->getDriver();
         }
-        if ($object->isInitialized('mode') && null !== $object->getMode()) {
+        if ($object->isInitialized('mode') && $object->getMode() !== null) {
             $data['Mode'] = $object->getMode();
         }
-        if ($object->isInitialized('rW') && null !== $object->getRW()) {
+        if ($object->isInitialized('rW') && $object->getRW() !== null) {
             $data['RW'] = $object->getRW();
         }
-        if ($object->isInitialized('propagation') && null !== $object->getPropagation()) {
+        if ($object->isInitialized('propagation') && $object->getPropagation() !== null) {
             $data['Propagation'] = $object->getPropagation();
         }
         foreach ($object as $key => $value) {
@@ -115,10 +120,12 @@ class MountPointNormalizer implements DenormalizerInterface, NormalizerInterface
                 $data[$key] = $value;
             }
         }
+
         return $data;
     }
-    public function getSupportedTypes(?string $format = null) : array
+
+    public function getSupportedTypes(string $format = null): array
     {
-        return array('Mdshack\\Docker\\API\\v1_40\\Model\\MountPoint' => false);
+        return ['Mdshack\\Docker\\API\\v1_40\\Model\\MountPoint' => false];
     }
 }

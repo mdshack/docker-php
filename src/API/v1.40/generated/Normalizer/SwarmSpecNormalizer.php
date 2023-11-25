@@ -5,31 +5,34 @@ namespace Mdshack\Docker\API\v1_40\Normalizer;
 use Jane\Component\JsonSchemaRuntime\Reference;
 use Mdshack\Docker\API\v1_40\Runtime\Normalizer\CheckArray;
 use Mdshack\Docker\API\v1_40\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class SwarmSpecNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+class SwarmSpecNormalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null, array $context = array()) : bool
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === 'Mdshack\\Docker\\API\\v1_40\\Model\\SwarmSpec';
     }
-    public function supportsNormalization($data, $format = null, array $context = array()) : bool
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_object($data) && get_class($data) === 'Mdshack\\Docker\\API\\v1_40\\Model\\SwarmSpec';
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -38,7 +41,7 @@ class SwarmSpecNormalizer implements DenormalizerInterface, NormalizerInterface,
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Mdshack\Docker\API\v1_40\Model\SwarmSpec();
-        if (null === $data || false === \is_array($data)) {
+        if ($data === null || \is_array($data) === false) {
             return $object;
         }
         if (\array_key_exists('Name', $data)) {
@@ -46,7 +49,7 @@ class SwarmSpecNormalizer implements DenormalizerInterface, NormalizerInterface,
             unset($data['Name']);
         }
         if (\array_key_exists('Labels', $data)) {
-            $values = new \ArrayObject(array(), \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($data['Labels'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -56,8 +59,7 @@ class SwarmSpecNormalizer implements DenormalizerInterface, NormalizerInterface,
         if (\array_key_exists('Orchestration', $data) && $data['Orchestration'] !== null) {
             $object->setOrchestration($this->denormalizer->denormalize($data['Orchestration'], 'Mdshack\\Docker\\API\\v1_40\\Model\\SwarmSpecOrchestration', 'json', $context));
             unset($data['Orchestration']);
-        }
-        elseif (\array_key_exists('Orchestration', $data) && $data['Orchestration'] === null) {
+        } elseif (\array_key_exists('Orchestration', $data) && $data['Orchestration'] === null) {
             $object->setOrchestration(null);
         }
         if (\array_key_exists('Raft', $data)) {
@@ -67,15 +69,13 @@ class SwarmSpecNormalizer implements DenormalizerInterface, NormalizerInterface,
         if (\array_key_exists('Dispatcher', $data) && $data['Dispatcher'] !== null) {
             $object->setDispatcher($this->denormalizer->denormalize($data['Dispatcher'], 'Mdshack\\Docker\\API\\v1_40\\Model\\SwarmSpecDispatcher', 'json', $context));
             unset($data['Dispatcher']);
-        }
-        elseif (\array_key_exists('Dispatcher', $data) && $data['Dispatcher'] === null) {
+        } elseif (\array_key_exists('Dispatcher', $data) && $data['Dispatcher'] === null) {
             $object->setDispatcher(null);
         }
         if (\array_key_exists('CAConfig', $data) && $data['CAConfig'] !== null) {
             $object->setCAConfig($this->denormalizer->denormalize($data['CAConfig'], 'Mdshack\\Docker\\API\\v1_40\\Model\\SwarmSpecCAConfig', 'json', $context));
             unset($data['CAConfig']);
-        }
-        elseif (\array_key_exists('CAConfig', $data) && $data['CAConfig'] === null) {
+        } elseif (\array_key_exists('CAConfig', $data) && $data['CAConfig'] === null) {
             $object->setCAConfig(null);
         }
         if (\array_key_exists('EncryptionConfig', $data)) {
@@ -91,40 +91,42 @@ class SwarmSpecNormalizer implements DenormalizerInterface, NormalizerInterface,
                 $object[$key_1] = $value_1;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        if ($object->isInitialized('name') && null !== $object->getName()) {
+        $data = [];
+        if ($object->isInitialized('name') && $object->getName() !== null) {
             $data['Name'] = $object->getName();
         }
-        if ($object->isInitialized('labels') && null !== $object->getLabels()) {
-            $values = array();
+        if ($object->isInitialized('labels') && $object->getLabels() !== null) {
+            $values = [];
             foreach ($object->getLabels() as $key => $value) {
                 $values[$key] = $value;
             }
             $data['Labels'] = $values;
         }
-        if ($object->isInitialized('orchestration') && null !== $object->getOrchestration()) {
+        if ($object->isInitialized('orchestration') && $object->getOrchestration() !== null) {
             $data['Orchestration'] = $this->normalizer->normalize($object->getOrchestration(), 'json', $context);
         }
-        if ($object->isInitialized('raft') && null !== $object->getRaft()) {
+        if ($object->isInitialized('raft') && $object->getRaft() !== null) {
             $data['Raft'] = $this->normalizer->normalize($object->getRaft(), 'json', $context);
         }
-        if ($object->isInitialized('dispatcher') && null !== $object->getDispatcher()) {
+        if ($object->isInitialized('dispatcher') && $object->getDispatcher() !== null) {
             $data['Dispatcher'] = $this->normalizer->normalize($object->getDispatcher(), 'json', $context);
         }
-        if ($object->isInitialized('cAConfig') && null !== $object->getCAConfig()) {
+        if ($object->isInitialized('cAConfig') && $object->getCAConfig() !== null) {
             $data['CAConfig'] = $this->normalizer->normalize($object->getCAConfig(), 'json', $context);
         }
-        if ($object->isInitialized('encryptionConfig') && null !== $object->getEncryptionConfig()) {
+        if ($object->isInitialized('encryptionConfig') && $object->getEncryptionConfig() !== null) {
             $data['EncryptionConfig'] = $this->normalizer->normalize($object->getEncryptionConfig(), 'json', $context);
         }
-        if ($object->isInitialized('taskDefaults') && null !== $object->getTaskDefaults()) {
+        if ($object->isInitialized('taskDefaults') && $object->getTaskDefaults() !== null) {
             $data['TaskDefaults'] = $this->normalizer->normalize($object->getTaskDefaults(), 'json', $context);
         }
         foreach ($object as $key_1 => $value_1) {
@@ -132,10 +134,12 @@ class SwarmSpecNormalizer implements DenormalizerInterface, NormalizerInterface,
                 $data[$key_1] = $value_1;
             }
         }
+
         return $data;
     }
-    public function getSupportedTypes(?string $format = null) : array
+
+    public function getSupportedTypes(string $format = null): array
     {
-        return array('Mdshack\\Docker\\API\\v1_40\\Model\\SwarmSpec' => false);
+        return ['Mdshack\\Docker\\API\\v1_40\\Model\\SwarmSpec' => false];
     }
 }

@@ -5,31 +5,34 @@ namespace Mdshack\Docker\API\v1_40\Normalizer;
 use Jane\Component\JsonSchemaRuntime\Reference;
 use Mdshack\Docker\API\v1_40\Runtime\Normalizer\CheckArray;
 use Mdshack\Docker\API\v1_40\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class SystemVersionNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+class SystemVersionNormalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null, array $context = array()) : bool
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === 'Mdshack\\Docker\\API\\v1_40\\Model\\SystemVersion';
     }
-    public function supportsNormalization($data, $format = null, array $context = array()) : bool
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_object($data) && get_class($data) === 'Mdshack\\Docker\\API\\v1_40\\Model\\SystemVersion';
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -38,7 +41,7 @@ class SystemVersionNormalizer implements DenormalizerInterface, NormalizerInterf
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Mdshack\Docker\API\v1_40\Model\SystemVersion();
-        if (null === $data || false === \is_array($data)) {
+        if ($data === null || \is_array($data) === false) {
             return $object;
         }
         if (\array_key_exists('Platform', $data)) {
@@ -46,7 +49,7 @@ class SystemVersionNormalizer implements DenormalizerInterface, NormalizerInterf
             unset($data['Platform']);
         }
         if (\array_key_exists('Components', $data)) {
-            $values = array();
+            $values = [];
             foreach ($data['Components'] as $value) {
                 $values[] = $this->denormalizer->denormalize($value, 'Mdshack\\Docker\\API\\v1_40\\Model\\SystemVersionComponentsItem', 'json', $context);
             }
@@ -98,52 +101,54 @@ class SystemVersionNormalizer implements DenormalizerInterface, NormalizerInterf
                 $object[$key] = $value_1;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        if ($object->isInitialized('platform') && null !== $object->getPlatform()) {
+        $data = [];
+        if ($object->isInitialized('platform') && $object->getPlatform() !== null) {
             $data['Platform'] = $this->normalizer->normalize($object->getPlatform(), 'json', $context);
         }
-        if ($object->isInitialized('components') && null !== $object->getComponents()) {
-            $values = array();
+        if ($object->isInitialized('components') && $object->getComponents() !== null) {
+            $values = [];
             foreach ($object->getComponents() as $value) {
                 $values[] = $this->normalizer->normalize($value, 'json', $context);
             }
             $data['Components'] = $values;
         }
-        if ($object->isInitialized('version') && null !== $object->getVersion()) {
+        if ($object->isInitialized('version') && $object->getVersion() !== null) {
             $data['Version'] = $object->getVersion();
         }
-        if ($object->isInitialized('apiVersion') && null !== $object->getApiVersion()) {
+        if ($object->isInitialized('apiVersion') && $object->getApiVersion() !== null) {
             $data['ApiVersion'] = $object->getApiVersion();
         }
-        if ($object->isInitialized('minAPIVersion') && null !== $object->getMinAPIVersion()) {
+        if ($object->isInitialized('minAPIVersion') && $object->getMinAPIVersion() !== null) {
             $data['MinAPIVersion'] = $object->getMinAPIVersion();
         }
-        if ($object->isInitialized('gitCommit') && null !== $object->getGitCommit()) {
+        if ($object->isInitialized('gitCommit') && $object->getGitCommit() !== null) {
             $data['GitCommit'] = $object->getGitCommit();
         }
-        if ($object->isInitialized('goVersion') && null !== $object->getGoVersion()) {
+        if ($object->isInitialized('goVersion') && $object->getGoVersion() !== null) {
             $data['GoVersion'] = $object->getGoVersion();
         }
-        if ($object->isInitialized('os') && null !== $object->getOs()) {
+        if ($object->isInitialized('os') && $object->getOs() !== null) {
             $data['Os'] = $object->getOs();
         }
-        if ($object->isInitialized('arch') && null !== $object->getArch()) {
+        if ($object->isInitialized('arch') && $object->getArch() !== null) {
             $data['Arch'] = $object->getArch();
         }
-        if ($object->isInitialized('kernelVersion') && null !== $object->getKernelVersion()) {
+        if ($object->isInitialized('kernelVersion') && $object->getKernelVersion() !== null) {
             $data['KernelVersion'] = $object->getKernelVersion();
         }
-        if ($object->isInitialized('experimental') && null !== $object->getExperimental()) {
+        if ($object->isInitialized('experimental') && $object->getExperimental() !== null) {
             $data['Experimental'] = $object->getExperimental();
         }
-        if ($object->isInitialized('buildTime') && null !== $object->getBuildTime()) {
+        if ($object->isInitialized('buildTime') && $object->getBuildTime() !== null) {
             $data['BuildTime'] = $object->getBuildTime();
         }
         foreach ($object as $key => $value_1) {
@@ -151,10 +156,12 @@ class SystemVersionNormalizer implements DenormalizerInterface, NormalizerInterf
                 $data[$key] = $value_1;
             }
         }
+
         return $data;
     }
-    public function getSupportedTypes(?string $format = null) : array
+
+    public function getSupportedTypes(string $format = null): array
     {
-        return array('Mdshack\\Docker\\API\\v1_40\\Model\\SystemVersion' => false);
+        return ['Mdshack\\Docker\\API\\v1_40\\Model\\SystemVersion' => false];
     }
 }

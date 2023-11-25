@@ -5,31 +5,34 @@ namespace Mdshack\Docker\API\v1_40\Normalizer;
 use Jane\Component\JsonSchemaRuntime\Reference;
 use Mdshack\Docker\API\v1_40\Runtime\Normalizer\CheckArray;
 use Mdshack\Docker\API\v1_40\Runtime\Normalizer\ValidatorTrait;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-class ServicesIdUpdatePostBodyNormalizer implements DenormalizerInterface, NormalizerInterface, DenormalizerAwareInterface, NormalizerAwareInterface
+
+class ServicesIdUpdatePostBodyNormalizer implements DenormalizerAwareInterface, DenormalizerInterface, NormalizerAwareInterface, NormalizerInterface
 {
+    use CheckArray;
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
-    use CheckArray;
     use ValidatorTrait;
-    public function supportsDenormalization($data, $type, $format = null, array $context = array()) : bool
+
+    public function supportsDenormalization($data, $type, $format = null, array $context = []): bool
     {
         return $type === 'Mdshack\\Docker\\API\\v1_40\\Model\\ServicesIdUpdatePostBody';
     }
-    public function supportsNormalization($data, $format = null, array $context = array()) : bool
+
+    public function supportsNormalization($data, $format = null, array $context = []): bool
     {
         return is_object($data) && get_class($data) === 'Mdshack\\Docker\\API\\v1_40\\Model\\ServicesIdUpdatePostBody';
     }
+
     /**
      * @return mixed
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if (isset($data['$ref'])) {
             return new Reference($data['$ref'], $context['document-origin']);
@@ -38,7 +41,7 @@ class ServicesIdUpdatePostBodyNormalizer implements DenormalizerInterface, Norma
             return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Mdshack\Docker\API\v1_40\Model\ServicesIdUpdatePostBody();
-        if (null === $data || false === \is_array($data)) {
+        if ($data === null || \is_array($data) === false) {
             return $object;
         }
         if (\array_key_exists('Name', $data)) {
@@ -46,7 +49,7 @@ class ServicesIdUpdatePostBodyNormalizer implements DenormalizerInterface, Norma
             unset($data['Name']);
         }
         if (\array_key_exists('Labels', $data)) {
-            $values = new \ArrayObject(array(), \ArrayObject::ARRAY_AS_PROPS);
+            $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
             foreach ($data['Labels'] as $key => $value) {
                 $values[$key] = $value;
             }
@@ -70,7 +73,7 @@ class ServicesIdUpdatePostBodyNormalizer implements DenormalizerInterface, Norma
             unset($data['RollbackConfig']);
         }
         if (\array_key_exists('Networks', $data)) {
-            $values_1 = array();
+            $values_1 = [];
             foreach ($data['Networks'] as $value_1) {
                 $values_1[] = $this->denormalizer->denormalize($value_1, 'Mdshack\\Docker\\API\\v1_40\\Model\\NetworkAttachmentConfig', 'json', $context);
             }
@@ -86,44 +89,46 @@ class ServicesIdUpdatePostBodyNormalizer implements DenormalizerInterface, Norma
                 $object[$key_1] = $value_2;
             }
         }
+
         return $object;
     }
+
     /**
      * @return array|string|int|float|bool|\ArrayObject|null
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $data = array();
-        if ($object->isInitialized('name') && null !== $object->getName()) {
+        $data = [];
+        if ($object->isInitialized('name') && $object->getName() !== null) {
             $data['Name'] = $object->getName();
         }
-        if ($object->isInitialized('labels') && null !== $object->getLabels()) {
-            $values = array();
+        if ($object->isInitialized('labels') && $object->getLabels() !== null) {
+            $values = [];
             foreach ($object->getLabels() as $key => $value) {
                 $values[$key] = $value;
             }
             $data['Labels'] = $values;
         }
-        if ($object->isInitialized('taskTemplate') && null !== $object->getTaskTemplate()) {
+        if ($object->isInitialized('taskTemplate') && $object->getTaskTemplate() !== null) {
             $data['TaskTemplate'] = $this->normalizer->normalize($object->getTaskTemplate(), 'json', $context);
         }
-        if ($object->isInitialized('mode') && null !== $object->getMode()) {
+        if ($object->isInitialized('mode') && $object->getMode() !== null) {
             $data['Mode'] = $this->normalizer->normalize($object->getMode(), 'json', $context);
         }
-        if ($object->isInitialized('updateConfig') && null !== $object->getUpdateConfig()) {
+        if ($object->isInitialized('updateConfig') && $object->getUpdateConfig() !== null) {
             $data['UpdateConfig'] = $this->normalizer->normalize($object->getUpdateConfig(), 'json', $context);
         }
-        if ($object->isInitialized('rollbackConfig') && null !== $object->getRollbackConfig()) {
+        if ($object->isInitialized('rollbackConfig') && $object->getRollbackConfig() !== null) {
             $data['RollbackConfig'] = $this->normalizer->normalize($object->getRollbackConfig(), 'json', $context);
         }
-        if ($object->isInitialized('networks') && null !== $object->getNetworks()) {
-            $values_1 = array();
+        if ($object->isInitialized('networks') && $object->getNetworks() !== null) {
+            $values_1 = [];
             foreach ($object->getNetworks() as $value_1) {
                 $values_1[] = $this->normalizer->normalize($value_1, 'json', $context);
             }
             $data['Networks'] = $values_1;
         }
-        if ($object->isInitialized('endpointSpec') && null !== $object->getEndpointSpec()) {
+        if ($object->isInitialized('endpointSpec') && $object->getEndpointSpec() !== null) {
             $data['EndpointSpec'] = $this->normalizer->normalize($object->getEndpointSpec(), 'json', $context);
         }
         foreach ($object as $key_1 => $value_2) {
@@ -131,10 +136,12 @@ class ServicesIdUpdatePostBodyNormalizer implements DenormalizerInterface, Norma
                 $data[$key_1] = $value_2;
             }
         }
+
         return $data;
     }
-    public function getSupportedTypes(?string $format = null) : array
+
+    public function getSupportedTypes(string $format = null): array
     {
-        return array('Mdshack\\Docker\\API\\v1_40\\Model\\ServicesIdUpdatePostBody' => false);
+        return ['Mdshack\\Docker\\API\\v1_40\\Model\\ServicesIdUpdatePostBody' => false];
     }
 }
